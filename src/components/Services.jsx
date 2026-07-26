@@ -47,18 +47,11 @@ function SlideIn({ children, direction = 'left', delay = 0, className = '' }) {
   )
 }
 
-function Services() {
-  const [flipped, setFlipped] = useState({})
-  const [showButton, setShowButton] = useState({})
-  const cardRefs = useRef([])
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const services = [
     {
       icon: "📱",
       title: "Mobiiltelefonide ekraani vahetus",
       description: "Professionaalne ekraanivahetus kõikidele populaarsetele mudelitele.",
-      price: "alates 45€",
       color: "from-purple-500 to-pink-500",
       details: [
         "✅ Samsung, iPhone, Xiaomi, Huawei",
@@ -71,7 +64,6 @@ function Services() {
       icon: "💻",
       title: "Sülearvutite ekraani vahetus",
       description: "Sülearvuti ekraani vahetus kiirelt ja professionaalselt.",
-      price: "alates 85€",
       color: "from-blue-500 to-cyan-500",
       details: [
         "✅ Dell, HP, Lenovo, Apple MacBook",
@@ -84,7 +76,6 @@ function Services() {
       icon: "🔋",
       title: "Mobiiltelefonide aku vahetus",
       description: "Aku vahetus originaal- ja kvaliteetsete analoogakkudega.",
-      price: "alates 35€",
       color: "from-green-500 to-emerald-500",
       details: [
         "✅ Originaalakud Apple ja Samsung",
@@ -97,7 +88,6 @@ function Services() {
       icon: "🧹",
       title: "Arvutite hooldus",
       description: "Põhjalik puhastus ja jahutuse optimeerimine.",
-      price: "25€",
       color: "from-teal-500 to-green-500",
       details: [
         "✅ Tolmupuhastus ja termopasta vahetus",
@@ -110,7 +100,6 @@ function Services() {
       icon: "💾",
       title: "Kõvaketta / andmekandja vahetus",
       description: "Ketta vahetus ja upgrade — kiirem ja mahukam salvestus.",
-      price: "30€ + ketas",
       color: "from-orange-500 to-amber-500",
       details: [
         "✅ HDD → SSD upgrade",
@@ -123,7 +112,6 @@ function Services() {
       icon: "🔐",
       title: "Andmete varundus & taastamine",
       description: "Kustunud või rikutud andmete päästmine ja varundamine.",
-      price: "alates 20€",
       color: "from-red-500 to-rose-500",
       details: [
         "✅ Kustunud failide taastamine",
@@ -136,7 +124,6 @@ function Services() {
       icon: "⚡",
       title: "Arvuti optimeerimine ja kiirendamine",
       description: "Sülearvuti või lauaarvuti kiirendamine ja puhastamine.",
-      price: "20€",
       color: "from-yellow-500 to-orange-500",
       details: [
         "✅ Startup optimeerimine",
@@ -149,7 +136,6 @@ function Services() {
       icon: "🚑",
       title: "IT kiirabi",
       description: "Kiire abi arvuti- ja IT-probleemidele.",
-      price: "15€ / tund",
       color: "from-rose-500 to-pink-600",
       details: [
         "✅ Kaugabi TeamViewer/AnyDeskiga",
@@ -162,7 +148,6 @@ function Services() {
       icon: "📡",
       title: "Ruuterite ja koduvõrkude paigaldus",
       description: "WiFi ja koduvõrgu seadistamine ning optimeerimine.",
-      price: "alates 30€",
       color: "from-indigo-500 to-violet-500",
       details: [
         "✅ Ruuteri seadistamine ja turvalisus",
@@ -175,7 +160,6 @@ function Services() {
       icon: "🔑",
       title: "Parooli lähtestamine & IT tugi",
       description: "Unustatud paroolide taastamine ja kasutajatugi.",
-      price: "alates 15€",
       color: "from-slate-500 to-gray-500",
       details: [
         "✅ Windows parooli lähtestamine",
@@ -183,8 +167,38 @@ function Services() {
         "✅ Andmete säilitamine kui võimalik",
         "✅ Samm-sammuline juhendamine"
       ]
+    },
+    {
+      icon: "💿",
+      title: "OS paigaldus & draiverite seadistamine",
+      description: "Operatsioonisüsteemide paigaldus ja draiverite uuendamine.",
+      color: "from-cyan-500 to-blue-600",
+      details: [
+        "✅ Windows 10/11 paigaldus",
+        "✅ Linux distributsioonid",
+        "✅ Kõikide draiverite uuendamine",
+        "✅ Programmide paigaldus ja seadistamine"
+      ]
+    },
+    {
+      icon: "🖨️",
+      title: "Printerite ja perifeeria seadistamine",
+      description: "Printerite, skannerite ja muude seadmete ühendamine.",
+      color: "from-lime-500 to-green-600",
+      details: [
+        "✅ Printerite WiFi ja juhtmega ühendus",
+        "✅ Skannerite ja veebikaamerate seadistamine",
+        "✅ Võrguprinterite konfigureerimine",
+        "✅ Tindisüsteemide paigaldus"
+      ]
     }
   ]
+
+function Services() {
+  const [flipped, setFlipped] = useState({})
+  const [showButton, setShowButton] = useState({})
+  const cardRefs = useRef([])
+
 
   const toggleFlip = (index) => {
     const newFlipped = !flipped[index]
@@ -205,7 +219,7 @@ function Services() {
         return () => clearTimeout(timer)
       }
     })
-  }, [flipped, services, showButton])
+  }, [flipped, showButton])
 
   useEffect(() => {
     const observers = []
@@ -273,6 +287,7 @@ function Services() {
                     className={`relative w-full h-full transition-all duration-700 ${flipped[index] ? 'rotate-y-180' : ''}`}
                     style={{ transformStyle: 'preserve-3d' }}
                   >
+                    {/* ESIKÜLG - ilma hinnata */}
                     <div 
                       className="absolute inset-0"
                       style={{ backfaceVisibility: 'hidden' }}
@@ -281,11 +296,30 @@ function Services() {
                         <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
                         <h3 className="text-lg font-bold mb-2 text-center leading-tight">{service.title}</h3>
                         <p className="text-white/80 text-center text-base leading-snug">{service.description}</p>
-                        <div className="mt-4 text-3xl font-black">{service.price}</div>
-                        <div className="mt-3 text-base text-white/60">Kliki detailideks →</div>
+
+                        {/* HINNA LINGI ASENDUS */}
+                        <div className="mt-5 flex flex-col items-center gap-2">
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              const el = document.getElementById('pricing')
+                              if (el) {
+                                const headerOffset = 80
+                                const elementPosition = el.getBoundingClientRect().top
+                                const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+                                window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+                              }
+                            }}
+                            className="px-5 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-white font-bold text-sm transition-all duration-300 border border-white/20 hover:border-white/40 cursor-pointer"
+                          >
+                            Vaata hinda →
+                          </button>
+                          <span className="text-xs text-white/50">Kliki kaarti detailideks</span>
+                        </div>
                       </div>
                     </div>
 
+                    {/* TAGAKÜLG - detailid */}
                     <div 
                       className="absolute inset-0"
                       style={{ 
@@ -305,6 +339,7 @@ function Services() {
                   </div>
                 </div>
 
+                {/* Broneeri nupp tagaküljel */}
                 <div 
                   className={`absolute bottom-4 left-1/2 transform -translate-x-1/2 transition-all duration-300 ${showButton[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
                   style={{ zIndex: 100 }}

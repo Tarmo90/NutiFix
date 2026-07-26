@@ -1,6 +1,7 @@
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Services from './components/Services'
+import Pricing from './components/Pricing'
 import WhyUs from './components/WhyUs'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
@@ -18,11 +19,7 @@ function App() {
   return (
     <div className="min-h-screen text-white relative">
 
-      {/* =========================
-          CINEMATIC BACKGROUND - KÕIGE TAGA
-      ========================= */}
-
-      {/* Layer 1 - logo blur (kõige taga) */}
+      {/* Layer 1 - logo blur */}
       <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -30 }}>
         <div
           className="absolute inset-0"
@@ -49,7 +46,7 @@ function App() {
         ></div>
       </div>
 
-      {/* Layer 3 - subtle noise feel */}
+      {/* Layer 3 - noise */}
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
@@ -60,7 +57,7 @@ function App() {
         }}
       />
 
-      {/* Layer 4 - ühtne taustavärv (katab kõik ääred) */}
+      {/* Layer 4 - background */}
       <div 
         className="fixed inset-0 pointer-events-none"
         style={{ 
@@ -69,14 +66,12 @@ function App() {
         }}
       />
 
-      {/* =========================
-          CONTENT
-      ========================= */}
-
+      {/* CONTENT */}
       <div className="relative" style={{ zIndex: 1 }}>
         <Header />
         <Hero />
         <Services />
+        <Pricing />
         <WhyUs />
         <Contact />
         <Footer />
