@@ -52,38 +52,39 @@ function Services() {
   const [showButton, setShowButton] = useState({})
   const cardRefs = useRef([])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const services = [
     {
-      icon: "💻",
-      title: "Arvutite remont",
-      description: "Sülearvutite ja lauaarvutite riist- ja tarkvaraparandus, viiruste eemaldamine, süsteemi uuendamine.",
-      price: "al 25€",
-      color: "from-blue-500 to-cyan-500",
+      icon: "📱",
+      title: "Mobiiltelefonide ekraani vahetus",
+      description: "Professionaalne ekraanivahetus kõikidele populaarsetele mudelitele.",
+      price: "alates 45€",
+      color: "from-purple-500 to-pink-500",
       details: [
-        "✅ Sülearvuti emaplaadi remont",
-        "✅ Protsessori ja GPU vahetus",
-        "✅ Viiruste ja pahavara eemaldamine",
-        "✅ Windows/macOS/Linux paigaldus"
+        "✅ Samsung, iPhone, Xiaomi, Huawei",
+        "✅ OLED, AMOLED ja LCD paneelid",
+        "✅ Originaal- ja kvaliteetsed analoogid",
+        "✅ Garantii 6 kuud ekraanile"
       ]
     },
     {
-      icon: "📱",
-      title: "Mobiilide remont",
-      description: "Ekraanivahetus, aku vahetus, laadimispesa parandus, veekahjustuste likvideerimine.",
-      price: "al 35€",
-      color: "from-purple-500 to-pink-500",
+      icon: "💻",
+      title: "Sülearvutite ekraani vahetus",
+      description: "Sülearvuti ekraani vahetus kiirelt ja professionaalselt.",
+      price: "alates 85€",
+      color: "from-blue-500 to-cyan-500",
       details: [
-        "✅ Ekraani ja puuteplaadi vahetus",
-        "✅ Aku ja laadimispesa remont",
-        "✅ Veekahjustuste kuivatus ja puhastus",
-        "✅ iPhone, Samsung, Huawei, Xiaomi"
+        "✅ Dell, HP, Lenovo, Apple MacBook",
+        "✅ IPS, TN ja OLED paneelid",
+        "✅ Hinge remont koos ekraaniga",
+        "✅ Garantii 6 kuud"
       ]
     },
     {
       icon: "🔋",
-      title: "Aku vahetus",
-      description: "Originaal- ja kvaliteetsed asendusakud sülearvutitele ja nutitelefonidele.",
-      price: "al 20€",
+      title: "Mobiiltelefonide aku vahetus",
+      description: "Aku vahetus originaal- ja kvaliteetsete analoogakkudega.",
+      price: "alates 35€",
       color: "from-green-500 to-emerald-500",
       details: [
         "✅ Originaalakud Apple ja Samsung",
@@ -93,11 +94,37 @@ function Services() {
       ]
     },
     {
+      icon: "🧹",
+      title: "Arvutite hooldus",
+      description: "Põhjalik puhastus ja jahutuse optimeerimine.",
+      price: "25€",
+      color: "from-teal-500 to-green-500",
+      details: [
+        "✅ Tolmupuhastus ja termopasta vahetus",
+        "✅ Jahutuse optimeerimine",
+        "✅ Ventilaatori mürataseme vähendamine",
+        "✅ Temperatuuride kontroll"
+      ]
+    },
+    {
       icon: "💾",
-      title: "Andmete taastamine",
-      description: "Kustunud või rikutud kõvaketastelt andmete päästmine ja varundamine.",
-      price: "al 50€",
-      color: "from-orange-500 to-red-500",
+      title: "Kõvaketta / andmekandja vahetus",
+      description: "Ketta vahetus ja upgrade — kiirem ja mahukam salvestus.",
+      price: "30€ + ketas",
+      color: "from-orange-500 to-amber-500",
+      details: [
+        "✅ HDD → SSD upgrade",
+        "✅ Andmete migreerimine vana kettalt",
+        "✅ M.2 NVMe ja SATA SSD paigaldus",
+        "✅ Ketta tervise diagnostika"
+      ]
+    },
+    {
+      icon: "🔐",
+      title: "Andmete varundus & taastamine",
+      description: "Kustunud või rikutud andmete päästmine ja varundamine.",
+      price: "alates 20€",
+      color: "from-red-500 to-rose-500",
       details: [
         "✅ Kustunud failide taastamine",
         "✅ Vigaste kõvaketaste lugemine",
@@ -106,29 +133,55 @@ function Services() {
       ]
     },
     {
-      icon: "🖥️",
-      title: "Ekraanide vahetus",
-      description: "LCD, OLED ja puutetundlike ekraanide professionaalne vahetus.",
-      price: "al 45€",
-      color: "from-indigo-500 to-purple-500",
+      icon: "⚡",
+      title: "Arvuti optimeerimine ja kiirendamine",
+      description: "Sülearvuti või lauaarvuti kiirendamine ja puhastamine.",
+      price: "20€",
+      color: "from-yellow-500 to-orange-500",
       details: [
-        "✅ OLED ja AMOLED ekraanid",
-        "✅ LCD ja IPS paneelid",
-        "✅ Puutetundliku klaasi vahetus",
-        "✅ Garantii 6 kuud ekraanile"
+        "✅ Startup optimeerimine",
+        "✅ Pahavara ja viiruste eemaldamine",
+        "✅ Draiverite uuendamine",
+        "✅ Süsteemi puhastus ja defragmentatsioon"
       ]
     },
     {
-      icon: "🛡️",
-      title: "Tarkvara paigaldus",
-      description: "Windows, macOS, Linux paigaldus, draiverite uuendamine, programmide seadistamine.",
-      price: "al 30€",
-      color: "from-teal-500 to-blue-500",
+      icon: "🚑",
+      title: "IT kiirabi",
+      description: "Kiire abi arvuti- ja IT-probleemidele.",
+      price: "15€ / tund",
+      color: "from-rose-500 to-pink-600",
       details: [
-        "✅ Windows 10/11 paigaldus ja aktiveerimine",
-        "✅ macOS uuendamine ja puhastamine",
-        "✅ Linux distributsioonide seadistamine",
-        "✅ Office, Adobe ja muu tarkvara"
+        "✅ Kaugabi TeamViewer/AnyDeskiga",
+        "✅ Kohapealne abi",
+        "✅ Kiire reageerimine",
+        "✅ Nõustamine ja juhendamine"
+      ]
+    },
+    {
+      icon: "📡",
+      title: "Ruuterite ja koduvõrkude paigaldus",
+      description: "WiFi ja koduvõrgu seadistamine ning optimeerimine.",
+      price: "alates 30€",
+      color: "from-indigo-500 to-violet-500",
+      details: [
+        "✅ Ruuteri seadistamine ja turvalisus",
+        "✅ WiFi katvuse optimeerimine",
+        "✅ Mesh-võrgu paigaldus",
+        "✅ IoT seadmete ühendamine"
+      ]
+    },
+    {
+      icon: "🔑",
+      title: "Parooli lähtestamine & IT tugi",
+      description: "Unustatud paroolide taastamine ja kasutajatugi.",
+      price: "alates 15€",
+      color: "from-slate-500 to-gray-500",
+      details: [
+        "✅ Windows parooli lähtestamine",
+        "✅ Android lukustuse eemaldamine",
+        "✅ Andmete säilitamine kui võimalik",
+        "✅ Samm-sammuline juhendamine"
       ]
     }
   ]
@@ -136,7 +189,7 @@ function Services() {
   const toggleFlip = (index) => {
     const newFlipped = !flipped[index]
     setFlipped(prev => ({ ...prev, [index]: newFlipped }))
-    
+
     if (!newFlipped) {
       setShowButton(prev => ({ ...prev, [index]: false }))
     }
@@ -148,13 +201,12 @@ function Services() {
         const timer = setTimeout(() => {
           setShowButton(prev => ({ ...prev, [index]: true }))
         }, 600)
-        
+
         return () => clearTimeout(timer)
       }
     })
-  }, [flipped])
+  }, [flipped, services, showButton])
 
-  // UUS: IntersectionObserver iga kaardi jaoks - pöörab tagasi kui kaob ekraanilt
   useEffect(() => {
     const observers = []
 
@@ -163,7 +215,6 @@ function Services() {
 
       const observer = new IntersectionObserver(
         ([entry]) => {
-          // Kui kaart läheb ekraanilt välja JA on ümberpööratud, siis pöörab tagasi
           if (!entry.isIntersecting && flipped[index]) {
             setFlipped(prev => ({ ...prev, [index]: false }))
             setShowButton(prev => ({ ...prev, [index]: false }))
@@ -179,41 +230,41 @@ function Services() {
     return () => {
       observers.forEach(obs => obs.disconnect())
     }
-  }, [flipped]) // sõltub flipped state-st, et teaks millised on ümberpööratud
+  }, [flipped])
 
   const getDirection = (index) => {
-    const row = Math.floor(index / 3)
+    const row = Math.floor(index / 4)
     if (row === 0) return 'left'
     return 'right'
   }
 
   return (
-    <section id="services" className="py-20 relative">
+    <section id="services" className="py-16 relative">
       <div className="container mx-auto px-4">
         <SlideIn direction="up" delay={0}>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-white text-glow">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-3 text-white text-glow">
             Teenused
           </h2>
         </SlideIn>
 
         <SlideIn direction="up" delay={0.1}>
-          <p className="text-center text-blue-200 mb-16 text-xl">
-            Professionaalne remont kõikidele populaarsetele seadmetele
+          <p className="text-center text-blue-200 mb-10 text-lg">
+            Professionaalne remont ja IT-abi kõikidele seadmetele
           </p>
         </SlideIn>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <SlideIn
               key={index}
               direction={getDirection(index)}
-              delay={0.1 + (index % 3) * 0.12}
+              delay={0.1 + (index % 4) * 0.08}
             >
               <div 
                 className="relative h-80"
                 ref={el => cardRefs.current[index] = el}
               >
-                
+
                 <div
                   className="h-full perspective-1000 cursor-pointer"
                   onClick={() => toggleFlip(index)}
@@ -226,12 +277,12 @@ function Services() {
                       className="absolute inset-0"
                       style={{ backfaceVisibility: 'hidden' }}
                     >
-                      <div className={`h-full bg-gradient-to-br ${service.color} rounded-2xl p-8 flex flex-col items-center justify-center text-white box-glow tilt`}>
+                      <div className={`h-full bg-gradient-to-br ${service.color} rounded-xl p-6 flex flex-col items-center justify-center text-white box-glow tilt`}>
                         <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
-                        <h3 className="text-2xl font-bold mb-2">{service.title}</h3>
-                        <p className="text-white/80 text-center">{service.description}</p>
+                        <h3 className="text-lg font-bold mb-2 text-center leading-tight">{service.title}</h3>
+                        <p className="text-white/80 text-center text-base leading-snug">{service.description}</p>
                         <div className="mt-4 text-3xl font-black">{service.price}</div>
-                        <div className="mt-4 text-sm text-white/60">Kliki detailideks →</div>
+                        <div className="mt-3 text-base text-white/60">Kliki detailideks →</div>
                       </div>
                     </div>
 
@@ -242,9 +293,9 @@ function Services() {
                         transform: 'rotateY(180deg)'
                       }}
                     >
-                      <div className="h-full bg-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center text-white border-2 border-blue-500/30">
-                        <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-                        <ul className="text-left space-y-2 text-blue-200">
+                      <div className="h-full bg-slate-800 rounded-xl p-6 flex flex-col items-center justify-center text-white border-2 border-blue-500/30">
+                        <h3 className="text-lg font-bold mb-4 text-center leading-tight">{service.title}</h3>
+                        <ul className="text-left space-y-2 text-blue-200 text-base leading-snug">
                           {service.details.map((detail, i) => (
                             <li key={i}>{detail}</li>
                           ))}
@@ -255,12 +306,12 @@ function Services() {
                 </div>
 
                 <div 
-                  className={`absolute bottom-4 left-1/2 transform -translate-x-1/2 transition-all duration-10 ${showButton[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                  className={`absolute bottom-4 left-1/2 transform -translate-x-1/2 transition-all duration-300 ${showButton[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
                   style={{ zIndex: 100 }}
                 >
                   <a 
                     href="#contact"
-                    className="px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors text-white font-bold no-underline inline-block shadow-lg"
+                    className="px-6 py-2.5 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors text-white font-bold no-underline inline-block shadow-lg text-base"
                     onClick={(e) => {
                       e.stopPropagation()
                     }}
