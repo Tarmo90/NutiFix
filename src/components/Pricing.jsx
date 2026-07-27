@@ -40,7 +40,7 @@ function SlideIn({ children, direction = 'left', delay = 0, className = '' }) {
   )
 }
 
-function AccordionItem({ title, icon, color, rows, isOpen, onToggle }) {
+function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) {
   const contentRef = useRef(null)
   const [height, setHeight] = useState(0)
 
@@ -51,7 +51,7 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle }) {
   }, [isOpen, rows])
 
   return (
-    <div className="mb-3">
+    <div className="mb-3" ref={itemRef}>
       <button
         onClick={onToggle}
         className={`w-full flex items-center justify-between px-6 py-4 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-white/10 hover:border-blue-500/40 transition-all duration-300 ${isOpen ? 'border-blue-500/50 bg-slate-800/80' : ''}`}
@@ -94,15 +94,10 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle }) {
   )
 }
 
-function Pricing() {
-  const [openIndex, setOpenIndex] = useState(0)
-
-  const toggle = (index) => {
-    setOpenIndex(openIndex === index ? -1 : index)
-  }
 
   const categories = [
     {
+      slug: "sulearvuti-ekraan",
       title: "Sülearvutite ekraani vahetus",
       icon: "💻",
       color: "from-blue-500 to-cyan-500",
@@ -114,6 +109,7 @@ function Pricing() {
       ]
     },
     {
+      slug: "arvuti-hooldus",
       title: "Arvutite hooldus",
       icon: "🧹",
       color: "from-teal-500 to-green-500",
@@ -126,6 +122,7 @@ function Pricing() {
       ]
     },
     {
+      slug: "kovaketas",
       title: "Kõvaketta / andmekandja vahetus",
       icon: "💾",
       color: "from-orange-500 to-amber-500",
@@ -138,6 +135,7 @@ function Pricing() {
       ]
     },
     {
+      slug: "andmed",
       title: "Andmete varundus & taastamine",
       icon: "🔐",
       color: "from-red-500 to-rose-500",
@@ -151,6 +149,7 @@ function Pricing() {
       ]
     },
     {
+      slug: "optimeerimine",
       title: "Arvuti optimeerimine ja kiirendamine",
       icon: "⚡",
       color: "from-yellow-500 to-orange-500",
@@ -164,6 +163,7 @@ function Pricing() {
       ]
     },
     {
+      slug: "it-kiirabi",
       title: "IT kiirabi",
       icon: "🚑",
       color: "from-rose-500 to-pink-600",
@@ -176,6 +176,7 @@ function Pricing() {
       ]
     },
     {
+      slug: "ruuter",
       title: "Ruuterite ja koduvõrkude paigaldus",
       icon: "📡",
       color: "from-indigo-500 to-violet-500",
@@ -189,6 +190,7 @@ function Pricing() {
       ]
     },
     {
+      slug: "parool",
       title: "Parooli lähtestamine & IT tugi",
       icon: "🔑",
       color: "from-slate-500 to-gray-500",
@@ -202,6 +204,7 @@ function Pricing() {
       ]
     },
     {
+      slug: "os-paigaldus",
       title: "OS paigaldus & draiverite seadistamine",
       icon: "💿",
       color: "from-cyan-500 to-blue-600",
@@ -215,6 +218,7 @@ function Pricing() {
       ]
     },
     {
+      slug: "printer",
       title: "Printerite ja perifeeria seadistamine",
       icon: "🖨️",
       color: "from-lime-500 to-green-600",
@@ -229,6 +233,10 @@ function Pricing() {
       ]
     },
   ]
+
+function Pricing() {
+  const [openIndex, setOpenIndex] = useState(-1)
+  const itemRefs = useRef([])
 
   const packages = [
     {
@@ -253,6 +261,45 @@ function Pricing() {
       features: ["Hoolduspakett", "OS optimeerimine", "Varundus"],
     },
   ]
+
+  // Check hash and open matching accordion
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash
+      if (hash.startsWith('#pricing-')) {
+        const slug = hash.replace('#pricing-', '')
+        const index = categories.findIndex(cat => cat.slug === slug)
+        if (index !== -1) {
+          setOpenIndex(index)
+          // Oota kuni accordion avaneb, siis keri täpselt kategooria juurde
+          setTimeout(() => {
+            const el = itemRefs.current[index]
+            if (el) {
+              const rect = el.getBoundingClientRect()
+              const scrollTop = window.pageYOffset + rect.top - 120
+              window.scrollTo({ top: scrollTop, behavior: 'smooth' })
+            }
+          }, 550)
+        }
+      } else if (hash === '#pricing') {
+        const pricingSection = document.getElementById('pricing')
+        if (pricingSection) {
+          pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }
+    }
+
+    // Check on mount
+    handleHashChange()
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  const toggle = (index) => {
+    setOpenIndex(openIndex === index ? -1 : index)
+  }
 
   return (
     <section id="pricing" className="py-20 relative">
@@ -332,6 +379,7 @@ function Pricing() {
             {...cat}
             isOpen={openIndex === i}
             onToggle={() => toggle(i)}
+            itemRef={el => itemRefs.current[i] = el}
           />
         ))}
 

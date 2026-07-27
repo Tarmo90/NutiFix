@@ -47,158 +47,169 @@ function SlideIn({ children, direction = 'left', delay = 0, className = '' }) {
   )
 }
 
-  const services = [
-    {
-      icon: "📱",
-      title: "Mobiiltelefonide ekraani vahetus",
-      description: "Professionaalne ekraanivahetus kõikidele populaarsetele mudelitele.",
-      color: "from-purple-500 to-pink-500",
-      details: [
-        "✅ Samsung, iPhone, Xiaomi, Huawei",
-        "✅ OLED, AMOLED ja LCD paneelid",
-        "✅ Originaal- ja kvaliteetsed analoogid",
-        "✅ Garantii 6 kuud ekraanile"
-      ]
-    },
-    {
-      icon: "💻",
-      title: "Sülearvutite ekraani vahetus",
-      description: "Sülearvuti ekraani vahetus kiirelt ja professionaalselt.",
-      color: "from-blue-500 to-cyan-500",
-      details: [
-        "✅ Dell, HP, Lenovo, Apple MacBook",
-        "✅ IPS, TN ja OLED paneelid",
-        "✅ Hinge remont koos ekraaniga",
-        "✅ Garantii 6 kuud"
-      ]
-    },
-    {
-      icon: "🔋",
-      title: "Mobiiltelefonide aku vahetus",
-      description: "Aku vahetus originaal- ja kvaliteetsete analoogakkudega.",
-      color: "from-green-500 to-emerald-500",
-      details: [
-        "✅ Originaalakud Apple ja Samsung",
-        "✅ Kvaliteetsed analoogakud teistele",
-        "✅ Aku tervise diagnostika",
-        "✅ Garantii 12 kuud akule"
-      ]
-    },
-    {
-      icon: "🧹",
-      title: "Arvutite hooldus",
-      description: "Põhjalik puhastus ja jahutuse optimeerimine.",
-      color: "from-teal-500 to-green-500",
-      details: [
-        "✅ Tolmupuhastus ja termopasta vahetus",
-        "✅ Jahutuse optimeerimine",
-        "✅ Ventilaatori mürataseme vähendamine",
-        "✅ Temperatuuride kontroll"
-      ]
-    },
-    {
-      icon: "💾",
-      title: "Kõvaketta / andmekandja vahetus",
-      description: "Ketta vahetus ja upgrade — kiirem ja mahukam salvestus.",
-      color: "from-orange-500 to-amber-500",
-      details: [
-        "✅ HDD → SSD upgrade",
-        "✅ Andmete migreerimine vana kettalt",
-        "✅ M.2 NVMe ja SATA SSD paigaldus",
-        "✅ Ketta tervise diagnostika"
-      ]
-    },
-    {
-      icon: "🔐",
-      title: "Andmete varundus & taastamine",
-      description: "Kustunud või rikutud andmete päästmine ja varundamine.",
-      color: "from-red-500 to-rose-500",
-      details: [
-        "✅ Kustunud failide taastamine",
-        "✅ Vigaste kõvaketaste lugemine",
-        "✅ SSD ja M.2 ketaste päästmine",
-        "✅ Konfidentsiaalsus garanteeritud"
-      ]
-    },
-    {
-      icon: "⚡",
-      title: "Arvuti optimeerimine ja kiirendamine",
-      description: "Sülearvuti või lauaarvuti kiirendamine ja puhastamine.",
-      color: "from-yellow-500 to-orange-500",
-      details: [
-        "✅ Startup optimeerimine",
-        "✅ Pahavara ja viiruste eemaldamine",
-        "✅ Draiverite uuendamine",
-        "✅ Süsteemi puhastus ja defragmentatsioon"
-      ]
-    },
-    {
-      icon: "🚑",
-      title: "IT kiirabi",
-      description: "Kiire abi arvuti- ja IT-probleemidele.",
-      color: "from-rose-500 to-pink-600",
-      details: [
-        "✅ Kaugabi TeamViewer/AnyDeskiga",
-        "✅ Kohapealne abi",
-        "✅ Kiire reageerimine",
-        "✅ Nõustamine ja juhendamine"
-      ]
-    },
-    {
-      icon: "📡",
-      title: "Ruuterite ja koduvõrkude paigaldus",
-      description: "WiFi ja koduvõrgu seadistamine ning optimeerimine.",
-      color: "from-indigo-500 to-violet-500",
-      details: [
-        "✅ Ruuteri seadistamine ja turvalisus",
-        "✅ WiFi katvuse optimeerimine",
-        "✅ Mesh-võrgu paigaldus",
-        "✅ IoT seadmete ühendamine"
-      ]
-    },
-    {
-      icon: "🔑",
-      title: "Parooli lähtestamine & IT tugi",
-      description: "Unustatud paroolide taastamine ja kasutajatugi.",
-      color: "from-slate-500 to-gray-500",
-      details: [
-        "✅ Windows parooli lähtestamine",
-        "✅ Android lukustuse eemaldamine",
-        "✅ Andmete säilitamine kui võimalik",
-        "✅ Samm-sammuline juhendamine"
-      ]
-    },
-    {
-      icon: "💿",
-      title: "OS paigaldus & draiverite seadistamine",
-      description: "Operatsioonisüsteemide paigaldus ja draiverite uuendamine.",
-      color: "from-cyan-500 to-blue-600",
-      details: [
-        "✅ Windows 10/11 paigaldus",
-        "✅ Linux distributsioonid",
-        "✅ Kõikide draiverite uuendamine",
-        "✅ Programmide paigaldus ja seadistamine"
-      ]
-    },
-    {
-      icon: "🖨️",
-      title: "Printerite ja perifeeria seadistamine",
-      description: "Printerite, skannerite ja muude seadmete ühendamine.",
-      color: "from-lime-500 to-green-600",
-      details: [
-        "✅ Printerite WiFi ja juhtmega ühendus",
-        "✅ Skannerite ja veebikaamerate seadistamine",
-        "✅ Võrguprinterite konfigureerimine",
-        "✅ Tindisüsteemide paigaldus"
-      ]
-    }
-  ]
+const services = [
+  {
+    icon: "📱",
+    title: "Mobiiltelefonide ekraani vahetus",
+    description: "Professionaalne ekraanivahetus kõikidele populaarsetele mudelitele.",
+    color: "from-violet-600 to-fuchsia-500",
+    pricingSlug: null,
+    details: [
+      "✅ Samsung, iPhone, Xiaomi, Huawei",
+      "✅ OLED, AMOLED ja LCD paneelid",
+      "✅ Originaal- ja kvaliteetsed analoogid",
+      "✅ Garantii 6 kuud ekraanile"
+    ]
+  },
+  {
+    icon: "💻",
+    title: "Sülearvutite ekraani vahetus",
+    description: "Sülearvuti ekraani vahetus kiirelt ja professionaalselt.",
+    color: "from-blue-600 to-indigo-500",
+    pricingSlug: "sulearvuti-ekraan",
+    details: [
+      "✅ Dell, HP, Lenovo, Apple MacBook",
+      "✅ IPS, TN ja OLED paneelid",
+      "✅ Hinge remont koos ekraaniga",
+      "✅ Garantii 6 kuud"
+    ]
+  },
+  {
+    icon: "🔋",
+    title: "Mobiiltelefonide aku vahetus",
+    description: "Aku vahetus originaal- ja kvaliteetsete analoogakkudega.",
+    color: "from-emerald-500 to-teal-400",
+    pricingSlug: null,
+    details: [
+      "✅ Originaalakud Apple ja Samsung",
+      "✅ Kvaliteetsed analoogakud teistele",
+      "✅ Aku tervise diagnostika",
+      "✅ Garantii 12 kuud akule"
+    ]
+  },
+  {
+    icon: "🧹",
+    title: "Arvutite hooldus",
+    description: "Põhjalik puhastus ja jahutuse optimeerimine.",
+    color: "from-cyan-500 to-sky-400",
+    pricingSlug: "arvuti-hooldus",
+    details: [
+      "✅ Tolmupuhastus ja termopasta vahetus",
+      "✅ Jahutuse optimeerimine",
+      "✅ Ventilaatori mürataseme vähendamine",
+      "✅ Temperatuuride kontroll"
+    ]
+  },
+  {
+    icon: "💾",
+    title: "Kõvaketta / andmekandja vahetus",
+    description: "Ketta vahetus ja upgrade — kiirem ja mahukam salvestus.",
+    color: "from-amber-500 to-orange-500",
+    pricingSlug: "kovaketas",
+    details: [
+      "✅ HDD → SSD upgrade",
+      "✅ Andmete migreerimine vana kettalt",
+      "✅ M.2 NVMe ja SATA SSD paigaldus",
+      "✅ Ketta tervise diagnostika"
+    ]
+  },
+  {
+    icon: "🔐",
+    title: "Andmete varundus & taastamine",
+    description: "Kustunud või rikutud andmete päästmine ja varundamine.",
+    color: "from-rose-500 to-red-500",
+    pricingSlug: "andmed",
+    details: [
+      "✅ Kustunud failide taastamine",
+      "✅ Vigaste kõvaketaste lugemine",
+      "✅ SSD ja M.2 ketaste päästmine",
+      "✅ Konfidentsiaalsus garanteeritud"
+    ]
+  },
+  {
+    icon: "⚡",
+    title: "Arvuti optimeerimine ja kiirendamine",
+    description: "Sülearvuti või lauaarvuti kiirendamine ja puhastamine.",
+    color: "from-yellow-400 to-amber-500",
+    pricingSlug: "optimeerimine",
+    details: [
+      "✅ Startup optimeerimine",
+      "✅ Pahavara ja viiruste eemaldamine",
+      "✅ Draiverite uuendamine",
+      "✅ Süsteemi puhastus ja defragmentatsioon"
+    ]
+  },
+  {
+    icon: "🚑",
+    title: "IT kiirabi",
+    description: "Kiire abi arvuti- ja IT-probleemidele.",
+    color: "from-red-500 to-orange-500",
+    pricingSlug: "it-kiirabi",
+    details: [
+      "✅ Kaugabi TeamViewer/AnyDeskiga",
+      "✅ Kohapealne abi",
+      "✅ Kiire reageerimine",
+      "✅ Nõustamine ja juhendamine"
+    ]
+  },
+  {
+    icon: "📡",
+    title: "Ruuterite ja koduvõrkude paigaldus",
+    description: "WiFi ja koduvõrgu seadistamine ning optimeerimine.",
+    color: "from-indigo-500 to-purple-500",
+    pricingSlug: "ruuter",
+    details: [
+      "✅ Ruuteri seadistamine ja turvalisus",
+      "✅ WiFi katvuse optimeerimine",
+      "✅ Mesh-võrgu paigaldus",
+      "✅ IoT seadmete ühendamine"
+    ]
+  },
+  {
+    icon: "🔑",
+    title: "Parooli lähtestamine & IT tugi",
+    description: "Unustatud paroolide taastamine ja kasutajatugi.",
+    color: "from-slate-500 to-zinc-400",
+    pricingSlug: "parool",
+    details: [
+      "✅ Windows parooli lähtestamine",
+      "✅ Android lukustuse eemaldamine",
+      "✅ Andmete säilitamine kui võimalik",
+      "✅ Samm-sammuline juhendamine"
+    ]
+  },
+  {
+    icon: "💿",
+    title: "OS paigaldus & draiverite seadistamine",
+    description: "Operatsioonisüsteemide paigaldus ja draiverite uuendamine.",
+    color: "from-sky-500 to-blue-600",
+    pricingSlug: "os-paigaldus",
+    details: [
+      "✅ Windows 10/11 paigaldus",
+      "✅ Linux distributsioonid",
+      "✅ Kõikide draiverite uuendamine",
+      "✅ Programmide paigaldus ja seadistamine"
+    ]
+  },
+  {
+    icon: "🖨️",
+    title: "Printerite ja perifeeria seadistamine",
+    description: "Printerite, skannerite ja muude seadmete ühendamine.",
+    color: "from-green-500 to-emerald-400",
+    pricingSlug: "printer",
+    details: [
+      "✅ Printerite WiFi ja juhtmega ühendus",
+      "✅ Skannerite ja veebikaamerate seadistamine",
+      "✅ Võrguprinterite konfigureerimine",
+      "✅ Tindisüsteemide paigaldus"
+    ]
+  }
+]
 
 function Services() {
   const [flipped, setFlipped] = useState({})
   const [showButton, setShowButton] = useState({})
   const cardRefs = useRef([])
-
 
   const toggleFlip = (index) => {
     const newFlipped = !flipped[index]
@@ -252,6 +263,15 @@ function Services() {
     return 'right'
   }
 
+  const scrollToPricing = (slug) => {
+    if (slug) {
+      window.location.hash = `pricing-${slug}`
+    } else {
+      window.location.hash = 'pricing'
+    }
+    // ÄRA keri siin! Pricing.jsx teeb kõik kerimise.
+  }
+
   return (
     <section id="services" className="py-16 relative">
       <div className="container mx-auto px-4">
@@ -297,20 +317,13 @@ function Services() {
                         <h3 className="text-lg font-bold mb-2 text-center leading-tight">{service.title}</h3>
                         <p className="text-white/80 text-center text-base leading-snug">{service.description}</p>
 
-                        {/* HINNA LINGI ASENDUS */}
                         <div className="mt-5 flex flex-col items-center gap-2">
                           <button 
                             onClick={(e) => {
                               e.stopPropagation()
-                              const el = document.getElementById('pricing')
-                              if (el) {
-                                const headerOffset = 80
-                                const elementPosition = el.getBoundingClientRect().top
-                                const offsetPosition = elementPosition + window.pageYOffset - headerOffset
-                                window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
-                              }
+                              scrollToPricing(service.pricingSlug)
                             }}
-                            className="px-5 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-white font-bold text-sm transition-all duration-300 border border-white/20 hover:border-white/40 cursor-pointer"
+                            className="px-5 py-2.5 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-lg text-white font-bold text-sm transition-all duration-300 border-2 border-white/40 hover:border-white/80 hover:shadow-lg hover:shadow-white/20 hover:scale-105 cursor-pointer"
                           >
                             Vaata hinda →
                           </button>
@@ -339,7 +352,6 @@ function Services() {
                   </div>
                 </div>
 
-                {/* Broneeri nupp tagaküljel */}
                 <div 
                   className={`absolute bottom-4 left-1/2 transform -translate-x-1/2 transition-all duration-300 ${showButton[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
                   style={{ zIndex: 100 }}

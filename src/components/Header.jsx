@@ -26,7 +26,7 @@ function Header() {
     >
       <div className="container mx-auto px-4 h-16 flex justify-between items-center">
         
-        {/* VASAKUL — logo, natuke allapoole nihutatud */}
+        {/* VASAKUL — logo */}
         <button 
           onClick={scrollToTop}
           className="flex items-center gap-2 group cursor-pointer bg-transparent border-none p-0 pt-6"
@@ -40,10 +40,10 @@ function Header() {
 
         {/* PAREMAL — navigatsioon */}
         <nav className="hidden md:flex items-center space-x-6">
-          {['Teenused', 'Miks meie?', 'Kontakt'].map((item, index) => (
+          {['Teenused', 'Hinnakiri', 'Miks meie?', 'Kontakt'].map((item, index) => (
             <a 
               key={index}
-              href={`#${['services', 'why-us', 'contact'][index]}`}
+              href={`#${['services', 'pricing', 'why-us', 'contact'][index]}`}
               className="relative text-white/80 hover:text-white transition-colors duration-300 text-sm font-medium group py-1"
             >
               {item}
@@ -64,10 +64,10 @@ function Header() {
       {/* Mobile nav */}
       <div className={`md:hidden overflow-hidden transition-all duration-500 ${isOpen ? 'max-h-64' : 'max-h-0'}`}>
         <nav className="bg-slate-900/90 backdrop-blur-md px-4 pb-3 space-y-1">
-          {['Teenused', 'Miks meie?', 'Kontakt'].map((item, index) => (
+          {['Teenused', 'Hinnakiri', 'Miks meie?', 'Kontakt'].map((item, index) => (
             <a 
               key={index}
-              href={`#${['services', 'why-us', 'contact'][index]}`}
+              href={`#${['services', 'pricing', 'why-us', 'contact'][index]}`}
               className="block py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg px-3 transition-all duration-300 text-sm"
               onClick={() => setIsOpen(false)}
             >
