@@ -224,13 +224,13 @@ function Hero() {
         <div className="text-center">
 
           <SlideIn direction="up" delay={0}>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white relative" style={{ textShadow: '0 0 40px rgba(59, 130, 246, 0.5), 0 0 80px rgba(139, 92, 246, 0.3)' }}>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white relative">
               ARVUTITE, MOBIILIDE REMONT JA HOOLDUS
             </h1>
           </SlideIn>
 
           <SlideIn direction="up" delay={0.15}>
-            <p className="text-xl md:text-2xl mb-8 text-blue-200" style={{ textShadow: '0 0 20px rgba(59, 130, 246, 0.3)' }}>
+            <p className="text-xl md:text-2xl mb-8 text-blue-200" >
               Kiire, professionaalne ja usaldusväärne teenus
             </p>
           </SlideIn>
@@ -240,12 +240,12 @@ function Hero() {
             <SlideIn direction="left" delay={0.3} className="w-full md:w-auto">
               <a href="#contact" className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg transition-all duration-300 hover:scale-110 overflow-hidden inline-block w-full md:w-auto" style={{ boxShadow: '0 10px 40px rgba(59, 130, 246, 0.4)' }}>
                 <span className="relative z-10">Broneeri aeg</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
               </a>
             </SlideIn>
             <SlideIn direction="right" delay={0.3} className="w-full md:w-auto">
-              <a href="tel:+37251234567" className="px-8 py-4 border-2 border-blue-400 text-blue-400 rounded-xl font-bold text-lg transition-all duration-300 hover:bg-blue-400 hover:text-white hover:scale-110 relative overflow-hidden inline-block w-full md:w-auto" style={{ boxShadow: '0 0 20px rgba(59, 130, 246, 0.2)' }}>
-                Helista: 5123 4567
+              <a href="tel:+37258530404" className="px-8 py-4 border-2 border-blue-400 text-blue-400 rounded-xl font-bold text-lg transition-all duration-300 hover:bg-blue-400 hover:text-white hover:scale-110 relative overflow-hidden inline-block w-full md:w-auto" style={{ boxShadow: '0 0 20px rgba(59, 130, 246, 0.2)' }}>
+                Helista: 5853 30404
               </a>
             </SlideIn>
           </div>

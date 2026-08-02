@@ -76,7 +76,7 @@ function WhyUs() {
   return (
     <section id="why-us" ref={sectionRef} className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-white" style={{ textShadow: '0 0 30px rgba(59, 130, 246, 0.5)' }}>
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-white" >
           Miks valida meid?
         </h2>
         

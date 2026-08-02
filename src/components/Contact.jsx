@@ -79,7 +79,7 @@ function Contact() {
           <div className="space-y-8">
             {[
               { icon: "📍", title: "Asukoht", text: "Võru, Eesti" },
-              { icon: "📞", title: "Telefon", text: "5XX XXXX", link: "tel:+3725XXXXXXXX" },
+              { icon: "📞", title: "Telefon", text: "58530404", link: "tel:+372 58530404" },
               { icon: "✉️", title: "E-post", text: "nutifix.info@gmail.com", link: "mailto:nutifix.info@gmail.com" }
             ].map((item, index) => (
               <a 

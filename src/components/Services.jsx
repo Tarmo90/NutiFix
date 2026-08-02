@@ -52,7 +52,7 @@ const services = [
     icon: "📱",
     title: "Mobiiltelefonide ekraani vahetus",
     description: "Professionaalne ekraanivahetus kõikidele populaarsetele mudelitele.",
-    color: "from-violet-600 to-fuchsia-500",
+    gradient: "linear-gradient(to bottom, #8b5cf6 0%, #7c3aed 60%, #5b21b6 100%)",
     pricingSlug: null,
     details: [
       "✅ Samsung, iPhone, Xiaomi, Huawei",
@@ -65,7 +65,7 @@ const services = [
     icon: "💻",
     title: "Sülearvutite ekraani vahetus",
     description: "Sülearvuti ekraani vahetus kiirelt ja professionaalselt.",
-    color: "from-blue-600 to-indigo-500",
+    gradient: "linear-gradient(to bottom,#60a5fa 0%, #3b82f6 60%, #1e40af 100%)",
     pricingSlug: "sulearvuti-ekraan",
     details: [
       "✅ Dell, HP, Lenovo, Apple MacBook",
@@ -78,7 +78,7 @@ const services = [
     icon: "🔋",
     title: "Mobiiltelefonide aku vahetus",
     description: "Aku vahetus originaal- ja kvaliteetsete analoogakkudega.",
-    color: "from-emerald-500 to-teal-400",
+    gradient: "linear-gradient(to bottom, #34d399 0%, #10b981 60%, #065f46 100%)",
     pricingSlug: null,
     details: [
       "✅ Originaalakud Apple ja Samsung",
@@ -91,7 +91,7 @@ const services = [
     icon: "🧹",
     title: "Arvutite hooldus",
     description: "Põhjalik puhastus ja jahutuse optimeerimine.",
-    color: "from-cyan-500 to-sky-400",
+    gradient: "linear-gradient(to bottom, #22d3ee 0%, #06b6d4 60%, #155e75 100%)",
     pricingSlug: "arvuti-hooldus",
     details: [
       "✅ Tolmupuhastus ja termopasta vahetus",
@@ -104,7 +104,7 @@ const services = [
     icon: "💾",
     title: "Kõvaketta / andmekandja vahetus",
     description: "Ketta vahetus ja upgrade — kiirem ja mahukam salvestus.",
-    color: "from-amber-500 to-orange-500",
+    gradient: "linear-gradient(to bottom, #fbbf24 0%, #f59e0b 60%, #92400e 100%)",
     pricingSlug: "kovaketas",
     details: [
       "✅ HDD → SSD upgrade",
@@ -117,7 +117,7 @@ const services = [
     icon: "🔐",
     title: "Andmete varundus & taastamine",
     description: "Kustunud või rikutud andmete päästmine ja varundamine.",
-    color: "from-rose-500 to-red-500",
+    gradient: "linear-gradient(to bottom, #fb7185 0%, #f43f5e 60%, #9f1239 100%)",
     pricingSlug: "andmed",
     details: [
       "✅ Kustunud failide taastamine",
@@ -130,7 +130,7 @@ const services = [
     icon: "⚡",
     title: "Arvuti optimeerimine ja kiirendamine",
     description: "Sülearvuti või lauaarvuti kiirendamine ja puhastamine.",
-    color: "from-yellow-400 to-amber-500",
+    gradient: "linear-gradient(to bottom, #fde047 0%, #eab308 60%, #854d0e 100%)",
     pricingSlug: "optimeerimine",
     details: [
       "✅ Startup optimeerimine",
@@ -143,7 +143,7 @@ const services = [
     icon: "🚑",
     title: "IT kiirabi",
     description: "Kiire abi arvuti- ja IT-probleemidele.",
-    color: "from-red-500 to-orange-500",
+    gradient: "linear-gradient(to bottom, #f87171 0%, #ef4444 60%, #991b1b 100%)",
     pricingSlug: "it-kiirabi",
     details: [
       "✅ Kaugabi TeamViewer/AnyDeskiga",
@@ -156,7 +156,7 @@ const services = [
     icon: "📡",
     title: "Ruuterite ja koduvõrkude paigaldus",
     description: "WiFi ja koduvõrgu seadistamine ning optimeerimine.",
-    color: "from-indigo-500 to-purple-500",
+    gradient: "linear-gradient(to bottom, #818cf8 0%, #6366f1 60%, #3730a3 100%)",
     pricingSlug: "ruuter",
     details: [
       "✅ Ruuteri seadistamine ja turvalisus",
@@ -169,7 +169,7 @@ const services = [
     icon: "🔑",
     title: "Parooli lähtestamine & IT tugi",
     description: "Unustatud paroolide taastamine ja kasutajatugi.",
-    color: "from-slate-500 to-zinc-400",
+    gradient: "linear-gradient(to bottom, #94a3b8 0%, #64748b 60%, #334155 100%)",
     pricingSlug: "parool",
     details: [
       "✅ Windows parooli lähtestamine",
@@ -182,7 +182,7 @@ const services = [
     icon: "💿",
     title: "OS paigaldus & draiverite seadistamine",
     description: "Operatsioonisüsteemide paigaldus ja draiverite uuendamine.",
-    color: "from-sky-500 to-blue-600",
+    gradient: "linear-gradient(to bottom, #38bdf8 0%, #0ea5e9 60%, #075985 100%)",
     pricingSlug: "os-paigaldus",
     details: [
       "✅ Windows 10/11 paigaldus",
@@ -195,7 +195,7 @@ const services = [
     icon: "🖨️",
     title: "Printerite ja perifeeria seadistamine",
     description: "Printerite, skannerite ja muude seadmete ühendamine.",
-    color: "from-green-500 to-emerald-400",
+    gradient: "linear-gradient(to bottom, #4ade80 0%, #22c55e 60%, #166534 100%)",
     pricingSlug: "printer",
     details: [
       "✅ Printerite WiFi ja juhtmega ühendus",
@@ -312,7 +312,7 @@ function Services() {
                       className="absolute inset-0"
                       style={{ backfaceVisibility: 'hidden' }}
                     >
-                      <div className={`h-full bg-gradient-to-br ${service.color} rounded-xl p-6 flex flex-col items-center justify-center text-white box-glow tilt`}>
+                      <div className="h-full rounded-xl p-6 flex flex-col items-center justify-center text-white box-glow tilt" style={{ background: service.gradient }}>
                         <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
                         <h3 className="text-lg font-bold mb-2 text-center leading-tight">{service.title}</h3>
                         <p className="text-white/80 text-center text-base leading-snug">{service.description}</p>
@@ -327,7 +327,7 @@ function Services() {
                           >
                             Vaata hinda →
                           </button>
-                          <span className="text-xs text-white/50">Kliki kaarti detailideks</span>
+                          <span className="text-sm text-white font-semibold bg-black/30 px-3 py-1 rounded-full border border-white/30">👆 Kliki kaarti detailideks</span>
                         </div>
                       </div>
                     </div>

@@ -169,9 +169,9 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) 
       color: "from-rose-500 to-pink-600",
       rows: [
         { service: "Kaugabi (TeamViewer / AnyDesk)", price: "25€ / tund" },
-        { service: "Kohapealne abi (Tartu linnas)", price: "35€ / tund" },
+        { service: "Kohapealne abi (Võru/Võrumaa)", price: "35€ / tund" },
         { service: "Kohapealne abi (lähiümbrus)", price: "35€ / tund + sõit" },
-        { service: "Arvuti kättetoimetamine remonti", price: "15€ (Tartus)" },
+        { service: "Arvuti kättetoimetamine remonti", price: "15€ (Võru/Võrumaa)" },
         { service: "Ööpäevaringne erakorraline abi", price: "50€ / tund" },
       ]
     },
