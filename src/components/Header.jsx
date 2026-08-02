@@ -40,7 +40,7 @@ function Header() {
 
         {/* PAREMAL — navigatsioon */}
         <nav className="hidden md:flex items-center space-x-6">
-          {['Teenused', 'Hinnakiri', 'Miks meie?', 'Kontakt'].map((item, index) => (
+          {['Teenused', 'Hinnakiri', 'Miks Nutifix?', 'Kontakt'].map((item, index) => (
             <a 
               key={index}
               href={`#${['services', 'pricing', 'why-us', 'contact'][index]}`}

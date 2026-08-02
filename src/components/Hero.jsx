@@ -98,19 +98,19 @@ function InfoCard({ icon, title, color, shortText, details, direction = 'left', 
     >
       <div className="p-6">
         <div className="text-5xl mb-3">{icon}</div>
-        <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
-        <p className="text-blue-200/80 text-sm mb-3">{shortText}</p>
+        <h3 className="text-white font-bold text-xl mb-2" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}>{title}</h3>
+        <p className="text-white/90 text-base mb-3">{shortText}</p>
 
         {/* Expanded content */}
         <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-64 opacity-100 mt-3 pt-3 border-t border-white/10' : 'max-h-0 opacity-0'}`}>
           <div className="space-y-2 text-left">
             {details.map((detail, i) => (
-              <p key={i} className="text-white/80 text-sm">{detail}</p>
+              <p key={i} className="text-white/90 text-base">{detail}</p>
             ))}
           </div>
         </div>
 
-        <div className="mt-3 text-xs text-white/40">
+        <div className="mt-3 text-sm text-white/60">
           {isOpen ? '↩ Kliki sulgemiseks' : '↗ Kliki lisainfo'}
         </div>
       </div>
@@ -224,13 +224,13 @@ function Hero() {
         <div className="text-center">
 
           <SlideIn direction="up" delay={0}>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white relative">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white relative" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}>
               ARVUTITE, MOBIILIDE REMONT JA HOOLDUS
             </h1>
           </SlideIn>
 
           <SlideIn direction="up" delay={0.15}>
-            <p className="text-xl md:text-2xl mb-8 text-blue-200" >
+            <p className="text-xl md:text-2xl mb-8 text-white" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>
               Kiire, professionaalne ja usaldusväärne teenus
             </p>
           </SlideIn>
@@ -238,13 +238,13 @@ function Hero() {
           {/* BUTTONS */}
           <div className="flex flex-col md:flex-row gap-6 justify-center">
             <SlideIn direction="left" delay={0.3} className="w-full md:w-auto">
-              <a href="#contact" className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg transition-all duration-300 hover:scale-110 overflow-hidden inline-block w-full md:w-auto" style={{ boxShadow: '0 10px 40px rgba(59, 130, 246, 0.4)' }}>
+              <a href="#contact" className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-xl transition-all duration-300 hover:scale-110 overflow-hidden inline-block w-full md:w-auto">
                 <span className="relative z-10">Broneeri aeg</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
               </a>
             </SlideIn>
             <SlideIn direction="right" delay={0.3} className="w-full md:w-auto">
-              <a href="tel:+37258530404" className="px-8 py-4 border-2 border-blue-400 text-blue-400 rounded-xl font-bold text-lg transition-all duration-300 hover:bg-blue-400 hover:text-white hover:scale-110 relative overflow-hidden inline-block w-full md:w-auto" style={{ boxShadow: '0 0 20px rgba(59, 130, 246, 0.2)' }}>
+              <a href="tel:+37258530404" className="px-8 py-4 border-2 border-white text-white rounded-xl font-bold text-xl transition-all duration-300 hover:bg-white hover:text-slate-900 hover:scale-110 relative overflow-hidden inline-block w-full md:w-auto">
                 Helista: 5853 30404
               </a>
             </SlideIn>

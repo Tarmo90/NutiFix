@@ -54,13 +54,13 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) 
     <div className="mb-3" ref={itemRef}>
       <button
         onClick={onToggle}
-        className={`w-full flex items-center justify-between px-6 py-4 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-white/10 hover:border-blue-500/40 transition-all duration-300 ${isOpen ? 'border-blue-500/50 bg-slate-800/80' : ''}`}
+        className={`w-full flex items-center justify-between px-6 py-5 rounded-xl bg-slate-800/80 border border-white/20 hover:border-blue-400/50 transition-all duration-300 ${isOpen ? 'border-blue-400/60 bg-slate-800' : ''}`}
       >
         <div className="flex items-center gap-3">
           <span className={`w-10 h-10 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center text-xl`}>
             {icon}
           </span>
-          <span className="text-lg font-bold text-white">{title}</span>
+          <span className="text-xl font-bold text-white">{title}</span>
         </div>
         <span
           className="text-blue-300 text-xl transition-transform duration-300"
@@ -83,8 +83,8 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) 
                   i !== rows.length - 1 ? 'border-b border-white/5' : ''
                 } hover:bg-white/5 transition-colors`}
               >
-                <span className="text-blue-100 text-base">{row.service}</span>
-                <span className="text-white font-bold text-base whitespace-nowrap ml-4">{row.price}</span>
+                <span className="text-white text-base font-medium">{row.service}</span>
+                <span className="text-white font-bold text-lg whitespace-nowrap ml-4">{row.price}</span>
               </div>
             ))}
           </div>
@@ -305,13 +305,13 @@ function Pricing() {
     <section id="pricing" className="py-20 relative">
       <div className="container mx-auto px-4 max-w-4xl">
         <SlideIn direction="up" delay={0}>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-3 text-white text-glow">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-3 text-white">
             Hinnakiri
           </h2>
-          <p className="text-center text-blue-200 mb-4 text-lg">
+          <p className="text-center text-white mb-4 text-lg">
             Kõik hinnad sisaldavad tööjõudu. Varuosad hinna sees või eraldi.
           </p>
-          <p className="text-center text-blue-300/60 mb-8 text-sm">
+          <p className="text-center text-white/70 mb-8 text-base">
             *Tasuta diagnostika. Täpne hind selgub pärast seadme ülevaatust. Kõikidele remontidele vähemalt 6 kuu garantii.*
           </p>
         </SlideIn>
@@ -322,15 +322,15 @@ function Pricing() {
             <div className="flex items-start gap-4">
               <span className="text-3xl">📱</span>
               <div>
-                <h3 className="text-lg font-bold text-white mb-1">Mobiiliteenused</h3>
-                <p className="text-blue-200 text-sm leading-relaxed">
+                <h3 className="text-xl font-bold text-white mb-1">Mobiiliteenused</h3>
+                <p className="text-white/90 text-base leading-relaxed">
                   Telefonide ekraani- ja akuvahetuste hinnad sõltuvad seadme mudelist ning kasutatavatest varuosadest 
                   (LCD, OLED või originaal). Võta ühendust <strong>tasuta diagnostikaks</strong> – saad personaalse pakkumise 
                   koos täpse hinnaga enne töö algust!
                 </p>
                 <a 
                   href="#contact" 
-                  className="inline-block mt-3 text-sm text-purple-300 hover:text-purple-200 underline underline-offset-2 transition-colors"
+                  className="inline-block mt-3 text-base text-white hover:text-blue-300 underline underline-offset-2 transition-colors"
                 >
                   Küsi mobiiliremondi pakkumist →
                 </a>
@@ -351,11 +351,11 @@ function Pricing() {
                 className={`relative rounded-2xl p-6 bg-gradient-to-br ${pkg.color} border border-white/10 text-center`}
               >
                 <div className="text-4xl mb-2">{pkg.emoji}</div>
-                <h4 className="text-lg font-bold text-white mb-2">{pkg.name}</h4>
-                <div className="text-4xl font-black text-white mb-4">{pkg.price}</div>
+                <h4 className="text-xl font-bold text-white mb-2">{pkg.name}</h4>
+                <div className="text-5xl font-black text-white mb-4">{pkg.price}</div>
                 <ul className="text-left space-y-2 text-white/90 text-sm">
                   {pkg.features.map((f, j) => (
-                    <li key={j}>✅ {f}</li>
+                    <li key={j} className="text-base">✅ {f}</li>
                   ))}
                 </ul>
               </div>
@@ -386,16 +386,16 @@ function Pricing() {
         {/* Footer */}
         <SlideIn direction="up" delay={0.1}>
           <div className="text-center mt-12 p-6 bg-slate-800/40 rounded-xl border border-white/10">
-            <p className="text-blue-200 mb-4">
+            <p className="text-white/90 mb-4 text-lg">
               Kas sa ei leia oma teenust või seadet? Võta meiega ühendust – teeme sulle personaalse pakkumise!
             </p>
             <a
               href="#contact"
-              className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-lg transition-colors shadow-lg"
+              className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-xl transition-colors"
             >
               Küsi pakkumist
             </a>
-            <p className="text-blue-300/40 text-xs mt-4">
+            <p className="text-white/50 text-sm mt-4">
               Hindadele lisandub käibemaks 22%. NutiFix jätab endale õiguse hindu ette teatamata muuta.
             </p>
           </div>
