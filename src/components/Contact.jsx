@@ -12,6 +12,8 @@ function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState(null)
 
+  // Teenuse/paketi auto-täitmine eemaldatud - kasutaja valib ise dropdown-ist
+
   // ⬇⬇⬇ ASENDA SEE OMA FORM ID-ga pärast Formspree registreerimist!
   const FORMSPREE_ID = 'xgogrjql'
 
@@ -75,51 +77,9 @@ function Contact() {
 
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
 
-          {/* VASAKUL — Kontaktinfo */}
-          <div className="space-y-8">
-            {[
-              { icon: "📍", title: "Asukoht", text: "Võru, Eesti" },
-              { icon: "📞", title: "Telefon", text: "58530404", link: "tel:+372 58530404" },
-              { icon: "✉️", title: "E-post", text: "nutifix.info@gmail.com", link: "mailto:nutifix.info@gmail.com" }
-            ].map((item, index) => (
-              <a 
-                key={index}
-                href={item.link || '#'}
-                className="group flex items-center gap-4 bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
-              >
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  {item.icon}
-                </div>
-                <div>
-                  <div className="text-blue-300 text-sm">{item.title}</div>
-                  <div className="text-white text-lg font-semibold group-hover:text-blue-400 transition-colors">
-                    {item.text}
-                  </div>
-                </div>
-              </a>
-            ))}
 
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-              <h3 className="text-xl font-bold text-white mb-4">Lahtiolekuajad</h3>
-              <div className="space-y-2 text-blue-200">
-                <div className="flex justify-between">
-                  <span>Esmaspäev – Reede</span>
-                  <span className="text-white">9:00 – 18:00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Laupäev</span>
-                  <span className="text-white">10:00 – 14:00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Pühapäev</span>
-                  <span className="text-red-400">Suletud</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* PAREMAL — Vorm */}
-          <form 
+          {/* VASAKUL — Vorm */}
+          <form
             onSubmit={handleSubmit} 
             className="relative bg-slate-800/80 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
           >
@@ -141,11 +101,11 @@ function Contact() {
 
             <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium mb-2 text-blue-300">Nimi *</label>
+                <label className="block text-xl font-medium mb-2 text-blue-300">Nimi *</label>
                 <input
                   type="text"
                   required
-                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400 transition-all"
+                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-white/40 transition-all"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   placeholder="Sinu nimi"
@@ -153,11 +113,11 @@ function Contact() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 text-blue-300">Telefon *</label>
+                <label className="block text-xl font-medium mb-2 text-blue-300">Telefon *</label>
                 <input
                   type="tel"
                   required
-                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400 transition-all"
+                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-white/40 transition-all"
                   value={formData.phone}
                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
                   placeholder="5123 4567"
@@ -165,36 +125,43 @@ function Contact() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 text-blue-300">Teenus *</label>
+                <label className="block text-xl font-medium mb-2 text-blue-300">Teenus *</label>
                 <select
                   required
-                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white transition-all"
+                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white transition-all appearance-none"
                   value={formData.service}
                   onChange={(e) => setFormData({...formData, service: e.target.value})}
                 >
                   <option value="" disabled>Vali teenus...</option>
-                  {services.map((s, i) => (
-                    <option key={i} value={s}>{s}</option>
-                  ))}
+                  <optgroup label="🎁 Hoolduspaketid">
+                    <option value="Arvuti Põhipakett">Arvuti Põhipakett (35€)</option>
+                    <option value="Arvuti Hoolduspakett">Arvuti Hoolduspakett (60€)</option>
+                    <option value="Arvuti Täispakett">Arvuti Täispakett (90€)</option>
+                  </optgroup>
+                  <optgroup label="🔧 Üksikteenused">
+                    {services.map((s, i) => (
+                      <option key={i} value={s}>{s}</option>
+                    ))}
+                  </optgroup>
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 text-blue-300">Seade</label>
+                <label className="block text-xl font-medium mb-2 text-blue-300">Seade</label>
                 <input
                   type="text"
                   placeholder="nt iPhone 13, Dell Inspiron..."
-                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400 transition-all"
+                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-white/40 transition-all"
                   value={formData.device}
                   onChange={(e) => setFormData({...formData, device: e.target.value})}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 text-blue-300">Probleemi kirjeldus</label>
+                <label className="block text-xl font-medium mb-2 text-blue-300">Probleemi kirjeldus</label>
                 <textarea
                   rows="3"
-                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400 transition-all resize-none"
+                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-white/40 transition-all resize-none"
                   value={formData.problem}
                   onChange={(e) => setFormData({...formData, problem: e.target.value})}
                   placeholder="Kirjelda probleemi lühidalt..."
@@ -209,14 +176,76 @@ function Contact() {
                 {isSubmitting ? 'Saadan...' : 'Broneeri aeg'}
               </button>
 
-              <p className="text-xs text-blue-300/60 text-center">
+              <p className="text-base text-blue-300/60 text-center">
                 Võtan ühendust 24h jooksul telefoni või emaili teel
               </p>
             </div>
           </form>
-        </div>
+
+
+          {/* PAREMAL — Kontaktinfo */}
+          <div className="space-y-8">
+            {[
+              { icon: "📍", title: "Asukoht", text: "Võru, Eesti" },
+              { icon: "📞", title: "Telefon", text: "58530404", link: "tel:+372 58530404" },
+              { icon: "✉️", title: "E-post", text: "nutifix.info@gmail.com", link: "mailto:nutifix.info@gmail.com" }
+            ].map((item, index) => (
+              <a 
+                key={index}
+                href={item.link || '#'}
+                className="group flex items-center gap-4 bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
+              >
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                  {item.icon}
+                </div>
+                <div>
+                  <div className="text-blue-300 text-xl">{item.title}</div>
+                  <div className="text-white text-lg font-semibold group-hover:text-blue-400 transition-colors">
+                    {item.text}
+                  </div>
+                </div>
+              </a>
+            ))}
+
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+              <h3 className="text-2xl font-bold text-white mb-4">Lahtiolekuajad</h3>
+              <div className="space-y-2 text-blue-200">
+                <div className="flex justify-between">
+                  <span>Esmaspäev – Reede</span>
+                  <span className="text-white">9:00 – 18:00</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Laupäev</span>
+                  <span className="text-white">10:00 – 14:00</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Pühapäev</span>
+                  <span className="text-red-400">Suletud</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
       </div>
-    </section>
+        </div>
+      <style>{`
+    select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.7rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+    }
+    select option, select optgroup {
+      background-color: #1e293b;
+      color: white;
+    }
+    select optgroup {
+      font-weight: bold;
+      color: #94a3b8;
+    }
+  `}</style>
+</section>
   )
 }
 

@@ -44,7 +44,7 @@ function Header() {
             <a 
               key={index}
               href={`#${['services', 'pricing', 'why-us', 'contact'][index]}`}
-              className="relative text-white/80 hover:text-white transition-colors duration-300 text-sm font-medium group py-1"
+              className="relative text-white/80 hover:text-white transition-colors duration-300 text-base font-medium group py-1"
             >
               {item}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>

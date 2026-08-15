@@ -50,8 +50,7 @@ function SlideIn({ children, direction = 'left', delay = 0, className = '' }) {
 }
 
 // Iga kaardi jaoks eraldi komponent
-function InfoCard({ icon, title, color, shortText, details, direction = 'left', delay = 0 }) {
-  const [isOpen, setIsOpen] = useState(false)
+function InfoCard({ icon, title, color, shortText, details, isOpen, onToggle, direction = 'left', delay = 0 }) {
   const ref = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
 
@@ -79,7 +78,10 @@ function InfoCard({ icon, title, color, shortText, details, direction = 'left', 
   return (
     <div
       ref={ref}
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={(e) => {
+        e.stopPropagation()
+        onToggle()
+      }}
       className={`
         relative rounded-xl border cursor-pointer
         hover:border-blue-500/50
@@ -102,10 +104,22 @@ function InfoCard({ icon, title, color, shortText, details, direction = 'left', 
         <p className="text-white/90 text-base mb-3">{shortText}</p>
 
         {/* Expanded content */}
-        <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-64 opacity-100 mt-3 pt-3 border-t border-white/10' : 'max-h-0 opacity-0'}`}>
+        <div 
+          className="overflow-hidden transition-all duration-500 ease-in-out"
+          style={{
+            maxHeight: isOpen ? '300px' : '0px',
+            opacity: isOpen ? 1 : 0,
+            marginTop: isOpen ? '12px' : '0px',
+            paddingTop: isOpen ? '12px' : '0px',
+            borderTop: isOpen ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent'
+          }}
+        >
           <div className="space-y-2 text-left">
             {details.map((detail, i) => (
-              <p key={i} className="text-white/90 text-base">{detail}</p>
+              <div key={i} className="flex items-start gap-2 text-white/90 text-base">
+                <span className="shrink-0">✓</span>
+                <span>{detail.replace(/^✓\s*/, '')}</span>
+              </div>
             ))}
           </div>
         </div>
@@ -120,6 +134,7 @@ function InfoCard({ icon, title, color, shortText, details, direction = 'left', 
 
 function Hero() {
   const [particles, setParticles] = useState([])
+  const [openCardIndex, setOpenCardIndex] = useState(-1)
 
   useEffect(() => {
     const newParticles = Array.from({ length: 30 }, (_, i) => ({
@@ -141,10 +156,9 @@ function Hero() {
       color: "from-blue-500 to-cyan-500",
       shortText: "Professionaalne diagnostika",
       details: [
-        "✓ Tasuta esmane diagnoos 15 minutiga",
-        "✓ Täpne rikke tuvastus professionaalse seadmetega",
-        "✓ Detailne hinnapakkumine enne remonti",
-        "✓ Kiiret remonti vajavad seadmed prioriteetseks"
+        "Tasuta esmane diagnoos 15 minutiga",
+        "Detailne hinnapakkumine enne remonti",
+        "Kiiret remonti vajavad seadmed prioriteetseks"
       ]
     },
     {
@@ -153,25 +167,34 @@ function Hero() {
       color: "from-purple-500 to-pink-500",
       shortText: "Kuni 12 kuud garantiid",
       details: [
-        "✓ 6-12 kuud garantiid kõigile remontidele",
-        "✓ Originaal- ja kvaliteetsed varuosad",
-        "✓ Garantiiremont kiirelt ja tasuta",
-        "✓ Rahulolu garantii — ei meeldi, raha tagasi"
+        "6-12 kuud garantiid kõigile remontidele",
+        "Originaal- ja kvaliteetsed varuosad",
+        "Garantiiremont kiirelt ja tasuta",
+        "Rahulolu garantii — ei meeldi, raha tagasi"
       ]
     },
     {
       icon: "🔧",
-      title: "Professionaalne remont",
+      title: "Usaldusväärne remont",
       color: "from-emerald-500 to-teal-500",
-      shortText: "Kogenud tehnikud",
+      shortText: "Korralikult tehtud",
       details: [
-        "✓ Üle 10 aasta kogemust",
-        "✓ Spetsialiseerumine Apple, Samsung, Huawei",
-        "✓ Ka keerulised emaplaadi remondid",
-        "✓ Puhas ja turvaline töökoda"
+        "Hoolikas töö ja aus hind",
+        "Populaarsed telefonid ja arvutid",
+        "Kõik mis oskuste piires",
+        "Läbipaistev tööprotsess ja aus suhtlus",
       ]
     }
   ]
+
+  const handleToggle = (index) => {
+    console.log('Clicked card:', index, 'Current open:', openCardIndex)
+    setOpenCardIndex(prev => {
+      const newIndex = prev === index ? -1 : index
+      console.log('Setting openCardIndex to:', newIndex)
+      return newIndex
+    })
+  }
 
   return (
     <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-32 md:pt-40">
@@ -196,27 +219,27 @@ function Hero() {
       </div>
 
       {/* BACKGROUND LOGO - PARANDATUD */}
-<div className="absolute inset-0 pointer-events-none flex items-end justify-center" style={{ zIndex: 0 }}>
-  <div
-    className="logo-pulse"
-    style={{
-      position: 'absolute',
-      bottom: '-55%',        // ← MUUDA SIIN (was 0)
-      left: '50%',
-      width: '150vw',        // ← MUUDA SIIN (was 80vw)
-      height: '120vh',       // ← MUUDA SIIN (was 40vh)
-      maxWidth: 'none',      // ← EEMALDA maxWidth: 800px
-      backgroundImage: 'url(/logo.png)',
-      backgroundSize: 'contain',
-      backgroundPosition: 'center bottom',
-      backgroundRepeat: 'no-repeat',
-      transform: 'translateX(-50%)',
-      transformOrigin: 'center bottom',
-      opacity: 0.2,          // ← MUUDA SIIN (was 0.3)
-      willChange: 'transform, opacity, filter'
-    }}
-  />
-</div>
+      <div className="absolute inset-0 pointer-events-none flex items-end justify-center" style={{ zIndex: 0 }}>
+        <div
+          className="logo-pulse"
+          style={{
+            position: 'absolute',
+            bottom: '-55%',
+            left: '50%',
+            width: '150vw',
+            height: '120vh',
+            maxWidth: 'none',
+            backgroundImage: 'url(/logo.png)',
+            backgroundSize: 'contain',
+            backgroundPosition: 'center bottom',
+            backgroundRepeat: 'no-repeat',
+            transform: 'translateX(-50%)',
+            transformOrigin: 'center bottom',
+            opacity: 0.2,
+            willChange: 'transform, opacity, filter'
+          }}
+        />
+      </div>
 
       {/* CONTENT */}
       <div className="container mx-auto px-4 relative" style={{ zIndex: 10 }}>
@@ -250,22 +273,22 @@ function Hero() {
             </SlideIn>
           </div>
 
-          {/* CARDS — igaüks oma state-ga */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-
+          {/* CARDS */}
+           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto items-start">
             {cards.map((item, index) => (
               <InfoCard
-                key={index}
+                key={`card-${index}`}
                 icon={item.icon}
                 title={item.title}
                 color={item.color}
                 shortText={item.shortText}
                 details={item.details}
+                isOpen={openCardIndex === index}
+                onToggle={() => handleToggle(index)}
                 direction={index === 0 ? 'left' : index === 2 ? 'right' : 'up'}
                 delay={0.2 + index * 0.15}
               />
             ))}
-
           </div>
 
         </div>

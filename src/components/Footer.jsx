@@ -11,7 +11,7 @@ function Footer() {
           
           <div className="flex gap-6">
             <a 
-              href="https://facebook.com"
+              href="https://www.facebook.com/profile.php?id=61593277231244"
               target="_blank"
               rel="noopener noreferrer"
               className="text-slate-400 hover:text-white transition-colors duration-300 hover:scale-110 transform"
