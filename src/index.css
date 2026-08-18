@@ -3,48 +3,45 @@
 @tailwind utilities;
 
 @layer utilities {
-  .perspective-1000 {
-    perspective: 1000px;
+  /* -webkit- eesliited on siin kirjas käsitsi (mitte lootes ainult
+     autoprefixerile), kuna need omadused vajavad Safaris/iOS-is
+     usaldusväärseks 3D-pöördega kaartide toimimiseks eksplitsiitset prefiksit */
+  .perspective-1000 { -webkit-perspective: 1000px; perspective: 1000px; }
+  .preserve-3d { -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }
+  .backface-hidden { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+  .rotate-y-180 { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); }
+  .tilt { transition: transform 0.3s ease; }
+  .tilt:hover {
+    transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale3d(1.05, 1.05, 1.05);
   }
-
-  .preserve-3d {
-    transform-style: preserve-3d;
-  }
-
-  .backface-hidden {
-    backface-visibility: hidden;
-  }
-
-  .rotate-y-180 {
-    transform: rotateY(180deg);
-  }
-
   .text-glow {
     text-shadow: 0 0 10px rgba(59, 130, 246, 0.5),
                  0 0 20px rgba(59, 130, 246, 0.3),
                  0 0 10px rgba(59, 130, 246, 0.1);
   }
-
-  .float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .float-delayed {
-    animation: float 6s ease-in-out infinite 2s;
-  }
+  .float { animation: float 6s ease-in-out infinite; }
+  .float-delayed { animation: float 6s ease-in-out infinite 2s; }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
+  0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-20px); }
 }
 
-/* ========== GLOBAL STYLES ========== */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  color-scheme: only light;
 }
 
 body {
+  margin: 0;
+  min-width: 320px;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
   background-attachment: fixed;
@@ -52,57 +49,54 @@ body {
   color: white;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-@layer utilities {
-  .perspective-1000 {
-    perspective: 1000px;
-  }
+img, svg, video, canvas {
+  max-width: 100%;
+}
 
-  .preserve-3d {
-    transform-style: preserve-3d;
-  }
+input, textarea, select, button {
+  font: inherit;
+}
 
-  .backface-hidden {
-    backface-visibility: hidden;
-  }
+input, textarea, select {
+  font-size: 16px;
+}
 
-  .rotate-y-180 {
-    transform: rotateY(180deg);
-  }
-
-  .text-glow {
-    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5),
-                 0 0 20px rgba(59, 130, 246, 0.3),
-                 0 0 10px rgba(59, 130, 246, 0.1);
-  }
-
-  .float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .float-delayed {
-    animation: float 6s ease-in-out infinite 2s;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+@media (max-width: 639px) {
+  body { background-attachment: scroll; }
 }
 
-/* ========== GLOBAL STYLES ========== */
-html {
-  scroll-behavior: smooth;
-  color-scheme: only light;
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100vw;
+/* Diskreetne kerimisriba teenusekaartide tagakülje nimekirjale
+   (turvavõrguna juhuks kui detailide loend ei mahu ühte kõrgusesse) */
+.card-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+.card-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.card-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.card-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
 }
 
-/* Prevent browser auto-dark mode from inverting colors */
 @media (prefers-color-scheme: dark) {
   html, body, #root {
     color-scheme: only light !important;
@@ -110,21 +104,54 @@ html {
   }
 }
 
-/* Prevent any dark mode color inversion on service cards */
-[data-service-card],
-#services * {
+[data-service-card], #services * {
   color-scheme: light !important;
   forced-color-adjust: none !important;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-  background-attachment: fixed;
-  min-height: 100vh;
-  color: white;
-  overflow-x: hidden;
-  width: 100%;
-  position: relative;
+
+/* NutiFix responsive consistency */
+:root {
+  --site-content-max: 1280px;
+  --site-side-padding: 16px;
 }
 
+@media (min-width: 640px) {
+  :root { --site-side-padding: 24px; }
+}
+@media (min-width: 1024px) {
+  :root { --site-side-padding: 32px; }
+}
+
+@media (max-width: 639px) {
+  section > div[class*="max-w-"] {
+    padding-left: var(--site-side-padding);
+    padding-right: var(--site-side-padding);
+  }
+
+  h1, h2, h3, p {
+    overflow-wrap: break-word;
+  }
+
+  section p {
+    max-width: 100%;
+  }
+
+  /* Keep mobile cards compact and visually consistent */
+  #services .grid > div,
+  #why-us .grid > div {
+    width: 100%;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Comfortable reading width instead of stretched text */
+  #services > div > p,
+  #why-us > div > p,
+  #contact > div > p {
+    max-width: 34rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

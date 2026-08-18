@@ -1,7 +1,7 @@
 function Footer() {
   return (
-    <footer className="bg-slate-900 border-t border-white/0 py-3">
-      <div className="container mx-auto px-4">
+    <footer className="bg-slate-900 border-t border-white/0 py-6">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-2xl font-bold">
             <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">

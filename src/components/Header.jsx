@@ -24,22 +24,22 @@ function Header() {
           : 'bg-transparent'
       }`}
     >
-      <div className="container mx-auto px-4 h-16 flex justify-between items-center">
-        
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex justify-between items-center">
+
         {/* VASAKUL — logo */}
-        <button 
+        <button
           onClick={scrollToTop}
-          className="flex items-center gap-2 group cursor-pointer bg-transparent border-none p-0 pt-6"
+          className="flex items-center gap-2 group cursor-pointer bg-transparent border-none p-0"
         >
-          <img 
-            src="/logo.png" 
-            alt="NutiFix" 
-            className="h-48 w-auto object-contain group-hover:scale-110 transition-transform duration-300"
+          <img
+            src="/logo.png"
+            alt="NutiFix"
+            className="h-7 sm:h-8 md:h-9 w-auto max-w-[50vw] object-contain group-hover:scale-105 transition-transform duration-300"
           />
         </button>
 
         {/* PAREMAL — navigatsioon */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center gap-5 lg:gap-7">
           {['Teenused', 'Hinnakiri', 'Miks Nutifix?', 'Kontakt'].map((item, index) => (
             <a 
               key={index}

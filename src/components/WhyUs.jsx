@@ -1,24 +1,35 @@
 import { useEffect, useRef, useState } from 'react'
 
 function WhyUs() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const sectionRef = useRef(null)
 
   useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+
+    // Turvavõrk: kui IntersectionObserver mingil põhjusel ei käivitu
+    // (nt teatud ekraanipildistamise tööriistad), muutub sektsioon
+    // igal juhul nähtavaks.
+    const fallback = setTimeout(() => setIsVisible(true), 700)
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
+          clearTimeout(fallback)
+          observer.unobserve(entry.target)
         }
       },
       { threshold: 0.2 }
     )
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
+    observer.observe(el)
 
-    return () => observer.disconnect()
+    return () => {
+      clearTimeout(fallback)
+      observer.disconnect()
+    }
   }, [])
 
   const reasons = [
@@ -26,19 +37,19 @@ function WhyUs() {
       icon: "⚡",
       title: "Kiire teenindus",
       desc: "Enamik remonte valmis sama päeva jooksul või 24h jooksul.",
-      color: "from-yellow-400 to-orange-500"
+      color: "from-purple-400 to-blue-700"
     },
     {
       icon: "🛡️",
       title: "Garantii",
       desc: "Kõigile remontidele ja varuosadele vähemalt 6 kuu garantii.",
-      color: "from-green-400 to-emerald-500"
+      color: "from-green-400 to-green-900"
     },
     {
       icon: "👨‍🔧",
       title: "Kogemus",
       desc: "Üle 10 aasta kogemust arvutite ja mobiilide remondis.",
-      color: "from-blue-400 to-indigo-500"
+      color: "from-red-600 to-orange-400"
     },
     {
       icon: "💎",
@@ -74,31 +85,31 @@ function WhyUs() {
   }
 
   return (
-    <section id="why-us" ref={sectionRef} className="py-20 relative overflow-hidden">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-white" >
+    <section id="why-us" ref={sectionRef} className="py-14 sm:py-16 md:py-20 relative overflow-hidden">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-10 sm:mb-12 md:mb-16 text-white" >
           Miks valida NutiFix?
         </h2>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
           {reasons.map((reason, index) => (
-            <div 
+            <div
               key={index}
-              className={`relative group ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} transition-all duration-700`}
+              className={`relative group h-full flex flex-col ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} transition-all duration-700`}
               style={{ transitionDelay: `${index * 150}ms` }}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
             >
               {/* Taustavalgus hoveril */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
-              
-              {/* Kaardi sisu - stabiilne */}
-              <div className="card-inner relative bg-slate-800/80 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/10 hover:border-blue-500/50 transition-all duration-300" style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}>
-                <div className={`w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br ${reason.color} flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+
+              {/* Kaardi sisu - stabiilne, alati sama kõrgusega kui reas kõige kõrgem kaart */}
+              <div className="card-inner relative flex-1 flex flex-col bg-slate-800/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 md:p-8 text-center border border-white/10 hover:border-blue-500/50 transition-all duration-300" style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d', willChange: 'transform' }}>
+                <div className={`w-14 h-14 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-6 rounded-full bg-gradient-to-br ${reason.color} flex items-center justify-center text-2xl sm:text-4xl shadow-lg shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                   {reason.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-white">{reason.title}</h3>
-                <p className="text-blue-200">{reason.desc}</p>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1.5 sm:mb-3 text-white shrink-0">{reason.title}</h3>
+                <p className="text-blue-200 text-sm sm:text-base">{reason.desc}</p>
               </div>
             </div>
           ))}

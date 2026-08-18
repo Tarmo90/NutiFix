@@ -2,15 +2,31 @@ import { useRef, useState, useEffect } from 'react'
 
 function SlideIn({ children, direction = 'left', delay = 0, className = '' }) {
   const ref = useRef(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    // Turvavõrk: kui IntersectionObserver mingil põhjusel ei käivitu,
+    // muutub sisu igal juhul nähtavaks.
+    const fallback = setTimeout(() => setIsVisible(true), 700)
+
     const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          clearTimeout(fallback)
+          observer.unobserve(entry.target)
+        }
+      },
       { threshold: 0.05, rootMargin: '-20px 0px -20px 0px' }
     )
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
+    observer.observe(el)
+    return () => {
+      clearTimeout(fallback)
+      observer.disconnect()
+    }
   }, [])
 
   const getTransform = () => {
@@ -56,14 +72,14 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) 
         onClick={onToggle}
         className={`w-full flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 rounded-xl bg-slate-800/80 border border-white/20 hover:border-blue-400/50 transition-all duration-300 ${isOpen ? 'border-blue-400/60 bg-slate-800' : ''}`}
       >
-        <div className="flex items-center gap-3">
-          <span className={`w-10 h-10 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center text-xl`}>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <span className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center text-base sm:text-xl shrink-0`}>
             {icon}
           </span>
-          <span className="text-xl font-bold text-white">{title}</span>
+          <span className="text-sm sm:text-lg md:text-xl font-bold text-white text-left">{title}</span>
         </div>
         <span
-          className="text-blue-300 text-xl transition-transform duration-300"
+          className="text-blue-300 text-base sm:text-xl transition-transform duration-300 shrink-0 ml-2"
           style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
         >
           ▼
@@ -83,8 +99,8 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) 
                   i !== rows.length - 1 ? 'border-b border-white/5' : ''
                 } hover:bg-white/5 transition-colors`}
               >
-                <span className="text-white text-base font-medium leading-tight">{row.service}</span>
-                <span className="text-white font-bold text-base sm:text-lg whitespace-nowrap mt-1 sm:mt-0">{row.price}</span>
+                <span className="text-white text-sm sm:text-base font-medium leading-tight">{row.service}</span>
+                <span className="text-white font-bold text-sm sm:text-lg whitespace-nowrap mt-1 sm:mt-0">{row.price}</span>
               </div>
             ))}
           </div>
@@ -241,7 +257,7 @@ function Pricing() {
       name: "Arvuti Põhipakett",
       emoji: "🥉",
       price: "35€",
-      color: "from-slate-600 to-gray-600",
+      color: "from-amber-600 to-orange-700",
       features: ["Tuvastamine", "Puhastus", "Termopasta vahetus"],
     },
     {
@@ -300,35 +316,35 @@ function Pricing() {
   }
 
   return (
-    <section id="pricing" className="py-20 relative">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <section id="pricing" className="py-14 sm:py-16 md:py-20 relative">
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
         <SlideIn direction="up" delay={0}>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-3 text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 text-white">
             Hinnakiri
           </h2>
-          <p className="text-center text-white mb-4 text-lg">
+          <p className="text-center text-white mb-3 sm:mb-4 text-sm sm:text-base md:text-lg">
             Kõik hinnad sisaldavad tööjõudu. Varuosad hinna sees või eraldi.
           </p>
-          <p className="text-center text-white/70 mb-8 text-base">
+          <p className="text-center text-white/70 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">
             *Tasuta diagnostika. Täpne hind selgub pärast seadme ülevaatust. Kõikidele remontidele vähemalt 6 kuu garantii.*
           </p>
         </SlideIn>
 
         {/* Mobiiliteenuste info */}
         <SlideIn direction="up" delay={0.05}>
-          <div className="mb-10 p-5 bg-gradient-to-r from-purple-900/40 to-pink-900/40 rounded-xl border border-purple-500/20">
-            <div className="flex items-start gap-4">
-              <span className="text-3xl">📱</span>
+          <div className="mb-8 sm:mb-10 p-4 sm:p-5 bg-gradient-to-r from-purple-900/40 to-pink-900/40 rounded-xl border border-purple-500/20">
+            <div className="flex items-start gap-3 sm:gap-4">
+              <span className="text-2xl sm:text-3xl">📱</span>
               <div>
-                <h3 className="text-xl font-bold text-white mb-1">Mobiiliteenused</h3>
-                <p className="text-white/90 text-base leading-relaxed">
-                  Telefonide ekraani- ja akuvahetuste hinnad sõltuvad seadme mudelist ning kasutatavatest varuosadest 
-                  (LCD, OLED või originaal). Võta ühendust <strong>tasuta diagnostikaks</strong> – saad personaalse pakkumise 
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">Mobiiliteenused</h3>
+                <p className="text-white/90 text-sm sm:text-base leading-relaxed">
+                  Telefonide ekraani- ja akuvahetuste hinnad sõltuvad seadme mudelist ning kasutatavatest varuosadest
+                  (LCD, OLED või originaal). Võta ühendust <strong>tasuta diagnostikaks</strong> – saad personaalse pakkumise
                   koos täpse hinnaga enne töö algust!
                 </p>
-                <a 
-                  href="#contact" 
-                  className="inline-block mt-3 text-base text-white hover:text-blue-300 underline underline-offset-2 transition-colors"
+                <a
+                  href="#contact"
+                  className="inline-block mt-3 text-sm sm:text-base text-white hover:text-blue-300 underline underline-offset-2 transition-colors"
                 >
                   Küsi mobiiliremondi pakkumist →
                 </a>
@@ -339,17 +355,17 @@ function Pricing() {
 
         {/* Paketid */}
         <SlideIn direction="up" delay={0.1}>
-          <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
             <span>🛠️</span> Arvuti hoolduspaketid
           </h3>
-          <div className="grid md:grid-cols-3 gap-6 mb-16">
+          <div className="nf-pkg-grid">
             {packages.map((pkg, i) => {
               const isSelected = selectedPackage === i
               return (
                 <div
                   key={i}
                   onClick={() => setSelectedPackage(isSelected ? null : i)}
-                  className={`relative rounded-2xl p-6 bg-gradient-to-br ${pkg.color} border-2 text-center cursor-pointer transition-all duration-300 hover:scale-105 ${
+                  className={`nf-pkg-card relative bg-gradient-to-br ${pkg.color} border-2 cursor-pointer transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 ${
                     isSelected ? 'border-white shadow-lg shadow-white/20 scale-105' : 'border-white/10 hover:border-white/40'
                   }`}
                 >
@@ -358,21 +374,21 @@ function Pricing() {
                       ✓
                     </div>
                   )}
-                  <div className="text-5xl mb-2">{pkg.emoji}</div>
-                  <h4 className="text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2">{pkg.name}</h4>
-                  <div className="text-4xl sm:text-4xl font-black text-white mb-2 sm:mb-4">{pkg.price}</div>
-                  <ul className="text-left space-y-2 text-white/90 text-sm min-h-[120px]">
+                  <div className="nf-pkg-emoji">{pkg.emoji}</div>
+                  <h4 className="nf-pkg-name">{pkg.name}</h4>
+                  <div className="nf-pkg-price">{pkg.price}</div>
+                  <ul className="nf-pkg-features">
                     {pkg.features.map((f, j) => (
-                      <li key={j} className="flex items-start gap-2 text-base">
+                      <li key={j} className="nf-pkg-feature">
                         <span className="shrink-0">✅</span>
                         <span>{f}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className={`mt-4 px-4 py-2 rounded-lg font-bold text-sm transition-all ${
-                    isSelected 
-                      ? 'bg-white text-slate-900' 
-                      : i === 0 
+                  <div className={`nf-pkg-btn font-bold transition-all ${
+                    isSelected
+                      ? 'bg-white text-slate-900'
+                      : i === 0
                         ? 'bg-white/20 text-white hover:bg-white/30 border border-white/30'
                         : i === 1
                           ? 'bg-blue-400/30 text-white hover:bg-blue-400/40 border border-blue-300/40'
@@ -386,13 +402,13 @@ function Pricing() {
           </div>
 
           {selectedPackage !== null && (
-            <div className="text-center mb-12 p-6 bg-blue-600/20 rounded-xl border border-blue-400/30">
-              <p className="text-white text-lg mb-3">
+            <div className="text-center mb-12 p-4 sm:p-6 bg-blue-600/20 rounded-xl border border-blue-400/30">
+              <p className="text-white text-sm sm:text-lg mb-3">
                 Valisid: <span className="font-bold text-blue-300">{packages[selectedPackage].name}</span> ({packages[selectedPackage].price})
               </p>
-              <a 
-                href="#contact" 
-                className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-lg transition-colors"
+              <a
+                href="#contact"
+                className="inline-block px-6 sm:px-8 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-sm sm:text-lg transition-colors"
                 onClick={() => {
                   // Navigate to contact
                 }}
@@ -406,9 +422,9 @@ function Pricing() {
         {/* Accordion */}
         <SlideIn direction="up" delay={0.15}>
           <div className="mb-8">
-            <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center gap-2">
               <span>📋</span> Detailne hinnakiri
-              <span className="text-sm font-normal text-blue-300/60 ml-2">(kliki lahti)</span>
+              <span className="text-xs sm:text-sm font-normal text-blue-300/60 ml-2">(kliki lahti)</span>
             </h3>
           </div>
         </SlideIn>
@@ -425,20 +441,74 @@ function Pricing() {
 
         {/* Footer */}
         <SlideIn direction="up" delay={0.1}>
-          <div className="text-center mt-12 p-6 bg-slate-800/40 rounded-xl border border-white/10">
-            <p className="text-white/90 mb-4 text-lg">
+          <div className="text-center mt-12 p-4 sm:p-6 bg-slate-800/40 rounded-xl border border-white/10">
+            <p className="text-white/90 mb-4 text-sm sm:text-lg">
               Kas sa ei leia oma teenust või seadet? Võta meiega ühendust – teeme sulle personaalse pakkumise!
             </p>
             <a
               href="#contact"
-              className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-xl transition-colors"
+              className="inline-block px-6 sm:px-8 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-base sm:text-xl transition-colors"
             >
               Küsi pakkumist
             </a>
-            
+
           </div>
         </SlideIn>
       </div>
+
+      {/* Hoolduspaketi-kaartide paigutus on siin otse tavalise CSS-ina
+          (samal proovitud-toimival põhjusel nagu Teenused-sektsioonis) –
+          telefonis oli sisu (emoji/pealkiri/hind/nimekiri/nupp) liiga
+          suurte vahedega laiali, sest kasutati fikseeritud lauaarvuti-
+          suuruseid ja fikseeritud min-height'i, mis polnud telefonis vajalik. */}
+      <style>{`
+        .nf-pkg-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+          margin-bottom: 32px;
+        }
+        .nf-pkg-card {
+          border-radius: 16px;
+          padding: 16px;
+          text-align: center;
+        }
+        .nf-pkg-emoji { font-size: 2rem; margin-bottom: 4px; }
+        .nf-pkg-name { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .nf-pkg-price { font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
+        .nf-pkg-features {
+          text-align: left;
+          color: rgba(255,255,255,0.9);
+          font-size: 0.75rem;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .nf-pkg-feature { display: flex; align-items: flex-start; gap: 6px; }
+        .nf-pkg-btn {
+          margin-top: 12px;
+          padding: 8px 12px;
+          border-radius: 8px;
+          font-size: 0.75rem;
+        }
+
+        @media (min-width: 640px) {
+          .nf-pkg-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 48px; }
+          .nf-pkg-card { padding: 24px; }
+          .nf-pkg-emoji { font-size: 3rem; margin-bottom: 8px; }
+          .nf-pkg-name { font-size: 1.125rem; margin-bottom: 8px; }
+          .nf-pkg-price { font-size: 2.25rem; margin-bottom: 16px; }
+          .nf-pkg-features { font-size: 0.875rem; gap: 8px; min-height: 90px; }
+          .nf-pkg-btn { margin-top: 16px; padding: 8px 16px; font-size: 0.875rem; }
+        }
+        @media (min-width: 768px) {
+          .nf-pkg-name { font-size: 1.25rem; }
+          .nf-pkg-price { font-size: 2.5rem; }
+        }
+        @media (min-width: 1024px) {
+          .nf-pkg-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+      `}</style>
     </section>
   )
 }

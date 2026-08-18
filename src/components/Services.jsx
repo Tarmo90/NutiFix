@@ -22,13 +22,12 @@ function SlideIn({ children, direction = 'left', delay = 0, className = '' }) {
   const getTransform = () => {
     if (isVisible) return 'translate(0, 0) scale(1)'
 
-    // Väiksemad väärtused mobiilile – väldib horisontaalset scrolli
     switch (direction) {
-      case 'left': return 'translateX(-60px) scale(0.95)'
-      case 'right': return 'translateX(60px) scale(0.95)'
-      case 'up': return 'translateY(40px) scale(0.97)'
-      case 'down': return 'translateY(-40px) scale(0.97)'
-      default: return 'translateX(-60px) scale(0.95)'
+      case 'left': return 'translateX(-200px) scale(0.85)'
+      case 'right': return 'translateX(200px) scale(0.85)'
+      case 'up': return 'translateY(100px) scale(0.9)'
+      case 'down': return 'translateY(-100px) scale(0.9)'
+      default: return 'translateX(-200px) scale(0.85)'
     }
   }
 
@@ -53,174 +52,197 @@ const services = [
     icon: "📱",
     title: "Mobiiltelefonide ekraani vahetus",
     description: "Professionaalne ekraanivahetus kõikidele populaarsetele mudelitele.",
-    gradient: "linear-gradient(to bottom right, #7c3aed, #0f172a)",
+    color: "from-purple-500 to-pink-500",
     pricingSlug: null,
     details: [
-      "Samsung, iPhone, Xiaomi, Huawei",
-      "OLED, AMOLED ja LCD paneelid",
-      "Originaal- ja kvaliteetsed analoogid",
-      "Garantii 6 kuud ekraanile"
+      "✅ Samsung, iPhone, Xiaomi, Huawei",
+      "✅ OLED, AMOLED ja LCD paneelid",
+      "✅ Originaal- ja kvaliteetsed analoogid",
+      "✅ Garantii 6 kuud ekraanile"
     ]
   },
   {
     icon: "💻",
     title: "Sülearvutite ekraani vahetus",
     description: "Sülearvuti ekraani vahetus kiirelt ja professionaalselt.",
-    gradient: "linear-gradient(to bottom right, #2563eb, #0f172a)",
+    color: "from-blue-500 to-cyan-500",
     pricingSlug: "sulearvuti-ekraan",
     details: [
-      "Dell, HP, Lenovo, Apple MacBook",
-      "IPS, TN ja OLED paneelid",
-      "Hinge remont koos ekraaniga",
-      "Garantii 6 kuud"
+      "✅ Dell, HP, Lenovo, Apple MacBook",
+      "✅ IPS, TN ja OLED paneelid",
+      "✅ Hinge remont koos ekraaniga",
+      "✅ Garantii 6 kuud"
     ]
   },
   {
     icon: "🔋",
     title: "Mobiiltelefonide aku vahetus",
     description: "Aku vahetus originaal- ja kvaliteetsete analoogakkudega.",
-    gradient: "linear-gradient(to bottom right, #059669, #0f172a)",
+    color: "from-blue-600 to-indigo-700",
     pricingSlug: null,
     details: [
-      "Originaalakud Apple ja Samsung",
-      "Kvaliteetsed analoogakud teistele",
-      "Aku tervise diagnostika",
-      "Garantii 12 kuud akule"
+      "✅ Originaalakud Apple ja Samsung",
+      "✅ Kvaliteetsed analoogakud teistele",
+      "✅ Aku tervise diagnostika",
+      "✅ Garantii 12 kuud akule"
     ]
   },
   {
     icon: "🧹",
     title: "Arvutite hooldus",
     description: "Põhjalik puhastus ja jahutuse optimeerimine.",
-    gradient: "linear-gradient(to bottom right, #0891b2, #0f172a)",
+    color: "from-teal-500 to-green-500",
     pricingSlug: "arvuti-hooldus",
     details: [
-      "Tolmupuhastus ja termopasta vahetus",
-      "Jahutuse optimeerimine",
-      "Ventilaatori mürataseme vähendamine",
-      "Temperatuuride kontroll"
+      "✅ Tolmupuhastus ja termopasta vahetus",
+      "✅ Jahutuse optimeerimine",
+      "✅ Ventilaatori mürataseme vähendamine",
+      "✅ Temperatuuride kontroll"
     ]
   },
   {
     icon: "💾",
     title: "Kõvaketta / andmekandja vahetus",
     description: "Ketta vahetus ja upgrade — kiirem ja mahukam salvestus.",
-    gradient: "linear-gradient(to bottom right, #d97706, #0f172a)",
+    color: "from-orange-500 to-amber-500",
     pricingSlug: "kovaketas",
     details: [
-      "HDD → SSD upgrade",
-      "Andmete migreerimine vana kettalt",
-      "M.2 NVMe ja SATA SSD paigaldus",
-      "Ketta tervise diagnostika"
+      "✅ HDD → SSD upgrade",
+      "✅ Andmete migreerimine vana kettalt",
+      "✅ M.2 NVMe ja SATA SSD paigaldus",
+      "✅ Ketta tervise diagnostika"
     ]
   },
   {
     icon: "🔐",
     title: "Andmete varundus & taastamine",
     description: "Kustunud või rikutud andmete päästmine ja varundamine.",
-    gradient: "linear-gradient(to bottom right, #e11d48, #0f172a)",
+    color: "from-red-500 to-rose-500",
     pricingSlug: "andmed",
     details: [
-      "Kustunud failide taastamine",
-      "Vigaste kõvaketaste lugemine",
-      "SSD ja M.2 ketaste päästmine",
-      "Konfidentsiaalsus garanteeritud"
+      "✅ Kustunud failide taastamine",
+      "✅ Vigaste kõvaketaste lugemine",
+      "✅ SSD ja M.2 ketaste päästmine",
+      "✅ Konfidentsiaalsus garanteeritud"
     ]
   },
   {
     icon: "⚡",
     title: "Arvuti optimeerimine ja kiirendamine",
     description: "Sülearvuti või lauaarvuti kiirendamine ja puhastamine.",
-    gradient: "linear-gradient(to bottom right, #ca8a04, #0f172a)",
+    color: "from-slate-700 to-slate-900",
     pricingSlug: "optimeerimine",
     details: [
-      "Startup optimeerimine",
-      "Pahavara ja viiruste eemaldamine",
-      "Draiverite uuendamine",
-      "Süsteemi puhastus ja defragmentatsioon"
+      "✅ Startup optimeerimine",
+      "✅ Pahavara ja viiruste eemaldamine",
+      "✅ Draiverite uuendamine",
+      "✅ Süsteemi puhastus ja defragmentatsioon"
     ]
   },
   {
     icon: "🚑",
     title: "IT kiirabi",
     description: "Kiire abi arvuti- ja IT-probleemidele.",
-    gradient: "linear-gradient(to bottom right, #dc2626, #0f172a)",
+    color: "from-rose-500 to-pink-600",
     pricingSlug: "it-kiirabi",
     details: [
-      "Kaugabi TeamViewer/AnyDeskiga",
-      "Kohapealne abi",
-      "Kiire reageerimine",
-      "Nõustamine ja juhendamine"
+      "✅ Kaugabi TeamViewer/AnyDeskiga",
+      "✅ Kohapealne abi",
+      "✅ Kiire reageerimine",
+      "✅ Nõustamine ja juhendamine"
     ]
   },
   {
     icon: "📡",
     title: "Ruuterite ja koduvõrkude paigaldus",
     description: "WiFi ja koduvõrgu seadistamine ning optimeerimine.",
-    gradient: "linear-gradient(to bottom right, #4f46e5, #0f172a)",
+    color: "from-indigo-500 to-violet-500",
     pricingSlug: "ruuter",
     details: [
-      "Ruuteri seadistamine ja turvalisus",
-      "WiFi katvuse optimeerimine",
-      "Mesh-võrgu paigaldus",
-      "IoT seadmete ühendamine"
+      "✅ Ruuteri seadistamine ja turvalisus",
+      "✅ WiFi katvuse optimeerimine",
+      "✅ Mesh-võrgu paigaldus",
+      "✅ IoT seadmete ühendamine"
     ]
   },
   {
     icon: "🔑",
     title: "Parooli lähtestamine & IT tugi",
     description: "Unustatud paroolide taastamine ja kasutajatugi.",
-    gradient: "linear-gradient(to bottom right, #475569, #0f172a)",
+    color: "from-slate-500 to-gray-500",
     pricingSlug: "parool",
     details: [
-      "Windows parooli lähtestamine",
-      "Android lukustuse eemaldamine",
-      "Andmete säilitamine kui võimalik",
-      "Samm-sammuline juhendamine"
+      "✅ Windows parooli lähtestamine",
+      "✅ Android lukustuse eemaldamine",
+      "✅ Andmete säilitamine kui võimalik",
+      "✅ Samm-sammuline juhendamine"
     ]
   },
   {
     icon: "💿",
     title: "OS paigaldus & draiverite seadistamine",
     description: "Operatsioonisüsteemide paigaldus ja draiverite uuendamine.",
-    gradient: "linear-gradient(to bottom right, #0284c7, #0f172a)",
+    color: "from-cyan-500 to-blue-600",
     pricingSlug: "os-paigaldus",
     details: [
-      "Windows 10/11 paigaldus",
-      "Linux distributsioonid",
-      "Kõikide draiverite uuendamine",
-      "Programmide paigaldus ja seadistamine"
+      "✅ Windows 10/11 paigaldus",
+      "✅ Linux distributsioonid",
+      "✅ Kõikide draiverite uuendamine",
+      "✅ Programmide paigaldus ja seadistamine"
     ]
   },
   {
     icon: "🖨️",
     title: "Printerite ja perifeeria seadistamine",
     description: "Printerite, skannerite ja muude seadmete ühendamine.",
-    gradient: "linear-gradient(to bottom right, #16a34a, #0f172a)",
+    color: "from-lime-500 to-green-600",
     pricingSlug: "printer",
     details: [
-      "Printerite WiFi ja juhtmega ühendus",
-      "Skannerite ja veebikaamerate seadistamine",
-      "Võrguprinterite konfigureerimine",
-      "Tindisüsteemide paigaldus"
+      "✅ Printerite WiFi ja juhtmega ühendus",
+      "✅ Skannerite ja veebikaamerate seadistamine",
+      "✅ Võrguprinterite konfigureerimine",
+      "✅ Tindisüsteemide paigaldus"
     ]
   }
 ]
 
 function Services() {
   const [flipped, setFlipped] = useState({})
+  const [showButton, setShowButton] = useState({})
   const cardRefs = useRef([])
 
+
   const toggleFlip = (index) => {
+    // Ainult üks kaart korraga lahti – kui avad uue kaardi, pöördub
+    // eelmine avatud kaart ise automaatselt tagasi.
     setFlipped(prev => {
       const isOpen = !!prev[index]
-      const newState = {}
-      for (let i = 0; i < services.length; i++) {
-        newState[i] = (i === index) ? !isOpen : false
-      }
-      return newState
+      const next = {}
+      services.forEach((_, i) => {
+        next[i] = (i === index) ? !isOpen : false
+      })
+      return next
     })
+    // "Broneeri aeg" nupp peab iga avamise korral uuesti oma väikese
+    // viivitusega ilmuma, ja kõigil teistel (nüüd suletud) kaartidel kaduma.
+    setShowButton({})
   }
+
+  const scrollToPricing = (slug) => {
+    window.location.hash = slug ? `pricing-${slug}` : 'pricing'
+  }
+
+  useEffect(() => {
+    services.forEach((_, index) => {
+      if (flipped[index] && !showButton[index]) {
+        const timer = setTimeout(() => {
+          setShowButton(prev => ({ ...prev, [index]: true }))
+        }, 600)
+
+        return () => clearTimeout(timer)
+      }
+    })
+  }, [flipped, showButton])
 
   useEffect(() => {
     const observers = []
@@ -232,6 +254,7 @@ function Services() {
         ([entry]) => {
           if (!entry.isIntersecting && flipped[index]) {
             setFlipped(prev => ({ ...prev, [index]: false }))
+            setShowButton(prev => ({ ...prev, [index]: false }))
           }
         },
         { threshold: 0.1, rootMargin: '0px' }
@@ -252,128 +275,268 @@ function Services() {
     return 'right'
   }
 
-  const scrollToPricing = (slug) => {
-    if (slug) {
-      window.location.hash = `pricing-${slug}`
-    } else {
-      window.location.hash = 'pricing'
-    }
-  }
-
   return (
-    <section id="services" className="py-10 md:py-16 relative">
-      <div className="container mx-auto px-4">
+    <section id="services" className="nf-services-section relative">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SlideIn direction="up" delay={0}>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-2 md:mb-3 text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-2 sm:mb-3 text-white">
             Teenused
           </h2>
         </SlideIn>
 
         <SlideIn direction="up" delay={0.1}>
-          <p className="text-center text-blue-200 mb-6 md:mb-10 text-base md:text-lg">
+          <p className="text-center text-blue-200 mb-6 sm:mb-8 md:mb-10 text-sm sm:text-base md:text-lg">
             Professionaalne remont ja IT-abi kõikidele seadmetele
           </p>
         </SlideIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="nf-services-grid">
           {services.map((service, index) => (
             <SlideIn
               key={index}
               direction={getDirection(index)}
               delay={0.1 + (index % 4) * 0.08}
             >
-              <div 
-                className="relative h-64 md:h-80"
+              <div
+                className="relative nf-service-card"
                 ref={el => cardRefs.current[index] = el}
               >
+
                 <div
                   className="h-full perspective-1000 cursor-pointer"
                   onClick={() => toggleFlip(index)}
                 >
-                  <div 
+                  <div
                     className={`relative w-full h-full transition-all duration-700 ${flipped[index] ? 'rotate-y-180' : ''}`}
-                    style={{ transformStyle: 'preserve-3d' }}
+                    style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
                   >
-                    {/* ESIKÜLG */}
-                    <div 
+                    {/* ESIKÜLG - ilma hinnata */}
+                    <div
                       className="absolute inset-0"
-                      style={{ backfaceVisibility: 'hidden' }}
+                      style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
                     >
-                      <div 
-                        className="h-full rounded-xl p-1 pb-12 md:pb-16 flex flex-col items-center text-white box-glow tilt relative" 
-                        style={{ background: service.gradient }}
+                      <div
+                        className={`nf-front-content bg-gradient-to-br ${service.color} tilt`}
                       >
-                        {/* Ikoon – väiksem mobiilis */}
-                        <div className="text-3xl md:text-5xl mb-2 md:mb-3 mt-6 md:mt-11 transform group-hover:scale-110 transition-transform duration-300 drop-shadow-md">
-                          {service.icon}
-                        </div>
-                        
-                        {/* Pealkiri – väiksem mobiilis */}
-                        <h3 className="text-base md:text-xl font-bold mb-1 md:mb-2 text-center leading-tight drop-shadow-md px-2">
-                          {service.title}
-                        </h3>
-                        
-                        {/* Kirjeldus – väiksem mobiilis */}
-                        <p className="text-white text-center text-sm md:text-base leading-snug drop-shadow-sm px-3">
-                          {service.description}
-                        </p>
+                        {/* Tumendav kate värvilise tausta peal – mõnel kaardil
+                            (nt helesinine, laimikollane, oranž) oli tekst
+                            liiga heleda taustavärvi peal raskesti loetav.
+                            See kate tagab kõigil kaartidel piisava kontrastsuse,
+                            ükskõik mis värvi gradient all on. */}
+                        <div className="nf-front-overlay"></div>
+                        <div className="nf-front-inner">
+                          <div className="nf-front-icon transform group-hover:scale-110 transition-transform duration-300">
+                            {service.icon}
+                          </div>
+                          {/* Pealkirjal ja kirjeldusel on fikseeritud kõrgus (nf-front-title/
+                              nf-front-desc), et 1- ja 2-realised pealkirjad/tekstid ei
+                              nihutaks nuppu igal kaardil erinevale kõrgusele – nii jäävad
+                              kõik tekstid ja nupud kõigil kaartidel samale reale. */}
+                          <h3 className="nf-front-title">{service.title}</h3>
+                          <p className="nf-front-desc">{service.description}</p>
 
-                        {/* Nupud all – kompaktsem mobiilis */}
-                        <div className="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 md:gap-2 w-full px-3 md:px-4">
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              scrollToPricing(service.pricingSlug)
-                            }}
-                            className="px-4 md:px-5 py-1.5 md:py-2 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-lg text-white font-bold text-xs md:text-sm transition-all duration-300 border-2 border-white/40 hover:border-white/80 hover:shadow-lg hover:shadow-white/20 hover:scale-105 cursor-pointer"
-                          >
-                            Vaata hinda →
-                          </button>
-                          <span className="text-xs md:text-sm text-white font-semibold bg-black/30 px-2 md:px-3 py-0.5 md:py-1 rounded-full border border-white/30 drop-shadow-sm">
-                            👆 Kliki detailideks
-                          </span>
+                          {/* HINNA LINGI ASENDUS – marginTop:auto lükkab nupugrupi alati
+                              kaardi põhja, sõltumata pealkirja/kirjelduse pikkusest. */}
+                          <div className="nf-front-btns">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                scrollToPricing(service.pricingSlug)
+                              }}
+                              className="px-4 sm:px-5 py-1.5 sm:py-2 bg-black/55 hover:bg-black/75 backdrop-blur-md rounded-lg text-white font-bold text-xs sm:text-sm transition-all duration-300 border-2 border-white/70 hover:border-white cursor-pointer"
+                              style={{ boxShadow: '0 0 14px rgba(255,255,255,0.4)' }}
+                            >
+                              Vaata hinda →
+                            </button>
+                            <span className="text-xs text-white/90 font-semibold">Kliki kaarti detailideks</span>
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* TAGAKÜLG */}
-                    <div 
+                    {/* TAGAKÜLG - detailid */}
+                    <div
                       className="absolute inset-0"
-                      style={{ 
+                      style={{
                         backfaceVisibility: 'hidden',
-                        transform: 'rotateY(180deg)'
+                        WebkitBackfaceVisibility: 'hidden',
+                        transform: 'rotateY(180deg)',
+                        WebkitTransform: 'rotateY(180deg)'
                       }}
                     >
-                      <div className="h-full bg-slate-800 rounded-xl p-3 md:p-5 pb-10 md:pb-14 flex flex-col items-center justify-center text-white border-2 border-blue-500/30 relative">
-                        <h3 className="text-base md:text-xl font-bold mb-3 md:mb-5 text-center leading-tight">
+                      <div
+                        className="h-full bg-slate-800 rounded-xl text-white border-2 border-blue-500/30 nf-back-content"
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          overflow: 'hidden'
+                        }}
+                      >
+                        {/* Paigutuse/vahede PÕHISTIILID on siin otse CSS-ina
+                            (nf-back-* klassid allpool <style> sildis), sest
+                            sinu eelvaade/build ei jõudnud uusi Tailwind
+                            klasse usaldusväärselt kompileerida – tavaline
+                            CSS töötab alati. Sama CSS teeb teksti telefonis
+                            väiksemaks, et miski liiga suur ei tunduks. */}
+                        <h3
+                          className="nf-back-title font-bold text-center leading-tight"
+                          style={{ flexShrink: 0 }}
+                        >
                           {service.title}
                         </h3>
-                        <ul className="w-full space-y-1 md:space-y-1.5 text-blue-200 text-sm md:text-base leading-snug">
+                        <ul
+                          className="card-scroll nf-back-list text-blue-200 leading-snug"
+                          style={{ width: '100%', maxHeight: '100%', overflowY: 'auto', textAlign: 'left' }}
+                        >
                           {service.details.map((detail, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <span className="shrink-0">✅</span>
-                              <span>{detail}</span>
+                            // Linnuke eraldi, kitsa fikseeritud laiusega – nii jääb
+                            // murdunud tekst joonduma teksti (mitte linnukese) alla.
+                            <li
+                              key={i}
+                              style={{ display: 'flex', alignItems: 'flex-start' }}
+                            >
+                              <span style={{ flexShrink: 0 }}>✅</span>
+                              <span>{detail.replace(/^✅\s*/, '')}</span>
                             </li>
                           ))}
                         </ul>
-                        <a 
-                          href="#contact"
-                          className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 px-4 md:px-5 py-1.5 md:py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors text-white font-bold no-underline inline-block shadow-lg text-xs md:text-sm"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                          }}
-                        >
-                          Broneeri aeg
-                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Broneeri nupp tagaküljel – eredam ja helendav, telefonis veidi väiksem */}
+                <div
+                  className={`absolute bottom-3 sm:bottom-4 left-1/2 transform -translate-x-1/2 transition-all duration-300 ${showButton[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                  style={{ zIndex: 100 }}
+                >
+                  <a
+                    href="#contact"
+                    className="px-4 sm:px-6 py-2 sm:py-2.5 bg-blue-600 hover:bg-blue-500 transition-colors text-white font-bold no-underline inline-block rounded-lg text-sm sm:text-base"
+                    
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  >
+                    Broneeri aeg
+                  </a>
+                </div>
+
               </div>
             </SlideIn>
           ))}
         </div>
       </div>
+
+      {/* Kõik selle sektsiooni PAIGUTUSE jaoks kriitilised mõõdud (kaardi
+          kõrgus, ruudustiku veerud/vahed, sektsiooni padding, tagakülje
+          teksti suurused) on siin otse tavalise CSS-ina, MITTE Tailwind
+          klassidena. Põhjus: build jättis need Tailwind klassid vahel
+          kompileerimata, mis lõhkus kogu kaartide paigutuse (kaardid
+          kaotasid kõrguse ja kattusid). Tavaline CSS selles <style>
+          sildis kehtib alati, ükskõik mida Tailwind teeb või ei tee. */}
+      <style>{`
+        .nf-services-section { padding-top: 20px; padding-bottom: 40px; }
+        .nf-services-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        .nf-service-card { height: 256px; }
+
+        /* Esikülg – pealkirjal/kirjeldusel fikseeritud kõrgus, et nupp
+           jääks alati kaardi põhja, ükskõik mitu rida tekst võtab. */
+        .nf-front-content {
+          position: relative;
+          height: 100%;
+          border-radius: 12px;
+          overflow: hidden;
+        }
+        /* Tumendav kate gradient-tausta peal, et tekst oleks alati loetav,
+           ka kõige heledamate taustavärvidega kaartidel (nt oranž/laimikollane/helesinine). */
+        .nf-front-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.38);
+          pointer-events: none;
+        }
+        .nf-front-inner {
+          position: relative;
+          z-index: 1;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          text-align: center;
+          color: #fff;
+          padding: 16px;
+        }
+        .nf-front-icon { font-size: 1.875rem; margin-bottom: 8px; }
+        .nf-front-title {
+          font-size: 1rem;
+          font-weight: 700;
+          line-height: 1.25;
+          height: 2.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 4px;
+          text-shadow: 0 1px 3px rgba(0,0,0,0.45);
+        }
+        .nf-front-desc {
+          font-size: 0.75rem;
+          line-height: 1.375;
+          height: 2.0625rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: rgba(255,255,255,0.92);
+          text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+        }
+        .nf-front-btns {
+          margin-top: auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 6px;
+          padding-top: 16px;
+        }
+
+        .nf-back-content { padding: 16px 16px 52px 16px; }
+        .nf-back-title { font-size: 1rem; margin-bottom: 10px; }
+        .nf-back-list { font-size: 0.875rem; }
+        .nf-back-list li { margin-bottom: 6px; gap: 6px; }
+
+        @media (min-width: 640px) {
+          .nf-services-section { padding-top: 28px; padding-bottom: 48px; }
+          .nf-services-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+          .nf-service-card { height: 320px; }
+
+          .nf-front-inner { padding: 20px; }
+          .nf-front-icon { font-size: 2.25rem; margin-bottom: 16px; }
+          .nf-front-title { font-size: 1.125rem; height: 2.8125rem; margin-bottom: 8px; }
+          .nf-front-desc { font-size: 0.875rem; height: 2.40625rem; }
+          .nf-front-btns { gap: 8px; padding-top: 24px; }
+
+          .nf-back-content { padding: 24px 24px 64px 24px; }
+          .nf-back-title { font-size: 1.125rem; margin-bottom: 16px; }
+          .nf-back-list { font-size: 1rem; }
+          .nf-back-list li { margin-bottom: 8px; gap: 8px; }
+        }
+        @media (min-width: 768px) {
+          .nf-front-desc { font-size: 1rem; height: 2.75rem; }
+        }
+        @media (min-width: 1024px) {
+          .nf-services-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 1280px) {
+          .nf-services-section { padding-top: 36px; padding-bottom: 64px; }
+          .nf-services-grid { gap: 24px; }
+        }
+      `}</style>
     </section>
   )
 }

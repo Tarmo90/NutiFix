@@ -1,0 +1,32 @@
+rules_version = '2';
+
+// Need reeglid lähevad Firebase Console → Firestore Database → "Rules" vahekaarti
+// (asenda kogu olemasolev tekst seal selle failiga ja vajuta "Publish").
+//
+// Loogika:
+// - Kõik saavad arvustusi LUGEDA (leht peab neid kõigile näitama).
+// - Kõik saavad UUE arvustuse LUUA, aga ainult siis, kui andmed on
+//   mõistlikud (nimi/tekst pole tühjad, pole liiga pikad, hinnang on 1-5,
+//   ja kuupäev on serveri enda määratud, mitte kasutaja käsitsi pandud).
+// - MITTE KEEGI ei saa olemasolevat arvustust muuta ega kustutada
+//   (see on lubatud ainult Firebase Console'i kaudu, kui vaja rämpsposti eemaldada).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /reviews/{reviewId} {
+      allow read: if true;
+
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 60
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() > 0
+                    && request.resource.data.text.size() <= 500
+                    && request.resource.data.stars is int
+                    && request.resource.data.stars >= 1
+                    && request.resource.data.stars <= 5
+                    && request.resource.data.createdAt == request.time;
+
+      allow update, delete: if false;
+    }
+  }
+}

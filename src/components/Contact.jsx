@@ -69,19 +69,19 @@ function Contact() {
   ]
 
   return (
-    <section id="contact" className="py-20 relative">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-white text-glow">
+    <section id="contact" className="py-14 sm:py-16 md:py-20 relative">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-10 sm:mb-12 md:mb-16 text-white">
           Broneeri aeg
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 max-w-5xl mx-auto">
 
 
           {/* VASAKUL — Vorm */}
           <form
             onSubmit={handleSubmit} 
-            className="relative bg-slate-800/80 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
+            className="relative bg-slate-800/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 md:p-8 border border-white/10"
           >
             {submitted && (
               <div className="absolute inset-0 bg-green-500/90 rounded-2xl flex items-center justify-center z-10">
@@ -97,11 +97,11 @@ function Contact() {
               </div>
             )}
 
-            <h3 className="text-2xl font-bold mb-6 text-white">Broneeri remont</h3>
+            <h3 className="text-xl sm:text-2xl font-bold mb-5 sm:mb-6 text-white">Broneeri remont</h3>
 
             <div className="space-y-5">
               <div>
-                <label className="block text-xl font-medium mb-2 text-blue-300">Nimi *</label>
+                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Nimi *</label>
                 <input
                   type="text"
                   required
@@ -113,7 +113,7 @@ function Contact() {
               </div>
 
               <div>
-                <label className="block text-xl font-medium mb-2 text-blue-300">Telefon *</label>
+                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Telefon *</label>
                 <input
                   type="tel"
                   required
@@ -125,7 +125,7 @@ function Contact() {
               </div>
 
               <div>
-                <label className="block text-xl font-medium mb-2 text-blue-300">Teenus *</label>
+                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Teenus *</label>
                 <select
                   required
                   className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white transition-all appearance-none"
@@ -147,7 +147,7 @@ function Contact() {
               </div>
 
               <div>
-                <label className="block text-xl font-medium mb-2 text-blue-300">Seade</label>
+                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Seade</label>
                 <input
                   type="text"
                   placeholder="nt iPhone 13, Dell Inspiron..."
@@ -158,7 +158,7 @@ function Contact() {
               </div>
 
               <div>
-                <label className="block text-xl font-medium mb-2 text-blue-300">Probleemi kirjeldus</label>
+                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Probleemi kirjeldus</label>
                 <textarea
                   rows="3"
                   className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-white/40 transition-all resize-none"
@@ -199,8 +199,8 @@ function Contact() {
                   {item.icon}
                 </div>
                 <div>
-                  <div className="text-blue-300 text-xl">{item.title}</div>
-                  <div className="text-white text-lg font-semibold group-hover:text-blue-400 transition-colors">
+                  <div className="text-blue-300 text-base sm:text-lg">{item.title}</div>
+                  <div className="text-white text-base sm:text-lg font-semibold group-hover:text-blue-400 transition-colors">
                     {item.text}
                   </div>
                 </div>
@@ -208,7 +208,7 @@ function Contact() {
             ))}
 
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-              <h3 className="text-2xl font-bold text-white mb-4">Lahtiolekuajad</h3>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Lahtiolekuajad</h3>
               <div className="space-y-2 text-blue-200">
                 <div className="flex justify-between">
                   <span>Esmaspäev – Reede</span>
