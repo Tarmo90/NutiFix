@@ -1,37 +1,49 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { STAGES, watchRepair } from '../repairs'
 
-// Demo-staatuse jälgija. Proovikood NF-2026-DEMO näitab kogu voogu.
-// Päris tellimuse staatuse saab kliendilt telefoni või e-postiga.
+// Päris jälgimine: kood luuakse kontaktivormi saatmisel ja salvestatakse
+// Firestore'i "repairs" kogumisse. NF-2026-DEMO näitab voogu ilma andmebaasita.
 
-const STAGES = [
-  { key: 'received', title: 'Päring vastu võetud', icon: '📨', text: 'Sinu remondipäring on meil olemas.' },
-  { key: 'diagnosis', title: 'Tasuta diagnostika', icon: '🔍', text: 'Seadme ülevaatus ja täpse hinna kinnitus.' },
-  { key: 'approved', title: 'Hind kinnitatud', icon: '✅', text: 'Ootame sinu nõusolekut töö alustamiseks.' },
-  { key: 'repair', title: 'Remont käib', icon: '🔧', text: 'Tehnik teeb töö ja kontrollib tulemust.' },
-  { key: 'ready', title: 'Valmis üleandmiseks', icon: '🎉', text: 'Sea saab kätte, garantii algab.' },
-]
-
-function hashStep(code) {
-  let hash = 0
-  for (let i = 0; i < code.length; i += 1) hash = (hash * 31 + code.charCodeAt(i)) % 997
-  return hash % STAGES.length
-}
+const ICONS = ['📨', '🔍', '✅', '🔧', '🎉']
 
 function Tracker() {
   const [code, setCode] = useState('')
   const [activeCode, setActiveCode] = useState('')
-
-  const stageIndex = useMemo(
-    () => (activeCode ? hashStep(activeCode.toUpperCase()) : -1),
-    [activeCode]
-  )
+  const [repair, setRepair] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const isDemo = activeCode.toUpperCase() === 'NF-2026-DEMO'
-  const current = stageIndex >= 0 ? STAGES[stageIndex] : null
+
+  useEffect(() => {
+    if (!activeCode || isDemo) return undefined
+    setLoading(true)
+    setError('')
+    setRepair(null)
+    const unsubscribe = watchRepair(
+      activeCode,
+      (value) => {
+        setRepair(value)
+        setLoading(false)
+        if (!value) setError('Sellist koodi ei leitud. Kontrolli kirjapilti.')
+      },
+      () => {
+        setError('Staatuse hankimine ebaõnnestus. Proovi hiljem uuesti.')
+        setLoading(false)
+      }
+    )
+    return unsubscribe
+  }, [activeCode, isDemo])
+
+  const rawIndex = isDemo ? 2 : Number(repair?.status ?? 0)
+  const stageIndex = Math.max(0, Math.min(STAGES.length - 1, rawIndex))
+  const current = activeCode && !error ? STAGES[stageIndex] : null
 
   const submit = (event) => {
     event.preventDefault()
-    setActiveCode(code.trim())
+    setError('')
+    setRepair(null)
+    setActiveCode(code.trim().toUpperCase())
   }
 
   return (
@@ -43,7 +55,7 @@ function Tracker() {
             Vaata remondi staatust
           </h2>
           <p className="text-blue-200 text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
-            Sisesta oma päringu kood või proovi demokoodi <b>NF-2026-DEMO</b>.
+            Sisesta päringu saamisel antud kood või proovi demokoodi <b>NF-2026-DEMO</b>.
             Päris staatuse saad alati ka telefoni või e-postiga.
           </p>
         </div>
@@ -54,11 +66,14 @@ function Tracker() {
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              placeholder="NF-2026-DEMO"
+              placeholder="NF-2026-XXXXX"
               aria-label="Remondi kood"
             />
             <button type="submit">Vaata staatust →</button>
           </form>
+
+          {loading && <p className="text-blue-200 text-sm mt-4">Otsin koodi…</p>}
+          {error && <p className="text-amber-300 text-sm mt-4">{error}</p>}
 
           {current && (
             <div className="nf-tracker-result">
@@ -66,9 +81,16 @@ function Tracker() {
                 <div>
                   <div className="nf-tracker-code">{isDemo ? 'Näidis tellimus' : `Kood: ${activeCode}`}</div>
                   <div className="nf-tracker-current">
-                    <span>{current.icon}</span> {current.title}
+                    <span>{ICONS[stageIndex]}</span> {current.title}
                   </div>
                   <p>{current.text}</p>
+                  {repair && (
+                    <p className="mt-2">
+                      {repair.device && <>Seade: {repair.device}</>}
+                      {repair.device && repair.service && ' · '}
+                      {repair.service && <>Teenus: {repair.service}</>}
+                    </p>
+                  )}
                 </div>
                 <div className="nf-tracker-pct">{Math.round(((stageIndex + 1) / STAGES.length) * 100)}%</div>
               </div>
@@ -79,7 +101,7 @@ function Tracker() {
                     key={stage.key}
                     className={`nf-tracker-step ${index < stageIndex ? 'done' : ''} ${index === stageIndex ? 'now' : ''}`}
                   >
-                    <div className="nf-step-dot">{index < stageIndex ? '✓' : stage.icon}</div>
+                    <div className="nf-step-dot">{index < stageIndex ? '✓' : ICONS[index]}</div>
                     <div className="nf-step-copy">
                       <b>{stage.title}</b>
                       <span>{stage.text}</span>

@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
 
 // Firebase projekti seaded (Firebase Console → Project settings → General → "Your apps").
 const firebaseConfig = {
@@ -18,11 +19,13 @@ const firebaseConfig = {
 // vaikimisi näidisandmete peale. `db` on sel juhul `null` ja
 // Reviews.jsx oskab sellega toime tulla.
 let db = null
+let auth = null
 try {
   const app = initializeApp(firebaseConfig)
   db = getFirestore(app)
+  auth = getAuth(app)
 } catch (err) {
   console.error('Firebase\'i seadistamine ebaõnnestus – arvustused kuvavad ainult näidisandmeid:', err)
 }
 
-export { db }
+export { db, auth }

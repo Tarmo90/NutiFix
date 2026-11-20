@@ -28,5 +28,23 @@ service cloud.firestore {
 
       allow update, delete: if false;
     }
+
+    // Remondipäringud: klient saab oma koodi järgi lugeda, uue päringu
+    // võib luua igaüks, aga staatuse muutmine nõuab sisselogitud töötajat.
+    match /repairs/{repairId} {
+      allow read: if true;
+
+      allow create: if request.resource.data.code is string
+                    && request.resource.data.code.size() == 14
+                    && request.resource.data.status == 0
+                    && request.resource.data.createdAt == request.time;
+
+      allow update: if request.auth != null
+                    && request.resource.data.status is int
+                    && request.resource.data.status >= 0
+                    && request.resource.data.status <= 4;
+
+      allow delete: if false;
+    }
   }
 }

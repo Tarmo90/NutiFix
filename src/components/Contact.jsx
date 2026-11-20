@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createRepair } from '../repairs'
 
 const SERVICES = [
   'Mobiiltelefonide ekraani vahetus',
@@ -42,6 +43,7 @@ function Contact() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [repairCode, setRepairCode] = useState('')
   const [error, setError] = useState(null)
   const [open, setOpen] = useState(isOpenNow())
 
@@ -84,9 +86,27 @@ function Contact() {
         }),
       })
       if (response.ok) {
+        // Formspree toob kirja kohale; Firestore'i dokument annab kliendile
+        // jälgimiskoodi. Kui Firestore on kättesaamatu, päring ei kadu —
+        // kuvame ikka kinnituse, aga ilma koodita.
+        let code = ''
+        try {
+          const created = await createRepair({
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email,
+            service: formData.service,
+            device: formData.device,
+            message,
+          })
+          code = created.code
+        } catch (err) {
+          console.warn('Jälgimiskoodi loomine ebaõnnestus:', err)
+        }
+        setRepairCode(code)
         setSubmitted(true)
         setFormData({ name: '', phone: '', email: '', service: '', device: '', problem: '' })
-        setTimeout(() => setSubmitted(false), 5000)
+        setTimeout(() => setSubmitted(false), 8000)
       } else {
         setError('Midagi läks valesti. Proovi uuesti või helista!')
       }
@@ -116,9 +136,26 @@ function Contact() {
             className="relative bg-slate-800/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-white/10"
           >
             {submitted && (
-              <div className="absolute inset-0 bg-blue-600/90 rounded-2xl flex items-center justify-center z-10">
-                <div className="text-white text-2xl font-bold text-center px-4">
-                  ✅<br />Aitäh!<br />Võtame ühendust
+              <div className="absolute inset-0 bg-blue-600/95 rounded-2xl flex items-center justify-center z-10 px-4">
+                <div className="text-white text-center">
+                  <div className="text-3xl mb-2">✅</div>
+                  <div className="text-2xl font-bold">Aitäh!</div>
+                  <p className="text-blue-100 text-sm mt-1">Võtame ühendust 24 tunni jooksul.</p>
+                  {repairCode ? (
+                    <div className="mt-4 bg-white/15 rounded-xl px-4 py-3 border border-white/25">
+                      <div className="text-blue-100 text-xs uppercase tracking-wider">Sinu jälgimiskood</div>
+                      <div className="text-xl font-mono font-bold tracking-wider mt-1 select-all">{repairCode}</div>
+                      <button
+                        type="button"
+                        onClick={() => navigator.clipboard?.writeText(repairCode)}
+                        className="mt-2 text-xs underline underline-offset-2 bg-transparent border-none text-white cursor-pointer"
+                      >
+                        Kopeeri
+                      </button>
+                    </div>
+                  ) : (
+                    <p className="text-blue-100 text-xs mt-3">Jälgimiskoodi ei õnnestunud luua — helista ja saadame selle sulle.</p>
+                  )}
                 </div>
               </div>
             )}

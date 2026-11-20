@@ -9,6 +9,7 @@ import Reviews from './components/Reviews'
 import SmartQuote from './components/SmartQuote'
 import Tracker from './components/Tracker'
 import Faq from './components/Faq'
+import Admin from './components/Admin'
 import Footer from './components/Footer'
 import Legal from './components/Legal'
 import CookieConsent from './components/CookieConsent'
@@ -54,6 +55,7 @@ function App() {
         <Faq />
         <Tracker />
         <Contact />
+        <Admin />
         <Footer onOpenLegal={openLegal} />
       </div>
 
