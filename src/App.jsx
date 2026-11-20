@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import DiagTerminal from './components/DiagTerminal'
+import QuickCheck from './components/QuickCheck'
 import Pricing from './components/Pricing'
 import WhyUs from './components/WhyUs'
 import Contact from './components/Contact'
@@ -57,6 +58,7 @@ function App() {
         <Header />
         <Hero />
         <DiagTerminal />
+        <QuickCheck />
         <SmartQuote />
         <Pricing />
         <WhyUs />

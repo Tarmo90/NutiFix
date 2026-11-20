@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import reportTextParser from '../reportTextParser'
-import { STAGES, getRepair, setRepairStatus, updateRepairInfo, updateRepairReport, createRepair } from '../repairs'
+import { STAGES, getRepair, setRepairStatus, updateRepairInfo, updateRepairReport, updateReportSummary, createRepair } from '../repairs'
 
 function Admin() {
   const [user, setUser] = useState(null)
@@ -131,7 +131,7 @@ function Admin() {
   }
 
   const saveReport = async () => {
-    if (!repair || !reportText) return
+    if (!repair || (!reportText && !reportUrl.trim())) return
     setBusy(true)
     setMessage('')
     try {
@@ -152,7 +152,8 @@ function Admin() {
         setParseStatus('pending')
         setReportSummary('')
         setParseError('')
-        setMessage('Link salvestatud — automaatne kokkuvõte valmib mõne minuti jooksul.')
+        setMessage('Link salvestatud — teen kokkuvõtte kohe.')
+        void parseLinkedReport(repair.id, nextUrl)
       } else {
         setMessage('Aruanne salvestatud — klient näeb seda oma koodiga.')
       }
@@ -160,6 +161,26 @@ function Admin() {
       setMessage('Aruande salvestamine ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
     } finally {
       setBusy(false)
+    }
+  }
+
+  const parseLinkedReport = async (id, url) => {
+    try {
+      const response = await Promise.race([
+        fetch(`https://r.jina.ai/${url}`),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Aegus')), 15000)),
+      ])
+      if (!response.ok) throw new Error('Aruande leht ei avanenud')
+      const summary = reportTextParser.parseReportMarkdown(await response.text())
+      if (!summary) throw new Error('Aruande vormingut ei tuntud ära')
+      await updateReportSummary(id, summary)
+      setRepair((prev) => ({ ...prev, reportSummary: summary, parseStatus: 'done', parseError: '' }))
+      setReportSummary(summary)
+      setParseStatus('done')
+      setMessage('Kokkuvõte valmis — klient näeb seda kohe.')
+    } catch (err) {
+      // Kirje jääb ootele ja ajastatud varaparser proovib hiljem uuesti.
+      setMessage('Kohene parsing ei õnnestunud; kokkuvõte ilmub mõne minuti jooksul.')
     }
   }
 

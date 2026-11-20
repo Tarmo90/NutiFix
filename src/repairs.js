@@ -121,3 +121,15 @@ export async function updateRepairReport(id, { name, text, url, previousUrl }) {
   }
   await updateDoc(doc(db, 'repairs', id), update)
 }
+
+// Brauser teeb avaliku rapordi tekstiks ja kirjutab kokkuvõtte kohe,
+// et klient ei peaks ootama ajastatud varaparsingut.
+export async function updateReportSummary(id, summary) {
+  if (!db) throw new Error('Andmebaas pole saadaval')
+  await updateDoc(doc(db, 'repairs', id), {
+    reportSummary: String(summary || '').slice(0, 1800),
+    parseStatus: 'done',
+    parseError: '',
+    parsedAt: serverTimestamp(),
+  })
+}

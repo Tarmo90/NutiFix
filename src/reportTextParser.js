@@ -38,6 +38,8 @@
     'Volume buttons': 'Helinupud',
     'Power button': 'Toitenupp',
     'Processor & graphics': 'Protsessor ja graafika',
+    'S Pen & Stylus': 'S Pen / pliiats',
+    'S Pen / stylus': 'S Pen / pliiats',
     'Fingerprint / Face': 'Sõrmejälg / näotuvastus',
     'Device info': 'Seadme info',
     'Widevine DRM': 'Widevine DRM',
@@ -171,5 +173,86 @@
     return linesOut.join('\n').slice(0, 1800)
   }
 
-  return { parseReportEmail }
+  const LONG_MONTHS = {
+    January: '01', February: '02', March: '03', April: '04', May: '05', June: '06',
+    July: '07', August: '08', September: '09', October: '10', November: '11', December: '12',
+  }
+
+  function formatLongDate(text) {
+    const match = String(text || '').match(/\b([A-Z][a-z]+)\s+(\d{1,2}),\s*(\d{4})/)
+    if (!match || !LONG_MONTHS[match[1]]) return ''
+    return `${match[2].padStart(2, '0')}.${LONG_MONTHS[match[1]]}.${match[3]}`
+  }
+
+  // r.jina.ai annab avaliku rapordilehe tekstina; parser töötab brauseris.
+  function parseReportMarkdown(text) {
+    const raw = String(text || '')
+    const device = (raw.match(/^Device\s+(.+)$/im) || [])[1] || ''
+    const software = (raw.match(/^Software\s+(.+)$/im) || [])[1] || ''
+    const created = formatLongDate((raw.match(/Created\s+([A-Z][a-z]+ \d+, \d{4})/) || [])[1])
+    const expiry = formatLongDate((raw.match(/link expires\s+([A-Z][a-z]+ \d+, \d{4})/) || [])[1])
+    const grade = (raw.match(/Grade\s+([A-F][+-]?)/) || [])[1] || ''
+
+    const tests = []
+    let current = null
+    const push = () => {
+      if (current && current.status) tests.push(current)
+      current = null
+    }
+    for (const line of raw.split(/\r?\n/)) {
+      const trimmed = line.trim()
+      const bullet = trimmed.match(/^\*\s+(.+)$/)
+      if (bullet) {
+        push()
+        const name = bullet[1].replace(/\*\*/g, '').trim()
+        const inline = name.match(/^(.*?)\s+(Passed|Failed|Skipped|Not tested)\s*$/)
+        current = inline
+          ? { name: inline[1].trim(), detail: '', status: inline[2] }
+          : { name, detail: '', status: '' }
+        if (inline) push()
+        continue
+      }
+      if (!current) continue
+      if (/^(Passed|Failed|Skipped|Not tested)\b/.test(trimmed)) {
+        current.status = (trimmed.match(/Passed|Failed|Skipped|Not tested/) || [])[0]
+        push()
+        continue
+      }
+      if (!trimmed || /^##|^`/.test(trimmed) || /^\[/.test(trimmed)) continue
+      if (!current.detail) current.detail = trimmed.replace(/\*\*/g, '').trim()
+    }
+
+    if (!device || tests.length < 5) return null
+
+    const passed = tests.filter((test) => test.status === 'Passed').length
+    const failed = tests.filter((test) => test.status === 'Failed').length
+    const skipped = tests.filter((test) => test.status !== 'Passed' && test.status !== 'Failed').length
+    const lines = []
+    lines.push(`Seade: ${device}${software ? `, ${software}` : ''}.`)
+    lines.push(
+      `MxMobi test${created ? ` (${created})` : ''}: ${grade ? `Grade ${grade}. ` : ''}` +
+      `${passed} läbinud, ${failed} läbimata, ${skipped} vahelejäetud.`
+    )
+
+    const measured = tests
+      .filter((test) => test.detail && test.status === 'Passed' && LABELS[test.name] && test.name !== 'Device info')
+      .slice(0, 14)
+      .map((test) => `${LABELS[test.name]}: ${translateDetail(test.name, test.detail)}`)
+    if (measured.length) lines.push(`Mõõdetud: ${measured.join('; ')}.`)
+
+    const issues = tests
+      .filter((test) => test.status !== 'Passed')
+      .map((test) => `${LABELS[test.name] || test.name} ${test.status === 'Failed' ? 'läbimata' : 'vahele jäetud'}`)
+    if (issues.length) lines.push(`Tähelepanu: ${issues.join('; ')}.`)
+
+    lines.push(failed > 0
+      ? `Kokkuvõte: leitud ${failed} läbimata testi — vaja täpsemat ülevaatust.`
+      : 'Kokkuvõte: kriitilisi vigu ei leitud.')
+    if (skipped > 0) lines.push('Vahelejäetud testid kontrollitakse kohapeal.')
+    if (expiry) lines.push(`MxMobi link aegub ${expiry}; põhitulemused on talletatud siin.`)
+
+    return lines.join('\n').slice(0, 1800)
+  }
+
+  return { parseReportEmail, parseReportMarkdown }
 })
