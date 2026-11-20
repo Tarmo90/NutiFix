@@ -317,7 +317,7 @@ function Admin() {
                         placeholder="https://..."
                         className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
                       <span className="block text-slate-400 text-xs mt-1">
-                        UserDiag (PC), MxMob (telefon), TestM vms — kopeeri rapordi jagatav URL siia, klient saab avada otse.
+                        UserDiag (PC), MxMob (telefon), TestM vms — jagatav URL. MxMobi link aegub 30 päeva pärast, seega kopeeri põhitulemused ka diagnoosiväljasse.
                       </span>
                     </label>
                     <button type="button" onClick={saveReport} disabled={busy || (!reportText && !reportUrl)}

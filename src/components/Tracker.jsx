@@ -28,7 +28,7 @@ function Tracker() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showReport, setShowReport] = useState(false)
-  const [showInlineReport, setShowInlineReport] = useState(true)
+  const [showInlineReport, setShowInlineReport] = useState(false)
 
   const isDemo = activeCode.toUpperCase() === 'NF-2026-DEMO'
 
@@ -63,7 +63,7 @@ function Tracker() {
     event.preventDefault()
     setError('')
     setRepair(null)
-    setShowInlineReport(true)
+    setShowInlineReport(false)
     setActiveCode(code.trim().toUpperCase())
   }
 
