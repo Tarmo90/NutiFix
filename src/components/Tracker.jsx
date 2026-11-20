@@ -119,7 +119,7 @@ function Tracker() {
                       {repair.reportUrl && (
                         <a href={repair.reportUrl} target="_blank" rel="noopener noreferrer"
                           className="w-full sm:w-auto inline-block px-4 py-2 rounded-lg border border-purple-400/40 bg-purple-500/10 text-purple-200 text-sm font-semibold hover:bg-purple-500/20 transition-colors">
-                          Ava UserDiagi / välisaruanne ↗
+                          Ava diagnostika aruanne ↗
                         </a>
                       )}
                     </div>

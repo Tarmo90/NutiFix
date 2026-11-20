@@ -312,12 +312,12 @@ function Admin() {
                       <div className="text-xs text-blue-300">Valitud: {reportName} ({reportText.length} märki)</div>
                     )}
                     <label className="block pt-2">
-                      <span className="block text-sm font-medium mb-1.5 text-blue-300">Või UserDiagi / muu aruande link</span>
+                      <span className="block text-sm font-medium mb-1.5 text-blue-300">Välise diagnostika aruande link</span>
                       <input type="url" value={reportUrl} onChange={(e) => setReportUrl(e.target.value)}
-                        placeholder="https://userdiag.com/raport/..."
+                        placeholder="https://..."
                         className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
                       <span className="block text-slate-400 text-xs mt-1">
-                        UserDiag loob rapordile jagatava URL-i — kopeeri see siia, klient saab avada otse.
+                        UserDiag (PC), MxMob (telefon), TestM vms — kopeeri rapordi jagatav URL siia, klient saab avada otse.
                       </span>
                     </label>
                     <button type="button" onClick={saveReport} disabled={busy || (!reportText && !reportUrl)}
