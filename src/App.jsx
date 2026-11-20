@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import DiagTerminal from './components/DiagTerminal'
@@ -17,6 +17,14 @@ import CookieConsent from './components/CookieConsent'
 
 function App() {
   const [legal, setLegal] = useState(null)
+  // Haldus renderdatakse ainult siis, kui aadressis on #admin.
+  // Tavalisel lehel seda DOM-is üldse pole — klient ei näe mingit vormi.
+  const [showAdmin, setShowAdmin] = useState(() => window.location.hash === '#admin')
+  useEffect(() => {
+    const onHash = () => setShowAdmin(window.location.hash === '#admin')
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
   const openLegal = (type) => setLegal(type)
   const closeLegal = () => setLegal(null)
 
@@ -55,7 +63,7 @@ function App() {
         <Faq />
         <Tracker />
         <Contact />
-        <Admin />
+        {showAdmin && <Admin />}
         <Footer onOpenLegal={openLegal} />
       </div>
 
