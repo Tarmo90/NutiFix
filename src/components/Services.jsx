@@ -209,7 +209,15 @@ const services = [
 function Services() {
   const [flipped, setFlipped] = useState({})
   const [showButton, setShowButton] = useState({})
+  const [query, setQuery] = useState('')
   const cardRefs = useRef([])
+
+  const filtered = services
+    .map((service, index) => ({ service, index }))
+    .filter(({ service }) => {
+      const text = `${service.title} ${service.description} ${service.details.join(' ')}`.toLowerCase()
+      return text.includes(query.trim().toLowerCase())
+    })
 
 
   const toggleFlip = (index) => {
@@ -290,12 +298,24 @@ function Services() {
           </p>
         </SlideIn>
 
+        <div className="nf-services-search">
+          <span>🔎</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Otsi teenust, seadet või probleemi..."
+            aria-label="Otsi teenust"
+          />
+          <span className="nf-services-count">{filtered.length} teenust</span>
+        </div>
+
         <div className="nf-services-grid">
-          {services.map((service, index) => (
+          {filtered.map(({ service, index }) => (
             <SlideIn
-              key={index}
+              key={service.title}
               direction={getDirection(index)}
-              delay={0.1 + (index % 4) * 0.08}
+              delay={0.05 + (index % 4) * 0.05}
             >
               <div
                 className="relative nf-service-card"
@@ -439,6 +459,18 @@ function Services() {
           sildis kehtib alati, ükskõik mida Tailwind teeb või ei tee. */}
       <style>{`
         .nf-services-section { padding-top: 20px; padding-bottom: 40px; }
+        .nf-services-search {
+          display: flex; align-items: center; gap: 10px; max-width: 560px; margin: 0 auto 24px;
+          background: rgba(15,23,42,.8); border: 1px solid rgba(255,255,255,.15);
+          border-radius: 12px; padding: 0 14px;
+        }
+        .nf-services-search:focus-within { border-color: #60a5fa; }
+        .nf-services-search input {
+          flex: 1; min-width: 0; background: transparent; border: none; outline: none;
+          color: #fff; font-family: inherit; font-size: 14px; padding: 12px 0;
+        }
+        .nf-services-search input::placeholder { color: rgba(148,163,184,.8); }
+        .nf-services-count { font-size: 11px; color: #93c5fd; white-space: nowrap; }
         .nf-services-grid {
           display: grid;
           grid-template-columns: 1fr;

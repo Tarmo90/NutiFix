@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -12,7 +12,20 @@ function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState(null)
 
-  // Teenuse/paketi auto-täitmine eemaldatud - kasutaja valib ise dropdown-ist
+  // Hinnakalkulaator saadab valiku otse siia — kasutaja ei pea seda ümber kirjutama.
+  useEffect(() => {
+    const fill = (event) => {
+      const detail = event.detail || {}
+      setFormData((prev) => ({
+        ...prev,
+        service: detail.service || prev.service,
+        device: detail.device || prev.device,
+        problem: detail.message || prev.problem,
+      }))
+    }
+    window.addEventListener('nf:quote', fill)
+    return () => window.removeEventListener('nf:quote', fill)
+  }, [])
 
   // ⬇⬇⬇ ASENDA SEE OMA FORM ID-ga pärast Formspree registreerimist!
   const FORMSPREE_ID = 'xgogrjql'

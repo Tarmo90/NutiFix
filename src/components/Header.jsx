@@ -1,14 +1,36 @@
 import { useState, useEffect } from 'react'
 
+const NAV = [
+  { label: 'Teenused', href: '#services' },
+  { label: 'Hinnakiri', href: '#pricing' },
+  { label: 'Pakkumine', href: '#quote' },
+  { label: 'Staatus', href: '#status' },
+  { label: 'Miks Nutifix?', href: '#why-us' },
+  { label: 'KKK', href: '#faq' },
+  { label: 'Kontakt', href: '#contact' },
+]
+
 function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [active, setActive] = useState('')
 
   useEffect(() => {
+    const sections = NAV.map((item) => document.querySelector(item.href)).filter(Boolean)
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
+      const height = document.documentElement.scrollHeight - window.innerHeight
+      setProgress(height > 0 ? Math.min(100, (window.scrollY / height) * 100) : 0)
+      const marker = window.scrollY + window.innerHeight * 0.35
+      let current = ''
+      sections.forEach((section) => {
+        if (section.offsetTop <= marker) current = `#${section.id}`
+      })
+      setActive(current)
     }
-    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -39,15 +61,19 @@ function Header() {
         </button>
 
         {/* PAREMAL — navigatsioon */}
-        <nav className="hidden md:flex items-center gap-5 lg:gap-7">
-          {['Teenused', 'Hinnakiri', 'Miks Nutifix?', 'Kontakt'].map((item, index) => (
-            <a 
-              key={index}
-              href={`#${['services', 'pricing', 'why-us', 'contact'][index]}`}
-              className="relative text-white/80 hover:text-white transition-colors duration-300 text-base font-medium group py-1"
+        <nav className="hidden lg:flex items-center gap-4 xl:gap-6">
+          {NAV.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className={`relative text-sm font-medium transition-colors duration-300 py-1 ${
+                active === item.href ? 'text-white' : 'text-white/70 hover:text-white'
+              }`}
             >
-              {item}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+              {item.label}
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-500 transition-all duration-300 ${
+                active === item.href ? 'w-full' : 'w-0'
+              }`}></span>
             </a>
           ))}
         </nav>
@@ -62,19 +88,26 @@ function Header() {
       </div>
 
       {/* Mobile nav */}
-      <div className={`md:hidden overflow-hidden transition-all duration-500 ${isOpen ? 'max-h-64' : 'max-h-0'}`}>
-        <nav className="bg-slate-900/90 backdrop-blur-md px-4 pb-3 space-y-1">
-          {['Teenused', 'Hinnakiri', 'Miks meie?', 'Kontakt'].map((item, index) => (
-            <a 
-              key={index}
-              href={`#${['services', 'pricing', 'why-us', 'contact'][index]}`}
+      <div className={`lg:hidden overflow-hidden transition-all duration-500 ${isOpen ? 'max-h-[420px]' : 'max-h-0'}`}>
+        <nav className="bg-slate-900/95 backdrop-blur-md px-4 pb-3 pt-1 space-y-1">
+          {NAV.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
               className="block py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg px-3 transition-all duration-300 text-sm"
               onClick={() => setIsOpen(false)}
             >
-              {item}
+              {item.label}
             </a>
           ))}
         </nav>
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent">
+        <div
+          className="h-full bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-500 transition-[width] duration-150"
+          style={{ width: `${progress}%` }}
+        />
       </div>
     </header>
   )

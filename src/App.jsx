@@ -5,6 +5,9 @@ import Pricing from './components/Pricing'
 import WhyUs from './components/WhyUs'
 import Contact from './components/Contact'
 import Reviews from './components/Reviews'
+import SmartQuote from './components/SmartQuote'
+import Tracker from './components/Tracker'
+import Faq from './components/Faq'
 import Footer from './components/Footer'
 
 
@@ -39,7 +42,10 @@ function App() {
         <Hero />
         <Services />
         <Pricing />
+        <SmartQuote />
+        <Tracker />
         <WhyUs />
+        <Faq />
         <Contact />
         <Reviews />
         <Footer />
