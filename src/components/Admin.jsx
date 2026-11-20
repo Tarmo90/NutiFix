@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
-import { STAGES, getRepair, setRepairStatus, updateRepairInfo } from '../repairs'
+import { STAGES, getRepair, setRepairStatus, updateRepairInfo, createRepair } from '../repairs'
 
 function Admin() {
   const [user, setUser] = useState(null)
@@ -11,6 +11,11 @@ function Admin() {
   const [repair, setRepair] = useState(null)
   const [diagnosis, setDiagnosis] = useState('')
   const [price, setPrice] = useState('')
+  const [newName, setNewName] = useState('')
+  const [newPhone, setNewPhone] = useState('')
+  const [newDevice, setNewDevice] = useState('')
+  const [newService, setNewService] = useState('')
+  const [newCode, setNewCode] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
 
@@ -47,6 +52,48 @@ function Admin() {
       if (!found) setMessage('Sellist koodi ei leitud.')
     } catch (err) {
       setMessage('Otsing ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  // Kood loodud käsitsi (klient helistas või tuli kohale). Saadame kirja
+  // samasse Formspree kanalisse — nii on kood ka sinu postkastis olemas.
+  const createCode = async (e) => {
+    e.preventDefault()
+    setBusy(true)
+    setMessage('')
+    setNewCode('')
+    try {
+      const created = await createRepair({
+        name: newName,
+        phone: newPhone,
+        device: newDevice,
+        service: newService,
+        message: 'Kood loodud käsitsi Halduses',
+      })
+      setNewCode(created.code)
+      try {
+        await fetch('https://formspree.io/f/xgogrjql', {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: newName,
+            phone: newPhone,
+            device: newDevice,
+            service: newService,
+            message: 'Uus remondikood loodud käsitsi',
+            jälgimiskood: created.code,
+            jälgimise_link: `https://nutifix.ee/#status-${created.code}`,
+          }),
+        })
+      } catch (err) {
+        console.warn('Koodi kiri ei läinud:', err)
+      }
+      setMessage('Kood loodud ja kirjasse saadetud.')
+      setNewName(''); setNewPhone(''); setNewDevice(''); setNewService('')
+    } catch (err) {
+      setMessage('Koodi loomine ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
     } finally {
       setBusy(false)
     }
@@ -133,6 +180,38 @@ function Admin() {
                   className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-60">
                   Otsi
                 </button>
+              </form>
+
+              <form onSubmit={createCode} className="mt-8 border-t border-white/10 pt-6 space-y-4">
+                <div className="text-sm font-semibold text-blue-300">Loo uus kood (kui klient helistas või tuli kohale)</div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <input type="text" required value={newName} onChange={(e) => setNewName(e.target.value)}
+                    placeholder="Kliendi nimi" aria-label="Kliendi nimi"
+                    className="px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
+                  <input type="tel" value={newPhone} onChange={(e) => setNewPhone(e.target.value)}
+                    placeholder="Telefon" aria-label="Telefon"
+                    className="px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
+                  <input type="text" value={newDevice} onChange={(e) => setNewDevice(e.target.value)}
+                    placeholder="Seade (nt iPhone 13)" aria-label="Seade"
+                    className="px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
+                  <input type="text" value={newService} onChange={(e) => setNewService(e.target.value)}
+                    placeholder="Teenus" aria-label="Teenus"
+                    className="px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
+                </div>
+                <button type="submit" disabled={busy}
+                  className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-60">
+                  Loo kood ja saada kirjasse
+                </button>
+                {newCode && (
+                  <div className="bg-blue-500/10 border border-blue-400/30 rounded-xl px-4 py-3">
+                    <div className="text-blue-300 text-xs uppercase tracking-wider mb-1">Uus jälgimiskood</div>
+                    <div className="font-mono text-xl font-bold text-white tracking-wider select-all">{newCode}</div>
+                    <button type="button" onClick={() => { navigator.clipboard?.writeText(newCode); setCode(newCode) }}
+                      className="mt-2 text-xs text-blue-300 underline underline-offset-2 bg-transparent border-none cursor-pointer">
+                      Kopeeri ja otsi üles
+                    </button>
+                  </div>
+                )}
               </form>
 
               {repair && (

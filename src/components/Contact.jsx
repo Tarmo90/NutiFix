@@ -72,6 +72,25 @@ function Contact() {
     setIsSubmitting(true)
     setError(null)
     const message = (formData.problem || '').trim()
+
+    // Kood luuakse ENNE kirja saatmist, et see läheks ka kirjasse —
+    // nii on kood olemas nii kliendi ekraanil, sinu postkastis kui ka
+    // jälgimisvaates, ühegi lisasammuta.
+    let code = ''
+    try {
+      const created = await createRepair({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        service: formData.service,
+        device: formData.device,
+        message,
+      })
+      code = created.code
+    } catch (err) {
+      console.warn('Jälgimiskoodi loomine ebaõnnestus:', err)
+    }
+
     try {
       const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
@@ -83,26 +102,11 @@ function Contact() {
           service: formData.service,
           device: formData.device,
           message,
+          jälgimiskood: code || 'EI ÕNNESTUNUD LOOMA',
+          jälgimise_link: code ? `https://nutifix.ee/#status-${code}` : '—',
         }),
       })
       if (response.ok) {
-        // Formspree toob kirja kohale; Firestore'i dokument annab kliendile
-        // jälgimiskoodi. Kui Firestore on kättesaamatu, päring ei kadu —
-        // kuvame ikka kinnituse, aga ilma koodita.
-        let code = ''
-        try {
-          const created = await createRepair({
-            name: formData.name,
-            phone: formData.phone,
-            email: formData.email,
-            service: formData.service,
-            device: formData.device,
-            message,
-          })
-          code = created.code
-        } catch (err) {
-          console.warn('Jälgimiskoodi loomine ebaõnnestus:', err)
-        }
         setRepairCode(code)
         setSubmitted(true)
         setFormData({ name: '', phone: '', email: '', service: '', device: '', problem: '' })

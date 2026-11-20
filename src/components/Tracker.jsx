@@ -7,8 +7,13 @@ import { STAGES, watchRepair } from '../repairs'
 const ICONS = ['📨', '🔍', '✅', '🔧', '🎉']
 
 function Tracker() {
-  const [code, setCode] = useState('')
-  const [activeCode, setActiveCode] = useState('')
+  // Kui klient avab kirjas oleva lingi, on kood juba väljas.
+  const linkedCode = () => {
+    const m = window.location.hash.match(/^#status-(.+)$/)
+    return m ? decodeURIComponent(m[1]).toUpperCase() : ''
+  }
+  const [code, setCode] = useState(linkedCode)
+  const [activeCode, setActiveCode] = useState(linkedCode)
   const [repair, setRepair] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
