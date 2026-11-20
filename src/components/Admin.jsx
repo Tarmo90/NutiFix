@@ -19,6 +19,9 @@ function Admin() {
   const [reportName, setReportName] = useState('')
   const [reportText, setReportText] = useState('')
   const [reportUrl, setReportUrl] = useState('')
+  const [parseStatus, setParseStatus] = useState('')
+  const [reportSummary, setReportSummary] = useState('')
+  const [parseError, setParseError] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
 
@@ -55,6 +58,9 @@ function Admin() {
       setReportName(found?.reportName || '')
       setReportText(found?.reportText || '')
       setReportUrl(found?.reportUrl || '')
+      setParseStatus(found?.parseStatus || '')
+      setReportSummary(found?.reportSummary || '')
+      setParseError(found?.parseError || '')
       if (!found) setMessage('Sellist koodi ei leitud.')
     } catch (err) {
       setMessage('Otsing ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
@@ -126,9 +132,27 @@ function Admin() {
     setBusy(true)
     setMessage('')
     try {
-      await updateRepairReport(repair.id, { name: reportName, text: reportText, url: reportUrl })
-      setRepair((prev) => ({ ...prev, reportName, reportText, reportUrl }))
-      setMessage('Aruanne salvestatud — klient näeb seda oma koodiga.')
+      const previousUrl = String(repair.reportUrl || '').trim()
+      const nextUrl = reportUrl.trim()
+      const wantsParse = Boolean(nextUrl) && nextUrl !== previousUrl
+      await updateRepairReport(repair.id, {
+        name: reportName, text: reportText, url: nextUrl, previousUrl,
+      })
+      setRepair((prev) => ({
+        ...prev,
+        reportName, reportText, reportUrl: nextUrl,
+        parseStatus: wantsParse ? 'pending' : prev.parseStatus,
+        reportSummary: wantsParse ? '' : prev.reportSummary,
+        parseError: wantsParse ? '' : prev.parseError,
+      }))
+      if (wantsParse) {
+        setParseStatus('pending')
+        setReportSummary('')
+        setParseError('')
+        setMessage('Link salvestatud — automaatne kokkuvõte valmib mõne minuti jooksul.')
+      } else {
+        setMessage('Aruanne salvestatud — klient näeb seda oma koodiga.')
+      }
     } catch (err) {
       setMessage('Aruande salvestamine ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
     } finally {
@@ -317,13 +341,39 @@ function Admin() {
                         placeholder="https://..."
                         className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
                       <span className="block text-slate-400 text-xs mt-1">
-                        UserDiag (PC), MxMob (telefon), TestM vms — jagatav URL. MxMobi link aegub 30 päeva pärast, seega kopeeri põhitulemused ka diagnoosiväljasse.
+                        MxMob (telefon), UserDiag (PC), TestM vms — jagatav URL. MxMobi põhitulemused võtab süsteem ise kokku; link aegub 30 päeva pärast, aga kokkuvõte jääb alles.
                       </span>
                     </label>
                     <button type="button" onClick={saveReport} disabled={busy || (!reportText && !reportUrl)}
                       className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-50">
                       Salvesta aruanne ja näita kliendile
                     </button>
+                    {(parseStatus === 'pending' || parseStatus === 'error' || reportSummary) && (
+                      <div className="rounded-xl border border-purple-400/30 bg-purple-500/10 px-4 py-3">
+                        <div className="text-purple-300 text-xs uppercase tracking-wider mb-1">Automaatne kokkuvõte</div>
+                        {parseStatus === 'pending' && (
+                          <p className="text-slate-300 text-sm">Ootan parsingu… kokkuvõte ilmub siia mõne minuti jooksul.</p>
+                        )}
+                        {parseStatus === 'error' && (
+                          <p className="text-amber-300 text-sm">Parsing ebaõnnestus: {parseError}</p>
+                        )}
+                        {reportSummary && (
+                          <>
+                            <pre className="whitespace-pre-wrap break-words text-xs text-slate-200 mt-2 max-h-64 overflow-auto">
+                              {reportSummary}
+                            </pre>
+                            <button type="button"
+                              onClick={() => {
+                                setDiagnosis(reportSummary.slice(0, 1000))
+                                setMessage('Kokkuvõte kopeeritud diagnoosiväljasse — vajuta Salvesta ja näita kliendile.')
+                              }}
+                              className="mt-3 text-xs text-purple-200 underline underline-offset-2 bg-transparent border-none cursor-pointer">
+                              Kopeeri diagnoosiväljasse
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

@@ -98,14 +98,26 @@ export async function updateRepairInfo(id, { diagnosis, price }) {
 // Diagnostikatarkvarade (HWiNFO, CrystalDiskInfo, 3uTools jt) tekstilised
 // aruanded salvestatakse otse dokumendi sisse. Firestore'i 1 MB piirang
 // mahutab need probleemideta; Storage nõuaks Blaze'i ja makseinfo.
-export async function updateRepairReport(id, { name, text, url }) {
+export async function updateRepairReport(id, { name, text, url, previousUrl }) {
   if (!db) throw new Error('Andmebaas pole saadaval')
   const cleanUrl = String(url || '').trim()
   const safeUrl = /^https?:\/\//i.test(cleanUrl) ? cleanUrl : ''
-  await updateDoc(doc(db, 'repairs', id), {
+  const update = {
     reportName: String(name || '').slice(0, 120),
     reportText: String(text || '').slice(0, 500000),
     reportUrl: safeUrl,
     updatedAt: serverTimestamp(),
-  })
+  }
+  // Uus link -> ajastatud parser võtab selle mõne minuti jooksul kokku.
+  // Tekstiaruande salvestamine ei kustuta olemasolevat kokkuvõtet.
+  if (safeUrl && safeUrl !== String(previousUrl || '').trim()) {
+    Object.assign(update, {
+      parseStatus: 'pending', reportSummary: '', parseError: '', parsedAt: null,
+    })
+  } else if (!safeUrl) {
+    Object.assign(update, {
+      parseStatus: 'idle', reportSummary: '', parseError: '', parsedAt: null,
+    })
+  }
+  await updateDoc(doc(db, 'repairs', id), update)
 }

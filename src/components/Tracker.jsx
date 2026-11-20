@@ -118,6 +118,14 @@ function Tracker() {
                           <p className="whitespace-pre-wrap break-words">{repair.diagnosis}</p>
                         </div>
                       )}
+                      {repair.reportSummary && (
+                        <div className="bg-slate-900/60 rounded-lg border border-purple-400/30 px-3 py-2">
+                          <div className="text-purple-300 text-xs uppercase tracking-wider mb-1">
+                            Diagnostika kokkuvõte (automaatne)
+                          </div>
+                          <p className="whitespace-pre-wrap break-words text-slate-200">{repair.reportSummary}</p>
+                        </div>
+                      )}
                       {repair.price && (
                         <div className="bg-blue-500/10 rounded-lg border border-blue-400/30 px-3 py-2">
                           <div className="text-blue-300 text-xs uppercase tracking-wider mb-1">Kinnitatud hind</div>
