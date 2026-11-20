@@ -17,11 +17,12 @@ import CookieConsent from './components/CookieConsent'
 
 function App() {
   const [legal, setLegal] = useState(null)
-  // Haldus renderdatakse ainult siis, kui aadressis on #admin.
-  // Tavalisel lehel seda DOM-is üldse pole — klient ei näe mingit vormi.
-  const [showAdmin, setShowAdmin] = useState(() => window.location.hash === '#admin')
+  // Haldus renderdatakse ainult salajase märgusõnaga aadressil.
+  // Tavalisel lehel ega vanal #adminil seda DOM-is üldse pole.
+  const ADMIN_HASH = '#nfx-9k4m'
+  const [showAdmin, setShowAdmin] = useState(() => window.location.hash === ADMIN_HASH)
   useEffect(() => {
-    const onHash = () => setShowAdmin(window.location.hash === '#admin')
+    const onHash = () => setShowAdmin(window.location.hash === ADMIN_HASH)
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
