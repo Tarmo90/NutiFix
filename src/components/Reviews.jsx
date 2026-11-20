@@ -230,7 +230,7 @@ function Reviews() {
               className="relative mt-6 max-w-lg mx-auto text-left bg-slate-800/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-white/10"
             >
               {submitted && (
-                <div className="absolute inset-0 bg-green-500/90 rounded-2xl flex items-center justify-center z-10">
+                <div className="absolute inset-0 bg-blue-600/90 rounded-2xl flex items-center justify-center z-10">
                   <div className="text-white text-xl font-bold text-center px-4">
                     ✅<br/>Aitäh arvustuse eest!
                   </div>

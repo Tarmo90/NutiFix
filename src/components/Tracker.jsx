@@ -136,7 +136,7 @@ function Tracker() {
           width: 34px; height: 34px; flex: 0 0 34px; border-radius: 9px;
           background: rgba(59,130,246,.2); display: flex; align-items: center; justify-content: center;
         }
-        .nf-tracker-step.done .nf-step-dot { background: #22c55e; color: #052e16; }
+        .nf-tracker-step.done .nf-step-dot { background: #3b82f6; color: #eff6ff; }
         .nf-step-copy { display: flex; flex-direction: column; }
         .nf-step-copy b { font-size: 13px; color: #fff; }
         .nf-step-copy span { font-size: 11px; color: rgba(219,234,254,.65); }

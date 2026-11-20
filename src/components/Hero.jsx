@@ -195,7 +195,7 @@ function Hero() {
     {
       icon: "🔧",
       title: "Usaldusväärne remont",
-      color: "from-emerald-500 to-teal-500",
+      color: "from-blue-600 to-purple-600",
       shortText: "Korralikult tehtud",
       details: [
         "Hoolikas töö ja aus hind",

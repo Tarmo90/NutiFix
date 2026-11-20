@@ -97,7 +97,7 @@ function Contact() {
             className="relative bg-slate-800/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 md:p-8 border border-white/10"
           >
             {submitted && (
-              <div className="absolute inset-0 bg-green-500/90 rounded-2xl flex items-center justify-center z-10">
+              <div className="absolute inset-0 bg-blue-600/90 rounded-2xl flex items-center justify-center z-10">
                 <div className="text-white text-2xl font-bold text-center px-4">
                   ✅<br/>Aitäh!<br/>Võtame<br/>ühendust
                 </div>

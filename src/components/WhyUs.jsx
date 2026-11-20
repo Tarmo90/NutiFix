@@ -43,7 +43,7 @@ function WhyUs() {
       icon: "🛡️",
       title: "Garantii",
       desc: "Kõigile remontidele ja varuosadele vähemalt 6 kuu garantii.",
-      color: "from-green-400 to-green-900"
+      color: "from-blue-500 to-purple-800"
     },
     {
       icon: "👨‍🔧",

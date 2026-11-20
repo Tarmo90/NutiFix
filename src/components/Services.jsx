@@ -91,7 +91,7 @@ const services = [
     icon: "🧹",
     title: "Arvutite hooldus",
     description: "Põhjalik puhastus ja jahutuse optimeerimine.",
-    color: "from-teal-500 to-green-500",
+    color: "from-blue-500 to-cyan-600",
     pricingSlug: "arvuti-hooldus",
     details: [
       "✅ Tolmupuhastus ja termopasta vahetus",
@@ -195,7 +195,7 @@ const services = [
     icon: "🖨️",
     title: "Printerite ja perifeeria seadistamine",
     description: "Printerite, skannerite ja muude seadmete ühendamine.",
-    color: "from-lime-500 to-green-600",
+    color: "from-blue-600 to-indigo-700",
     pricingSlug: "printer",
     details: [
       "✅ Printerite WiFi ja juhtmega ühendus",

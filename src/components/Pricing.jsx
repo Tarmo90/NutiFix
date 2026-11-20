@@ -127,7 +127,7 @@ const categories = [
     slug: "arvuti-hooldus",
     title: "Arvutite puhastus ja hooldus",
     icon: "🧹",
-    color: "from-teal-500 to-green-500",
+    color: "from-blue-500 to-cyan-600",
     rows: [
       { service: "Sülearvuti puhastus + termopasta vahetus", price: "35€" },
       { service: "Lauaarvuti puhastus + termopasta vahetus", price: "40€" },
@@ -234,7 +234,7 @@ const categories = [
     slug: "printer",
     title: "Printerite ja lisaseadmete seadistamine",
     icon: "🖨️",
-    color: "from-lime-500 to-green-600",
+    color: "from-blue-600 to-indigo-700",
     rows: [
       { service: "Printeri ühendamine (juhtmega)", price: "30€" },
       { service: "Printeri ühendamine (WiFi)", price: "35€" },
