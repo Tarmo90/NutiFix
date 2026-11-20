@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 
 const NAV = [
-  { label: 'Teenused', href: '#services' },
   { label: 'Hinnakiri', href: '#pricing' },
   { label: 'Pakkumine', href: '#quote' },
   { label: 'Staatus', href: '#status' },

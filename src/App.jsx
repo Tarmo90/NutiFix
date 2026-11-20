@@ -1,6 +1,5 @@
 import Header from './components/Header'
 import Hero from './components/Hero'
-import Services from './components/Services'
 import Pricing from './components/Pricing'
 import WhyUs from './components/WhyUs'
 import Contact from './components/Contact'
@@ -41,7 +40,6 @@ function App() {
         <Header />
         <Hero />
         <SmartQuote />
-        <Services />
         <Pricing />
         <WhyUs />
         <Faq />
