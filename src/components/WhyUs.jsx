@@ -36,7 +36,7 @@ function WhyUs() {
     {
       icon: "⚡",
       title: "Kiire teenindus",
-      desc: "Enamik remonte valmis sama päeva jooksul või 24h jooksul.",
+      desc: "Enamik remonte valmis 3–5 tööpäeva jooksul; varuosa tellimisel täpsustame.",
       color: "from-purple-400 to-blue-700"
     },
     {

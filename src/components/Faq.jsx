@@ -7,7 +7,7 @@ const ITEMS = [
   },
   {
     q: 'Kui kaua remont aega võtab?',
-    a: 'Remondiaeg sõltub rikkest, seadme mudelist ja varuosa saadavusest. Enamik töid valmib samal päeval või 24 tunni jooksul; täpse aja ütleme pärast ülevaatust.',
+    a: 'Remondiaeg sõltub rikkest, seadme mudelist ja varuosa saadavusest. Enamik töid valmib 3–5 tööpäeva jooksul; kui varuosa tuleb tellida, ütleme täpse aja pärast ülevaatust.',
   },
   {
     q: 'Kui pikk on remondi garantii?',

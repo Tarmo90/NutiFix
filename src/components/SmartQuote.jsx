@@ -28,7 +28,7 @@ function smartRound(value) {
 function SmartQuote() {
   const [group, setGroup] = useState('Kõik')
   const [selected, setSelected] = useState([])
-  const [urgency, setUrgency] = useState('normal')
+  const [timeline, setTimeline] = useState('standard')
   const [device, setDevice] = useState('')
 
   const visible = useMemo(
@@ -41,8 +41,8 @@ function SmartQuote() {
     [selected]
   )
 
-  const urgencyExtra = urgency === 'today' ? 15 : urgency === 'express' ? 25 : 0
-  const total = smartRound(subtotal + urgencyExtra)
+  // Tähtaeg ei muuda hinda — varuosa saadavus sõltub tarnijast, mitte kiirusest.
+  const total = smartRound(subtotal)
 
   const toggle = (option) => {
     setSelected((prev) =>
@@ -61,8 +61,8 @@ function SmartQuote() {
         service: selected.length === 1 ? selected[0].label : 'Muu / Ei ole kindel',
         device,
         message: `Kalkulaatori pakkumine: ${chosen}. Seade: ${device || 'määramata'}. `
-          + `Hinnang: ${total}€ (kiirendus: ${urgency === 'normal' ? 'tavaline' : urgency}). `
-          + `Lõplik hind kinnitatakse pärast diagnostikat.`,
+          + `Hinnang: ${total}€. Ajaline soov: ${timeline}. `
+          + `Varuosa saadavus ja lõplik hind kinnitatakse pärast diagnostikat.`,
       },
     }))
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -71,7 +71,7 @@ function SmartQuote() {
   const reset = () => {
     setSelected([])
     setDevice('')
-    setUrgency('normal')
+    setTimeline('standard')
     setGroup('Kõik')
   }
 
@@ -136,11 +136,11 @@ function SmartQuote() {
                 />
               </label>
               <label>
-                <span>Tähtaeg</span>
-                <select value={urgency} onChange={(e) => setUrgency(e.target.value)}>
-                  <option value="normal">Tavaline (1–2 tööpäeva)</option>
-                  <option value="today">Sama päev (+15€)</option>
-                  <option value="express">Kiireim (+25€)</option>
+                <span>Ajaline soov</span>
+                <select value={timeline} onChange={(e) => setTimeline(e.target.value)}>
+                  <option value="standard">Standard — 3–5 tööpäeva</option>
+                  <option value="parts">Varuosa tellimusel — täpsustame</option>
+                  <option value="flexible">Ei ole kiire — sobib ka nädal</option>
                 </select>
               </label>
             </div>
@@ -159,12 +159,6 @@ function SmartQuote() {
                   <b>{item.price}€</b>
                 </div>
               ))}
-              {urgencyExtra > 0 && (
-                <div className="nf-summary-line extra">
-                  <span>Kiirendus</span>
-                  <b>+{urgencyExtra}€</b>
-                </div>
-              )}
             </div>
 
             <button type="button" className="nf-summary-cta" onClick={askQuote}>
