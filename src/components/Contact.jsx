@@ -1,19 +1,61 @@
 import { useEffect, useState } from 'react'
 
+const SLOTS = [
+  '9:00 – 12:00',
+  '12:00 – 15:00',
+  '15:00 – 18:00',
+  'Laupäev 10:00 – 18:00',
+  'Ei ole kindel',
+]
+
+const SERVICES = [
+  'Mobiiltelefonide ekraani vahetus',
+  'Sülearvutite ekraani vahetus',
+  'Mobiiltelefonide aku vahetus',
+  'Arvutite hooldus',
+  'Kõvaketta / andmekandja vahetus',
+  'Andmete varundus & taastamine',
+  'Arvuti optimeerimine ja kiirendamine',
+  'IT kiirabi',
+  'Ruuterite ja koduvõrkude paigaldus',
+  'Parooli lähtestamine & IT tugi',
+  'OS paigaldus & draiverite seadistamine',
+  'Printerite ja perifeeria seadistamine',
+  'Muu / Ei ole kindel',
+]
+
+function isOpenNow() {
+  try {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Tallinn',
+      weekday: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    }).formatToParts(new Date())
+    const get = (type) => parts.find((p) => p.type === type)?.value || ''
+    const day = get('weekday')
+    const hour = Number(get('hour')) + Number(get('minute')) / 60
+    if (day === 'Sun') return false
+    if (day === 'Sat') return hour >= 10 && hour < 18
+    return hour >= 9 && hour < 18
+  } catch {
+    return false
+  }
+}
+
 function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    service: '',
-    device: '',
-    problem: ''
+    name: '', phone: '', email: '', service: '', device: '', problem: ''
   })
+  const [slot, setSlot] = useState('Ei ole kindel')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState(null)
+  const [open, setOpen] = useState(isOpenNow())
 
-  // Hinnakalkulaator saadab valiku otse siia — kasutaja ei pea seda ümber kirjutama.
   useEffect(() => {
+    const timer = setInterval(() => setOpen(isOpenNow()), 60000)
     const fill = (event) => {
       const detail = event.detail || {}
       setFormData((prev) => ({
@@ -24,126 +66,112 @@ function Contact() {
       }))
     }
     window.addEventListener('nf:quote', fill)
-    return () => window.removeEventListener('nf:quote', fill)
+    return () => {
+      clearInterval(timer)
+      window.removeEventListener('nf:quote', fill)
+    }
   }, [])
 
-  // ⬇⬇⬇ ASENDA SEE OMA FORM ID-ga pärast Formspree registreerimist!
   const FORMSPREE_ID = 'xgogrjql'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     setError(null)
-
+    const message = `${formData.problem || ''}\nSoovitud aeg: ${slot}`.trim()
     try {
       const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.name,
           phone: formData.phone,
+          email: formData.email,
           service: formData.service,
           device: formData.device,
-          message: formData.problem
-        })
+          message,
+        }),
       })
-
       if (response.ok) {
         setSubmitted(true)
-        setFormData({ name: '', phone: '', service: '', device: '', problem: '' })
+        setFormData({ name: '', phone: '', email: '', service: '', device: '', problem: '' })
+        setSlot('Ei ole kindel')
         setTimeout(() => setSubmitted(false), 5000)
       } else {
         setError('Midagi läks valesti. Proovi uuesti või helista!')
       }
-    } catch (err) {
+    } catch {
       setError('Võrgu viga. Kontrolli ühendust või helista!')
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const services = [
-    'Mobiiltelefonide ekraani vahetus',
-    'Sülearvutite ekraani vahetus',
-    'Mobiiltelefonide aku vahetus',
-    'Arvutite hooldus',
-    'Kõvaketta / andmekandja vahetus',
-    'Andmete varundus & taastamine',
-    'Arvuti optimeerimine ja kiirendamine',
-    'IT kiirabi',
-    'Ruuterite ja koduvõrkude paigaldus',
-    'Parooli lähtestamine & IT tugi',
-    'OS paigaldus & draiverite seadistamine',
-    'Printerite ja perifeeria seadistamine',
-    'Muu / Ei ole kindel'
-  ]
+  const update = (key) => (e) => setFormData((prev) => ({ ...prev, [key]: e.target.value }))
 
   return (
     <section id="contact" className="py-14 sm:py-16 md:py-20 relative">
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-10 sm:mb-12 md:mb-16 text-white">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-8 sm:mb-10 text-white">
           Broneeri aeg
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto">
 
-
-          {/* VASAKUL — Vorm */}
           <form
-            onSubmit={handleSubmit} 
-            className="relative bg-slate-800/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 md:p-8 border border-white/10"
+            onSubmit={handleSubmit}
+            className="relative bg-slate-800/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-white/10"
           >
             {submitted && (
               <div className="absolute inset-0 bg-blue-600/90 rounded-2xl flex items-center justify-center z-10">
                 <div className="text-white text-2xl font-bold text-center px-4">
-                  ✅<br/>Aitäh!<br/>Võtame<br/>ühendust
+                  ✅<br />Aitäh!<br />Võtame ühendust
                 </div>
               </div>
             )}
 
             {error && (
-              <div className="mb-4 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm">
+              <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm">
                 {error}
               </div>
             )}
 
-            <h3 className="text-xl sm:text-2xl font-bold mb-5 sm:mb-6 text-white">Broneeri remont</h3>
+            <h3 className="text-xl sm:text-2xl font-bold mb-5 text-white">Broneeri remont</h3>
 
-            <div className="space-y-5">
-              <div>
-                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Nimi *</label>
-                <input
-                  type="text"
-                  required
-                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-white/40 transition-all"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  placeholder="Sinu nimi"
-                />
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label className="block">
+                  <span className="block text-sm font-medium mb-1.5 text-blue-300">Nimi *</span>
+                  <input
+                    type="text" required value={formData.name} onChange={update('name')}
+                    placeholder="Sinu nimi"
+                    className="w-full px-3 py-2.5 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 text-white placeholder-white/40 text-sm"
+                  />
+                </label>
+                <label className="block">
+                  <span className="block text-sm font-medium mb-1.5 text-blue-300">Telefon *</span>
+                  <input
+                    type="tel" required value={formData.phone} onChange={update('phone')}
+                    placeholder="5123 4567"
+                    className="w-full px-3 py-2.5 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 text-white placeholder-white/40 text-sm"
+                  />
+                </label>
               </div>
 
-              <div>
-                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Telefon *</label>
+              <label className="block">
+                <span className="block text-sm font-medium mb-1.5 text-blue-300">E-post (soovi korral)</span>
                 <input
-                  type="tel"
-                  required
-                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-white/40 transition-all"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  placeholder="5123 4567"
+                  type="email" value={formData.email} onChange={update('email')}
+                  placeholder="sinu@email.ee"
+                  className="w-full px-3 py-2.5 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 text-white placeholder-white/40 text-sm"
                 />
-              </div>
+              </label>
 
-              <div>
-                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Teenus *</label>
+              <label className="block">
+                <span className="block text-sm font-medium mb-1.5 text-blue-300">Teenus *</span>
                 <select
-                  required
-                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white transition-all appearance-none"
-                  value={formData.service}
-                  onChange={(e) => setFormData({...formData, service: e.target.value})}
+                  required value={formData.service} onChange={update('service')}
+                  className="w-full px-3 py-2.5 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 text-white text-sm"
                 >
                   <option value="" disabled>Vali teenus...</option>
                   <optgroup label="🎁 Hoolduspaketid">
@@ -152,113 +180,133 @@ function Contact() {
                     <option value="Arvuti Täispakett">Arvuti Täispakett (90€)</option>
                   </optgroup>
                   <optgroup label="🔧 Üksikteenused">
-                    {services.map((s, i) => (
-                      <option key={i} value={s}>{s}</option>
+                    {SERVICES.map((service) => (
+                      <option key={service} value={service}>{service}</option>
                     ))}
                   </optgroup>
                 </select>
-              </div>
+              </label>
 
               <div>
-                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Seade</label>
+                <span className="block text-sm font-medium mb-1.5 text-blue-300">Soovitud aeg</span>
+                <div className="nf-slots">
+                  {SLOTS.map((item) => (
+                    <button
+                      key={item} type="button"
+                      onClick={() => setSlot(item)}
+                      className={`nf-slot ${slot === item ? 'active' : ''}`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <label className="block">
+                <span className="block text-sm font-medium mb-1.5 text-blue-300">Seade</span>
                 <input
-                  type="text"
+                  type="text" value={formData.device} onChange={update('device')}
                   placeholder="nt iPhone 13, Dell Inspiron..."
-                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-white/40 transition-all"
-                  value={formData.device}
-                  onChange={(e) => setFormData({...formData, device: e.target.value})}
+                  className="w-full px-3 py-2.5 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 text-white placeholder-white/40 text-sm"
                 />
-              </div>
+              </label>
 
-              <div>
-                <label className="block text-base sm:text-lg font-medium mb-2 text-blue-300">Probleemi kirjeldus</label>
+              <label className="block">
+                <span className="block text-sm font-medium mb-1.5 text-blue-300">Probleemi kirjeldus</span>
                 <textarea
-                  rows="3"
-                  className="w-full px-4 py-3 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-white/40 transition-all resize-none"
-                  value={formData.problem}
-                  onChange={(e) => setFormData({...formData, problem: e.target.value})}
+                  rows="3" value={formData.problem} onChange={update('problem')}
                   placeholder="Kirjelda probleemi lühidalt..."
-                ></textarea>
-              </div>
+                  className="w-full px-3 py-2.5 bg-slate-800 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 text-white placeholder-white/40 text-sm resize-none"
+                />
+              </label>
 
               <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 ${isSubmitting ? 'bg-slate-600 cursor-not-allowed' : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:shadow-lg hover:shadow-blue-500/30'}`}
+                type="submit" disabled={isSubmitting}
+                className={`w-full py-3 rounded-lg font-bold text-sm transition-all ${
+                  isSubmitting
+                    ? 'bg-slate-600 cursor-not-allowed text-white'
+                    : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white'
+                }`}
               >
-                {isSubmitting ? 'Saadan...' : 'Broneeri aeg'}
+                {isSubmitting ? 'Saadan...' : 'Saada remondipäring'}
               </button>
 
-              <p className="text-base text-blue-300/60 text-center">
-                Võtan ühendust 24h jooksul telefoni või emaili teel
+              <p className="text-xs text-blue-300/60 text-center">
+                Võtame ühendust 24 tunni jooksul. Varuosa saadavuse täpsustame pärast diagnostikat.
               </p>
             </div>
           </form>
 
+          <div className="space-y-4">
+            <div className="bg-slate-800/50 rounded-xl p-5 border border-white/10 flex items-center justify-between">
+              <div>
+                <div className="text-blue-300 text-xs uppercase tracking-wide">Praegu</div>
+                <div className="text-white font-semibold">
+                  {open ? '✅ Avatud — helista julgelt' : '🌙 Suletud — jäta päring'}
+                </div>
+              </div>
+              <a href="tel:+37258530404" className="text-blue-300 text-sm underline underline-offset-2">
+                5853 0404
+              </a>
+            </div>
 
-          {/* PAREMAL — Kontaktinfo */}
-          <div className="space-y-8">
             {[
-              { icon: "📍", title: "Asukoht", text: "Võru, Eesti" },
-              { icon: "📞", title: "Telefon", text: "58530404", link: "tel:+372 58530404" },
-              { icon: "✉️", title: "E-post", text: "nutifix.info@gmail.com", link: "mailto:nutifix.info@gmail.com" }
-            ].map((item, index) => (
-              <a 
-                key={index}
-                href={item.link || '#'}
-                className="group flex items-center gap-4 bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
+              { icon: '📍', title: 'Asukoht', text: 'F. R. Kreutzwaldi 58b, Võru', link: 'https://maps.google.com/?q=F.+R.+Kreutzwaldi+58b,+Võru' },
+              { icon: '📞', title: 'Telefon', text: '+372 5853 0404', link: 'tel:+37258530404' },
+              { icon: '✉️', title: 'E-post', text: 'info@nutifix.ee', link: 'mailto:info@nutifix.ee' },
+            ].map((item) => (
+              <a
+                key={item.title} href={item.link || '#'}
+                className="group flex items-center gap-4 bg-slate-800/50 rounded-xl p-5 border border-white/10 hover:border-blue-500/50 transition-all"
               >
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-xl">
                   {item.icon}
                 </div>
                 <div>
-                  <div className="text-blue-300 text-base sm:text-lg">{item.title}</div>
-                  <div className="text-white text-base sm:text-lg font-semibold group-hover:text-blue-400 transition-colors">
+                  <div className="text-blue-300 text-sm">{item.title}</div>
+                  <div className="text-white font-semibold group-hover:text-blue-400 transition-colors">
                     {item.text}
                   </div>
                 </div>
               </a>
             ))}
 
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Lahtiolekuajad</h3>
-              <div className="space-y-2 text-blue-200">
-                <div className="flex justify-between">
-                  <span>Esmaspäev – Reede</span>
-                  <span className="text-white">9:00 – 18:00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Laupäev</span>
-                  <span className="text-white">10:00 – 14:00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Pühapäev</span>
-                  <span className="text-red-400">Suletud</span>
-                </div>
+            <div className="bg-slate-800/50 rounded-xl p-5 border border-white/10">
+              <h3 className="text-lg font-bold text-white mb-3">Lahtiolekuajad</h3>
+              <div className="space-y-1.5 text-blue-200 text-sm">
+                <div className="flex justify-between"><span>Esmaspäev – Reede</span><span className="text-white">9:00 – 18:00</span></div>
+                <div className="flex justify-between"><span>Laupäev</span><span className="text-white">10:00 – 18:00</span></div>
+                <div className="flex justify-between"><span>Pühapäev</span><span className="text-red-400">Suletud</span></div>
               </div>
+              <a
+                href="https://maps.google.com/?q=F.+R.+Kreutzwaldi+58b,+Võru"
+                className="inline-block mt-4 text-blue-300 text-sm underline underline-offset-2"
+              >
+                Ava Google Mapsis →
+              </a>
             </div>
           </div>
-
-      </div>
         </div>
+      </div>
+
       <style>{`
-    select {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-      background-position: right 0.7rem center;
-      background-repeat: no-repeat;
-      background-size: 1.5em 1.5em;
-      padding-right: 2.5rem;
-    }
-    select option, select optgroup {
-      background-color: #1e293b;
-      color: white;
-    }
-    select optgroup {
-      font-weight: bold;
-      color: #94a3b8;
-    }
-  `}</style>
-</section>
+        .nf-slots { display: flex; flex-wrap: wrap; gap: 8px; }
+        .nf-slot {
+          background: rgba(15,23,42,.8); border: 1px solid rgba(255,255,255,.16);
+          color: #cbd5e1; border-radius: 8px; padding: 7px 11px; font-size: 12px;
+          cursor: pointer; transition: .2s;
+        }
+        .nf-slot:hover { border-color: #60a5fa; color: #fff; }
+        .nf-slot.active { background: #3b82f6; border-color: #60a5fa; color: #fff; font-weight: 700; }
+        select {
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+          background-position: right .7rem center; background-repeat: no-repeat;
+          background-size: 1.5em 1.5em; padding-right: 2.5rem; appearance: none;
+        }
+        select option, select optgroup { background-color: #1e293b; color: white; }
+        select optgroup { font-weight: bold; color: #94a3b8; }
+      `}</style>
+    </section>
   )
 }
 
