@@ -56,7 +56,7 @@ function Header() {
           <img
             src="/logo.png"
             alt="NutiFix"
-            className="h-7 sm:h-8 md:h-9 w-auto max-w-[50vw] object-contain group-hover:scale-105 transition-transform duration-300"
+            className="h-9 sm:h-10 md:h-12 w-auto max-w-[50vw] object-contain group-hover:scale-105 transition-transform duration-300"
           />
         </button>
 

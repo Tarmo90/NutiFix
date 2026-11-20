@@ -220,11 +220,6 @@ function SmartQuote() {
           padding: 11px 12px; color: #fff; font-family: inherit; font-size: 14px; outline: none;
         }
         .nf-quote-fields input:focus, .nf-quote-fields select:focus { border-color: #60a5fa; }
-        .nf-quote-summary { position: relative; overflow: hidden; }
-        .nf-quote-summary::before {
-          content: ''; position: absolute; inset: -60% -40% auto auto; width: 220px; height: 220px;
-          background: radial-gradient(circle, rgba(59,130,246,.25), transparent 70%); pointer-events: none;
-        }
         .nf-summary-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #93c5fd; font-weight: 800; }
         .nf-summary-total { font-size: 52px; line-height: 1.1; font-weight: 900; color: #fff; margin: 4px 0; }
         .nf-summary-note { font-size: 12px; color: rgba(226,232,240,.7); }

@@ -112,7 +112,7 @@ function DiagTerminal() {
   return (
     <section id="diag" className="relative overflow-hidden">
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-6 md:mb-8">
+        <div className="text-center mb-3 md:mb-4">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-400 bg-clip-text text-transparent">
             Näidisdiagnostika
           </h2>

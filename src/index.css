@@ -281,7 +281,6 @@ input, textarea, select {
   border-color: rgba(96, 165, 250, 0.25) !important;
   box-shadow: 0 8px 30px rgba(15, 23, 42, 0.35) !important;
 }
-#quote .nf-quote-summary::before { opacity: 0.9 !important; }
 
 @media (min-width: 1024px) {
   #services .nf-service-card { height: 190px !important; }
@@ -299,7 +298,7 @@ input, textarea, select {
   grid-template-columns: 1fr;
   gap: 8px;
   max-width: 720px;
-  margin: 0 auto 18px;
+  margin: 0 auto 12px;
 }
 .nf-diag-steps > div {
   display: flex;
@@ -324,20 +323,6 @@ input, textarea, select {
 }
 @media (min-width: 768px) {
   .nf-diag-steps { grid-template-columns: repeat(3, 1fr); }
-}
-
-.nf-spotlight {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 1;
-  transition: opacity .35s ease;
-  background:
-    radial-gradient(340px circle at var(--nf-x, 50%) var(--nf-y, 30%),
-      rgba(56, 189, 248, 0.10),
-      rgba(139, 92, 246, 0.06) 45%,
-      transparent 70%);
 }
 
 .nf-live-dot {
