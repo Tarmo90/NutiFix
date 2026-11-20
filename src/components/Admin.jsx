@@ -18,6 +18,7 @@ function Admin() {
   const [newCode, setNewCode] = useState('')
   const [reportName, setReportName] = useState('')
   const [reportText, setReportText] = useState('')
+  const [reportUrl, setReportUrl] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
 
@@ -53,6 +54,7 @@ function Admin() {
       setPrice(found?.price || '')
       setReportName(found?.reportName || '')
       setReportText(found?.reportText || '')
+      setReportUrl(found?.reportUrl || '')
       if (!found) setMessage('Sellist koodi ei leitud.')
     } catch (err) {
       setMessage('Otsing ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
@@ -124,8 +126,8 @@ function Admin() {
     setBusy(true)
     setMessage('')
     try {
-      await updateRepairReport(repair.id, { name: reportName, text: reportText })
-      setRepair((prev) => ({ ...prev, reportName, reportText }))
+      await updateRepairReport(repair.id, { name: reportName, text: reportText, url: reportUrl })
+      setRepair((prev) => ({ ...prev, reportName, reportText, reportUrl }))
       setMessage('Aruanne salvestatud — klient näeb seda oma koodiga.')
     } catch (err) {
       setMessage('Aruande salvestamine ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
@@ -309,9 +311,18 @@ function Admin() {
                     {reportName && (
                       <div className="text-xs text-blue-300">Valitud: {reportName} ({reportText.length} märki)</div>
                     )}
-                    <button type="button" onClick={saveReport} disabled={busy || !reportText}
+                    <label className="block pt-2">
+                      <span className="block text-sm font-medium mb-1.5 text-blue-300">Või UserDiagi / muu aruande link</span>
+                      <input type="url" value={reportUrl} onChange={(e) => setReportUrl(e.target.value)}
+                        placeholder="https://userdiag.com/raport/..."
+                        className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
+                      <span className="block text-slate-400 text-xs mt-1">
+                        UserDiag loob rapordile jagatava URL-i — kopeeri see siia, klient saab avada otse.
+                      </span>
+                    </label>
+                    <button type="button" onClick={saveReport} disabled={busy || (!reportText && !reportUrl)}
                       className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-50">
-                      Laadi aruanne üles ja näita kliendile
+                      Salvesta aruanne ja näita kliendile
                     </button>
                   </div>
                 </div>
