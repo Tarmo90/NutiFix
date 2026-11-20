@@ -85,11 +85,25 @@ function Tracker() {
                   </div>
                   <p>{current.text}</p>
                   {repair && (
-                    <p className="mt-2">
-                      {repair.device && <>Seade: {repair.device}</>}
-                      {repair.device && repair.service && ' · '}
-                      {repair.service && <>Teenus: {repair.service}</>}
-                    </p>
+                    <div className="mt-2 space-y-2">
+                      <p>
+                        {repair.device && <>Seade: {repair.device}</>}
+                        {repair.device && repair.service && ' · '}
+                        {repair.service && <>Teenus: {repair.service}</>}
+                      </p>
+                      {repair.diagnosis && (
+                        <div className="bg-slate-900/60 rounded-lg border border-white/10 px-3 py-2">
+                          <div className="text-blue-300 text-xs uppercase tracking-wider mb-1">Diagnostika</div>
+                          <p className="whitespace-pre-wrap break-words">{repair.diagnosis}</p>
+                        </div>
+                      )}
+                      {repair.price && (
+                        <div className="bg-blue-500/10 rounded-lg border border-blue-400/30 px-3 py-2">
+                          <div className="text-blue-300 text-xs uppercase tracking-wider mb-1">Kinnitatud hind</div>
+                          <p className="text-lg font-bold text-white break-words">{repair.price}</p>
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
                 <div className="nf-tracker-pct">{Math.round(((stageIndex + 1) / STAGES.length) * 100)}%</div>

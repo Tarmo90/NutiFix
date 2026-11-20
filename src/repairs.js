@@ -82,3 +82,15 @@ export async function setRepairStatus(id, status) {
   }
   await updateDoc(doc(db, 'repairs', id), { status, updatedAt: serverTimestamp() })
 }
+
+// Diagnoosi märkused ja kinnitatud hind lähevad kliendile tema koodiga
+// jälgimisvaates kuvamiseks. Mõlemad on vabatekst, et mahutaksid ka
+// täpsustused (nt "aku 55 € + ekraan 89 € = 144 €").
+export async function updateRepairInfo(id, { diagnosis, price }) {
+  if (!db) throw new Error('Andmebaas pole saadaval')
+  await updateDoc(doc(db, 'repairs', id), {
+    diagnosis: String(diagnosis || '').slice(0, 1000),
+    price: String(price || '').slice(0, 200),
+    updatedAt: serverTimestamp(),
+  })
+}

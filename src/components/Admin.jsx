@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
-import { STAGES, getRepair, setRepairStatus } from '../repairs'
+import { STAGES, getRepair, setRepairStatus, updateRepairInfo } from '../repairs'
 
 function Admin() {
   const [user, setUser] = useState(null)
@@ -9,6 +9,8 @@ function Admin() {
   const [password, setPassword] = useState('')
   const [code, setCode] = useState('')
   const [repair, setRepair] = useState(null)
+  const [diagnosis, setDiagnosis] = useState('')
+  const [price, setPrice] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
 
@@ -40,9 +42,27 @@ function Admin() {
     try {
       const found = await getRepair(code.trim())
       setRepair(found)
+      setDiagnosis(found?.diagnosis || '')
+      setPrice(found?.price || '')
       if (!found) setMessage('Sellist koodi ei leitud.')
     } catch (err) {
       setMessage('Otsing ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const saveInfo = async (e) => {
+    e.preventDefault()
+    if (!repair) return
+    setBusy(true)
+    setMessage('')
+    try {
+      await updateRepairInfo(repair.id, { diagnosis, price })
+      setRepair((prev) => ({ ...prev, diagnosis, price }))
+      setMessage('Diagnoos ja hind salvestatud — klient näeb neid oma koodiga.')
+    } catch (err) {
+      setMessage('Salvestamine ebaõnnestus: ' + (err?.message || 'vaata Firestore reegleid'))
     } finally {
       setBusy(false)
     }
@@ -143,6 +163,26 @@ function Admin() {
                       ))}
                     </div>
                   </div>
+
+                  <form onSubmit={saveInfo} className="mt-6 border-t border-white/10 pt-5 space-y-4">
+                    <div className="text-sm font-semibold text-blue-300">Info kliendile</div>
+                    <label className="block">
+                      <span className="block text-sm font-medium mb-1.5 text-blue-300">Diagnoosi tulemused ja märkused</span>
+                      <textarea rows="4" value={diagnosis} onChange={(e) => setDiagnosis(e.target.value)}
+                        placeholder="Nt aku 78 %, ekraani nurk nõrk, SSD korras. Soovitus: aku vahetus."
+                        className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm resize-y" />
+                    </label>
+                    <label className="block">
+                      <span className="block text-sm font-medium mb-1.5 text-blue-300">Kinnitatud hind</span>
+                      <input type="text" value={price} onChange={(e) => setPrice(e.target.value)}
+                        placeholder="Nt 144 € (aku 55 € + ekraan 89 €)"
+                        className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
+                    </label>
+                    <button type="submit" disabled={busy}
+                      className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-60">
+                      Salvesta ja näita kliendile
+                    </button>
+                  </form>
                 </div>
               )}
             </>
