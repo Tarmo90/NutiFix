@@ -216,7 +216,7 @@ function Hero() {
   }
 
   return (
-    <section className="relative min-h-[auto] md:min-h-screen flex items-start justify-center overflow-hidden pt-28 sm:pt-[39rem] md:pt-[10rem] pb-32 md:pb-40">
+    <section id="hero" className="nf-hero relative min-h-[auto] flex items-start justify-center overflow-hidden pt-24 md:pt-28 pb-16 md:pb-20">
 
       {/* FLOATING PARTICLES */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>

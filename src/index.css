@@ -155,3 +155,79 @@ input, textarea, select {
     margin-right: auto;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* NutiFix compact + punchy layer                                       */
+/* ------------------------------------------------------------------ */
+
+#hero h1 { font-size: clamp(1.9rem, 4.2vw, 3.2rem) !important; line-height: 1.1 !important; margin-bottom: 10px !important; }
+#hero p { font-size: clamp(0.95rem, 1.6vw, 1.2rem) !important; margin-bottom: 16px !important; }
+#hero .grid { margin-top: 20px !important; gap: 10px !important; }
+#hero .grid > div { padding: 14px !important; }
+#hero .grid h3 { font-size: 1rem !important; margin-bottom: 4px !important; }
+#hero .grid p { font-size: 0.8rem !important; margin-bottom: 8px !important; }
+#hero .grid .text-3xl, #hero .grid .md\\:text-5xl { font-size: 1.8rem !important; margin-bottom: 4px !important; }
+
+#quote, #services, #pricing, #why-us, #faq, #contact, #reviews, #status {
+  padding-top: 34px !important;
+  padding-bottom: 34px !important;
+}
+
+#quote h2, #services h2, #pricing h2, #why-us h2, #faq h2, #contact h2, #reviews h2, #status h2 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem) !important;
+  margin-bottom: 6px !important;
+}
+
+#services .nf-services-search { margin-bottom: 16px !important; }
+#services .nf-service-card { height: 210px !important; }
+#services .nf-front-inner { padding: 12px !important; }
+#services .nf-front-icon { font-size: 1.6rem !important; margin-bottom: 6px !important; }
+#services .nf-front-title { font-size: 0.9rem !important; height: 2.2rem !important; margin-bottom: 4px !important; }
+#services .nf-front-desc { font-size: 0.72rem !important; height: 2rem !important; }
+#services .nf-front-btns { padding-top: 10px !important; gap: 4px !important; }
+#services .nf-back-content { padding: 14px 14px 46px 14px !important; }
+#services .nf-back-title { font-size: 0.9rem !important; margin-bottom: 8px !important; }
+#services .nf-back-list { font-size: 0.78rem !important; }
+
+#pricing .nf-pkg-grid { margin-bottom: 20px !important; gap: 12px !important; }
+#pricing .nf-pkg-card { padding: 14px !important; }
+#pricing .nf-pkg-emoji { font-size: 1.8rem !important; margin-bottom: 2px !important; }
+#pricing .nf-pkg-name { font-size: 0.9rem !important; margin-bottom: 2px !important; }
+#pricing .nf-pkg-price { font-size: 1.7rem !important; margin-bottom: 6px !important; }
+#pricing .nf-pkg-features { font-size: 0.72rem !important; gap: 3px !important; min-height: 0 !important; }
+#pricing .nf-pkg-btn { margin-top: 10px !important; padding: 7px 10px !important; font-size: 0.72rem !important; }
+
+#quote .nf-quote-grid { gap: 16px !important; }
+#quote .nf-quote-option { padding: 9px 11px !important; }
+#quote .nf-summary-total { font-size: 44px !important; }
+
+#faq .nf-faq-item button { padding: 12px 14px !important; }
+#faq .nf-faq-answer p { padding: 0 14px 14px 40px !important; }
+
+#contact form, #contact .space-y-5 > div { margin-bottom: 0 !important; }
+#contact form { padding: 18px !important; }
+#contact .space-y-5 { gap: 12px !important; }
+#contact label { font-size: 0.85rem !important; margin-bottom: 4px !important; }
+#contact input, #contact select, #contact textarea { padding: 10px 12px !important; }
+#contact .space-y-8 { gap: 14px !important; }
+#contact .p-6 { padding: 16px !important; }
+
+#reviews .nf-review-card { padding: 16px !important; }
+#reviews .nf-review-text { min-height: 0 !important; font-size: 0.85rem !important; }
+
+#status .nf-tracker-card { padding: 16px !important; }
+#status .nf-tracker-step { padding: 8px 10px !important; }
+
+/* Punchier accents: fine glow on cards, crisp section dividers */
+#quote .nf-quote-main, #quote .nf-quote-summary,
+#services .nf-service-card, #pricing .nf-pkg-card,
+#faq .nf-faq-item, #reviews .nf-review-card {
+  border-color: rgba(96, 165, 250, 0.25) !important;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.35) !important;
+}
+#quote .nf-quote-summary::before { opacity: 0.9 !important; }
+
+@media (min-width: 1024px) {
+  #services .nf-service-card { height: 190px !important; }
+  #services .nf-front-desc { font-size: 0.8rem !important; }
+}

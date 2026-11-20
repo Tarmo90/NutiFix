@@ -40,14 +40,14 @@ function App() {
       <div className="relative" style={{ zIndex: 1 }}>
         <Header />
         <Hero />
+        <SmartQuote />
         <Services />
         <Pricing />
-        <SmartQuote />
-        <Tracker />
         <WhyUs />
         <Faq />
         <Contact />
         <Reviews />
+        <Tracker />
         <Footer />
       </div>
 
