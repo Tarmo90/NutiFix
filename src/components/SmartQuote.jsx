@@ -11,9 +11,9 @@ const OPTIONS = [
   { group: 'Arvuti', label: 'Põhipakett', price: 35, note: 'Tuvastamine, puhastus, termopasta' },
   { group: 'Arvuti', label: 'Hoolduspakett', price: 60, note: ' + SSD kontroll ja kiirendamine' },
   { group: 'Arvuti', label: 'Täispakett', price: 90, note: ' + süsteemi optimeerimine ja varundus' },
-  { group: 'Arvuti', label: 'Sülearvuti ekraan', price: 95, note: 'Standard 14–15.6" paneel' },
+  { group: 'Arvuti', label: 'Sülearvuti ekraan', price: 95, note: 'standardne 14–15,6″ paneel' },
   { group: 'Kettad', label: 'HDD → SSD uuendus', price: 40, note: ' + SSD hind, andmete ülekandega' },
-  { group: 'Kettad', label: 'Andmete päästmine', price: 150, note: 'Vigaselt kettalt, 150–350€' },
+  { group: 'Kettad', label: 'Andmete päästmine', price: 150, note: 'Vigaselt kettalt, 150–350 €' },
   { group: 'Tugi', label: 'IT kiirabi (kohapeal)', price: 35, note: 'Tunnihind Võrus' },
   { group: 'Tugi', label: 'Kaugabi', price: 25, note: 'Tunnihind' },
   { group: 'Tugi', label: 'Windowsi paigaldus', price: 50, note: 'Puhas paigaldus' },
@@ -168,7 +168,7 @@ function SmartQuote() {
               Tühjenda valikud
             </button>
             <p className="nf-summary-fine">
-              Varuosad võivad lisanduda. Täpse hinna saad pärast tasuta diagnostikat.
+              Varuosa hind lisandub tööjõu hinnale. Täpse koguhinna kinnitame pärast tasuta diagnostikat.
             </p>
           </aside>
         </div>

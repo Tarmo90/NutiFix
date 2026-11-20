@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react'
 
-const SLOTS = [
-  '9:00 – 12:00',
-  '12:00 – 15:00',
-  '15:00 – 18:00',
-  'Laupäev 10:00 – 18:00',
-  'Ei ole kindel',
-]
-
 const SERVICES = [
   'Mobiiltelefonide ekraani vahetus',
   'Sülearvutite ekraani vahetus',
@@ -48,7 +40,6 @@ function Contact() {
   const [formData, setFormData] = useState({
     name: '', phone: '', email: '', service: '', device: '', problem: ''
   })
-  const [slot, setSlot] = useState('Ei ole kindel')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState(null)
@@ -78,7 +69,7 @@ function Contact() {
     e.preventDefault()
     setIsSubmitting(true)
     setError(null)
-    const message = `${formData.problem || ''}\nSoovitud aeg: ${slot}`.trim()
+    const message = (formData.problem || '').trim()
     try {
       const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
@@ -95,7 +86,6 @@ function Contact() {
       if (response.ok) {
         setSubmitted(true)
         setFormData({ name: '', phone: '', email: '', service: '', device: '', problem: '' })
-        setSlot('Ei ole kindel')
         setTimeout(() => setSubmitted(false), 5000)
       } else {
         setError('Midagi läks valesti. Proovi uuesti või helista!')
@@ -112,9 +102,12 @@ function Contact() {
   return (
     <section id="contact" className="py-14 sm:py-16 md:py-20 relative">
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-8 sm:mb-10 text-white">
-          Broneeri aeg
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 text-white">
+          Võta ühendust
         </h2>
+        <p className="text-center text-blue-200 mb-8 sm:mb-10 text-sm sm:text-base md:text-lg">
+          Kirjuta, helista või täida vorm — vastame 24 tunni jooksul.
+        </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto">
 
@@ -175,9 +168,9 @@ function Contact() {
                 >
                   <option value="" disabled>Vali teenus...</option>
                   <optgroup label="🎁 Hoolduspaketid">
-                    <option value="Arvuti Põhipakett">Arvuti Põhipakett (35€)</option>
-                    <option value="Arvuti Hoolduspakett">Arvuti Hoolduspakett (60€)</option>
-                    <option value="Arvuti Täispakett">Arvuti Täispakett (90€)</option>
+                    <option value="Arvuti Põhipakett">Arvuti Põhipakett (35 €)</option>
+                    <option value="Arvuti Hoolduspakett">Arvuti Hoolduspakett (60 €)</option>
+                    <option value="Arvuti Täispakett">Arvuti Täispakett (90 €)</option>
                   </optgroup>
                   <optgroup label="🔧 Üksikteenused">
                     {SERVICES.map((service) => (
@@ -186,21 +179,6 @@ function Contact() {
                   </optgroup>
                 </select>
               </label>
-
-              <div>
-                <span className="block text-sm font-medium mb-1.5 text-blue-300">Soovitud aeg</span>
-                <div className="nf-slots">
-                  {SLOTS.map((item) => (
-                    <button
-                      key={item} type="button"
-                      onClick={() => setSlot(item)}
-                      className={`nf-slot ${slot === item ? 'active' : ''}`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               <label className="block">
                 <span className="block text-sm font-medium mb-1.5 text-blue-300">Seade</span>
@@ -290,14 +268,6 @@ function Contact() {
       </div>
 
       <style>{`
-        .nf-slots { display: flex; flex-wrap: wrap; gap: 8px; }
-        .nf-slot {
-          background: rgba(15,23,42,.8); border: 1px solid rgba(255,255,255,.16);
-          color: #cbd5e1; border-radius: 8px; padding: 7px 11px; font-size: 12px;
-          cursor: pointer; transition: .2s;
-        }
-        .nf-slot:hover { border-color: #60a5fa; color: #fff; }
-        .nf-slot.active { background: #3b82f6; border-color: #60a5fa; color: #fff; font-weight: 700; }
         select {
           background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
           background-position: right .7rem center; background-repeat: no-repeat;

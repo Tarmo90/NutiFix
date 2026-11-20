@@ -70,16 +70,32 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) 
     <div className="mb-3" ref={itemRef}>
       <button
         onClick={onToggle}
-        className={`w-full flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 rounded-xl bg-slate-800/80 border border-white/20 hover:border-blue-400/50 transition-all duration-300 ${isOpen ? 'border-blue-400/60 bg-slate-800' : ''}`}
+        aria-expanded={isOpen}
+        className={`group relative w-full flex items-center justify-between gap-3 px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl border bg-slate-900/55 backdrop-blur transition-all duration-300 overflow-hidden ${
+          isOpen
+            ? 'border-cyan-400/45 bg-slate-900/85 shadow-[0_16px_44px_-18px_rgba(34,211,238,0.55)]'
+            : 'border-white/10 hover:border-white/25 hover:bg-slate-900/75'
+        }`}
       >
-        <div className="flex items-center gap-2 sm:gap-3">
-          <span className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center text-base sm:text-xl shrink-0`}>
+        {/* Ainus värv selles nimekirjas: õhuke riba vasakul */}
+        <span
+          aria-hidden="true"
+          className={`absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b ${color} transition-opacity duration-300 ${
+            isOpen ? 'opacity-100' : 'opacity-40 group-hover:opacity-70'
+          }`}
+        />
+
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/[0.06] ring-1 ring-white/10 grid place-items-center text-base sm:text-lg shrink-0">
             {icon}
           </span>
-          <span className="text-sm sm:text-lg md:text-xl font-bold text-white text-left">{title}</span>
+          <span className="text-sm sm:text-base md:text-lg font-semibold text-white/95 text-left truncate">
+            {title}
+          </span>
         </div>
+
         <span
-          className="text-blue-300 text-base sm:text-xl transition-transform duration-300 shrink-0 ml-2"
+          className="text-white/45 group-hover:text-white/75 text-xs sm:text-sm transition-all duration-300 shrink-0"
           style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
         >
           ▼
@@ -91,16 +107,18 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) 
         style={{ height: `${height}px` }}
       >
         <div ref={contentRef} className="pt-2">
-          <div className="bg-slate-800/40 backdrop-blur-sm rounded-xl border border-white/5 overflow-hidden">
+          <div className="bg-slate-950/45 backdrop-blur-sm rounded-xl border border-white/[0.08] overflow-hidden">
             {rows.map((row, i) => (
               <div
                 key={i}
-                className={`flex flex-col sm:flex-row sm:justify-between sm:items-center px-4 sm:px-6 py-3 ${
-                  i !== rows.length - 1 ? 'border-b border-white/5' : ''
-                } hover:bg-white/5 transition-colors`}
+                className={`group/row flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1 sm:gap-4 px-4 sm:px-5 py-2.5 ${
+                  i !== rows.length - 1 ? 'border-b border-white/[0.06]' : ''
+                } hover:bg-cyan-400/[0.06] transition-colors`}
               >
-                <span className="text-white text-sm sm:text-base font-medium leading-tight">{row.service}</span>
-                <span className="text-white font-bold text-sm sm:text-lg whitespace-nowrap mt-1 sm:mt-0">{row.price}</span>
+                <span className="text-white/80 text-sm sm:text-[0.95rem] leading-snug">{row.service}</span>
+                <span className="text-white font-semibold text-sm sm:text-base whitespace-nowrap tabular-nums">
+                  {row.price}
+                </span>
               </div>
             ))}
           </div>
@@ -117,10 +135,10 @@ const categories = [
     icon: "💻",
     color: "from-blue-500 to-cyan-500",
     rows: [
-      { service: `Standard 14-15.6 tolli ekraan`, price: "alates 95€" },
-      { service: "IPS / kõrgkvaliteediline paneel", price: "alates 115€" },
-      { service: "OLED / Retina (MacBook, Dell XPS)", price: "alates 180€" },
-      { service: "Hinge remont koos ekraaniga", price: "+35€" },
+      { service: `Standardne 14–15,6″ ekraan`, price: "alates 95 €" },
+      { service: "IPS / kõrgkvaliteediline paneel", price: "alates 115 €" },
+      { service: "OLED / Retina (MacBook, Dell XPS)", price: "alates 180 €" },
+      { service: "Hinge remont koos ekraaniga", price: "+35 €" },
     ]
   },
   {
@@ -129,11 +147,11 @@ const categories = [
     icon: "🧹",
     color: "from-blue-500 to-cyan-600",
     rows: [
-      { service: "Sülearvuti puhastus + termopasta vahetus", price: "35€" },
-      { service: "Lauaarvuti puhastus + termopasta vahetus", price: "40€" },
-      { service: "Mänguarvuti puhastus", price: "50€" },
-      { service: "Jahutuse parandamine", price: "30€ + osa" },
-      { service: "Termopasta vahetus eraldi", price: "20€" },
+      { service: "Sülearvuti puhastus + termopasta vahetus", price: "35 €" },
+      { service: "Lauaarvuti puhastus + termopasta vahetus", price: "40 €" },
+      { service: "Mänguarvuti puhastus", price: "50 €" },
+      { service: "Jahutuse parandamine", price: "30 € + osa" },
+      { service: "Termopasta vahetus eraldi", price: "20 €" },
     ]
   },
   {
@@ -142,10 +160,10 @@ const categories = [
     icon: "💾",
     color: "from-orange-500 to-amber-500",
     rows: [
-      { service: "HDD → SSD uuendus (andmetega)", price: "40€ + SSD" },
-      { service: "Kiire SSD paigaldus", price: "35€ + SSD" },
-      { service: "Tavalise SSD paigaldus", price: "30€ + SSD" },
-      { service: "Välise ketta korpusesse panemine", price: "20€ + korpus" },
+      { service: "HDD → SSD uuendus (andmetega)", price: "40 € + SSD" },
+      { service: "Kiire SSD paigaldus", price: "35 € + SSD" },
+      { service: "Tavalise SSD paigaldus", price: "30 € + SSD" },
+      { service: "Välise ketta korpusesse panemine", price: "20 € + korpus" },
       { service: "Ketta tervise kontroll", price: "Tasuta" },
     ]
   },
@@ -155,12 +173,12 @@ const categories = [
     icon: "🔐",
     color: "from-red-500 to-rose-500",
     rows: [
-      { service: "Andmete ülekandmine välisele kettale", price: "30€" },
-      { service: "Kustunud failide tagasi toomine (lihtne)", price: "50€" },
-      { service: "Kustunud failide tagasi toomine (keeruline)", price: "90-180€" },
-      { service: "Vigase ketta andmete päästmine", price: "150-350€" },
-      { service: "SSD ketta andmete päästmine", price: "120-280€" },
-      { service: "Telefoni andmete tagasi toomine", price: "70-200€" },
+      { service: "Andmete ülekandmine välisele kettale", price: "30 €" },
+      { service: "Kustunud failide tagasi toomine (lihtne)", price: "50 €" },
+      { service: "Kustunud failide tagasi toomine (keeruline)", price: "90–180 €" },
+      { service: "Vigase ketta andmete päästmine", price: "150–350 €" },
+      { service: "SSD ketta andmete päästmine", price: "120–280 €" },
+      { service: "Telefoni andmete tagasi toomine", price: "70–200 €" },
     ]
   },
   {
@@ -169,12 +187,12 @@ const categories = [
     icon: "⚡",
     color: "from-yellow-500 to-orange-500",
     rows: [
-      { service: "Kiire puhastus (1-2h)", price: "30€" },
-      { service: "Põhjalik puhastus (3-4h)", price: "50€" },
-      { service: "Viiruste ja pahavara eemaldamine", price: "35€" },
-      { service: "Käivituse kiiremaks tegemine", price: "20€" },
-      { service: "Juhtprogrammide uuendamine", price: "20€" },
-      { service: "Täielik puhastus + kiiremaks tegemine", price: "65€" },
+      { service: "Kiire puhastus (1–2 h)", price: "30 €" },
+      { service: "Põhjalik puhastus (3–4 h)", price: "50 €" },
+      { service: "Viiruste ja pahavara eemaldamine", price: "35 €" },
+      { service: "Käivituse kiiremaks tegemine", price: "20 €" },
+      { service: "Juhtprogrammide uuendamine", price: "20 €" },
+      { service: "Täielik puhastus + kiiremaks tegemine", price: "65 €" },
     ]
   },
   {
@@ -183,11 +201,11 @@ const categories = [
     icon: "🚑",
     color: "from-rose-500 to-pink-600",
     rows: [
-      { service: "Kaugabi (kaugühendus)", price: "25€ / tund" },
-      { service: "Kohapealne abi (Võru)", price: "35€ / tund" },
-      { service: "Kohapealne abi (lähiümbrus)", price: "35€ / tund + sõit" },
-      { service: "Seadme toomine remonti", price: "15€ (Võru)" },
-      { service: "Ööpäevaringne kiire abi", price: "50€ / tund" },
+      { service: "Kaugabi (kaugühendus)", price: "25 €/tund" },
+      { service: "Kohapealne abi (Võru)", price: "35 €/tund" },
+      { service: "Kohapealne abi (lähiümbrus)", price: "35 €/tund + sõit" },
+      { service: "Seadme toomine remonti", price: "15 € (Võru)" },
+      { service: "Ööpäevaringne kiire abi", price: "50 €/tund" },
     ]
   },
   {
@@ -196,11 +214,11 @@ const categories = [
     icon: "📡",
     color: "from-indigo-500 to-violet-500",
     rows: [
-      { service: "Ruuteri seadistamine (1 seade)", price: "40€" },
-      { service: "Tugevama võrgu paigaldus (2-3 seadet)", price: "80€" },
-      { service: "Vana ruuteri vahetus uue vastu", price: "35€" },
-      { service: "Võrgu turvalisuse kontroll", price: "35€" },
-      { service: "Nutiseadmete ühendamine", price: "20€ / seade" },
+      { service: "Ruuteri seadistamine (1 seade)", price: "40 €" },
+      { service: "Tugevama võrgu paigaldus (2–3 seadet)", price: "80 €" },
+      { service: "Vana ruuteri vahetus uue vastu", price: "35 €" },
+      { service: "Võrgu turvalisuse kontroll", price: "35 €" },
+      { service: "Nutiseadmete ühendamine", price: "20 € / seade" },
     ]
   },
   {
@@ -209,11 +227,11 @@ const categories = [
     icon: "🔑",
     color: "from-slate-500 to-gray-500",
     rows: [
-      { service: "Windowsi parooli taastamine", price: "25€" },
-      { service: "Androidi lukustuse eemaldamine (lihtne)", price: "30€" },
-      { service: "Androidi lukustuse eemaldamine (keeruline)", price: "50€" },
-      { service: "Nõustamine (30 min)", price: "15€" },
-      { service: "Nõustamine (1 tund)", price: "25€" },
+      { service: "Windowsi parooli taastamine", price: "25 €" },
+      { service: "Androidi lukustuse eemaldamine (lihtne)", price: "30 €" },
+      { service: "Androidi lukustuse eemaldamine (keeruline)", price: "50 €" },
+      { service: "Nõustamine (30 min)", price: "15 €" },
+      { service: "Nõustamine (1 tund)", price: "25 €" },
     ]
   },
   {
@@ -222,12 +240,12 @@ const categories = [
     icon: "💿",
     color: "from-cyan-500 to-blue-600",
     rows: [
-      { service: "Windows 10/11 paigaldus (puhas)", price: "50€" },
-      { service: "Windows + juhtprogrammid + uuendused", price: "65€" },
-      { service: "Windows + programmid (Office jne)", price: "80€" },
-      { service: "Linux (Ubuntu / Mint) paigaldus", price: "40€" },
-      { service: "Kahe süsteemiga arvuti (Windows + Linux)", price: "70€" },
-      { service: "macOS paigaldus (Macile)", price: "55€" },
+      { service: "Windows 10/11 paigaldus (puhas)", price: "50 €" },
+      { service: "Windows + juhtprogrammid + uuendused", price: "65 €" },
+      { service: "Windows + programmid (Office jne)", price: "80 €" },
+      { service: "Linux (Ubuntu / Mint) paigaldus", price: "40 €" },
+      { service: "Kahe süsteemiga arvuti (Windows + Linux)", price: "70 €" },
+      { service: "macOS paigaldus (Macile)", price: "55 €" },
     ]
   },
   {
@@ -236,13 +254,13 @@ const categories = [
     icon: "🖨️",
     color: "from-blue-600 to-indigo-700",
     rows: [
-      { service: "Printeri ühendamine (juhtmega)", price: "30€" },
-      { service: "Printeri ühendamine (WiFi)", price: "35€" },
-      { service: "Võrguprinteri seadistamine", price: "40€" },
-      { service: "Skanneri ühendamine", price: "20€" },
-      { service: "Veebikaamera ühendamine", price: "15€" },
-      { service: "Täitepaagiga tindisüsteemi paigaldus", price: "35€" },
-      { service: "Lisaseadmete komplekt (3 seadet)", price: "70€" },
+      { service: "Printeri ühendamine (juhtmega)", price: "30 €" },
+      { service: "Printeri ühendamine (WiFi)", price: "35 €" },
+      { service: "Võrguprinteri seadistamine", price: "40 €" },
+      { service: "Skanneri ühendamine", price: "20 €" },
+      { service: "Veebikaamera ühendamine", price: "15 €" },
+      { service: "Täitepaagiga tindisüsteemi paigaldus", price: "35 €" },
+      { service: "Lisaseadmete komplekt (3 seadet)", price: "70 €" },
     ]
   },
 ]
@@ -256,21 +274,21 @@ function Pricing() {
     {
       name: "Arvuti Põhipakett",
       emoji: "🥉",
-      price: "35€",
+      price: "35 €",
       color: "from-amber-600 to-orange-700",
       features: ["Tuvastamine", "Puhastus", "Termopasta vahetus"],
     },
     {
       name: "Arvuti Hoolduspakett",
       emoji: "🥈",
-      price: "60€",
+      price: "60 €",
       color: "from-blue-600 to-indigo-600",
       features: ["Põhipakett", "SSD kontroll", "Kiiremaks tegemine"],
     },
     {
       name: "Arvuti Täispakett",
       emoji: "🥇",
-      price: "90€",
+      price: "90 €",
       color: "from-purple-600 to-pink-600",
       features: ["Hoolduspakett", "Süsteemi kiiremaks tegemine", "Andmete varundus"],
     },
@@ -323,10 +341,11 @@ function Pricing() {
             Hinnakiri
           </h2>
           <p className="text-center text-white mb-3 sm:mb-4 text-sm sm:text-base md:text-lg">
-            Kõik hinnad sisaldavad tööjõudu. Varuosad hinna sees või eraldi.
+            Kõik hinnad sisaldavad tööjõudu. Varuosa hind on iga töö juures eraldi välja toodud.
           </p>
           <p className="text-center text-white/70 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">
-            *Tasuta diagnostika. Täpne hind selgub pärast seadme ülevaatust. Kõikidele remontidele vähemalt 6 kuu garantii.*
+            Diagnostika on tasuta. Täpne hind kinnitatakse pärast seadme ülevaatust. Kõikidele
+            remonditöödele kehtib vähemalt 6 kuu garantii.
           </p>
         </SlideIn>
 
@@ -365,36 +384,24 @@ function Pricing() {
                 <div
                   key={i}
                   onClick={() => setSelectedPackage(isSelected ? null : i)}
-                  className={`nf-pkg-card relative bg-gradient-to-br ${pkg.color} border-2 cursor-pointer transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 ${
-                    isSelected ? 'border-white shadow-lg shadow-white/20 scale-105' : 'border-white/10 hover:border-white/40'
-                  }`}
+                  className={`nf-pkg-card relative cursor-pointer ${isSelected ? 'selected' : ''}`}
                 >
-                  {isSelected && (
-                    <div className="absolute -top-3 -right-3 bg-white text-slate-900 rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg shadow-lg">
-                      ✓
-                    </div>
-                  )}
-                  <div className="nf-pkg-emoji">{pkg.emoji}</div>
+                  <div className="nf-pkg-top">
+                    <span className="nf-pkg-emoji">{pkg.emoji}</span>
+                    {i === 1 && <span className="nf-pkg-badge">Soovitus</span>}
+                  </div>
                   <h4 className="nf-pkg-name">{pkg.name}</h4>
                   <div className="nf-pkg-price">{pkg.price}</div>
                   <ul className="nf-pkg-features">
                     {pkg.features.map((f, j) => (
                       <li key={j} className="nf-pkg-feature">
-                        <span className="shrink-0">✅</span>
+                        <span aria-hidden="true">✓</span>
                         <span>{f}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className={`nf-pkg-btn font-bold transition-all ${
-                    isSelected
-                      ? 'bg-white text-slate-900'
-                      : i === 0
-                        ? 'bg-white/20 text-white hover:bg-white/30 border border-white/30'
-                        : i === 1
-                          ? 'bg-blue-400/30 text-white hover:bg-blue-400/40 border border-blue-300/40'
-                          : 'bg-purple-400/30 text-white hover:bg-purple-400/40 border border-purple-300/40'
-                  }`}>
-                    {isSelected ? '✓ Valitud' : 'Kliki valimiseks'}
+                  <div className={`nf-pkg-btn ${isSelected ? 'selected' : ''}`}>
+                    {isSelected ? '✓ Valitud' : 'Vali pakett'}
                   </div>
                 </div>
               )
@@ -422,9 +429,9 @@ function Pricing() {
         {/* Accordion */}
         <SlideIn direction="up" delay={0.15}>
           <div className="mb-8">
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center gap-2">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 flex flex-wrap items-baseline gap-2">
               <span>📋</span> Detailne hinnakiri
-              <span className="text-xs sm:text-sm font-normal text-blue-300/60 ml-2">(kliki lahti)</span>
+              <span className="text-xs sm:text-sm font-normal text-blue-300/60">avatav jaotiste kaupa</span>
             </h3>
           </div>
         </SlideIn>

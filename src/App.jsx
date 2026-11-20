@@ -1,5 +1,7 @@
 import Header from './components/Header'
 import Hero from './components/Hero'
+import DiagTerminal from './components/DiagTerminal'
+import LiveFx from './components/LiveFx'
 import Pricing from './components/Pricing'
 import WhyUs from './components/WhyUs'
 import Contact from './components/Contact'
@@ -14,6 +16,8 @@ function App() {
 
   return (
     <div className="min-h-screen text-white relative">
+
+      <LiveFx />
 
       {/* Layer 1 - noise texture */}
       <div
@@ -39,13 +43,14 @@ function App() {
       <div className="relative" style={{ zIndex: 1 }}>
         <Header />
         <Hero />
+        <DiagTerminal />
         <SmartQuote />
         <Pricing />
         <WhyUs />
-        <Faq />
-        <Contact />
         <Reviews />
+        <Faq />
         <Tracker />
+        <Contact />
         <Footer />
       </div>
 

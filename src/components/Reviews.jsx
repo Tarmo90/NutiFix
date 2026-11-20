@@ -10,33 +10,9 @@ import {
   limit,
 } from 'firebase/firestore'
 
-// Näidisarvustused, mis on nähtaval seni, kuni Firebase pole veel
-// seadistatud (vt src/firebase.js) või kui keegi pole veel oma
-// arvustust jätnud. Niipea kui Firestore on ühendatud, ilmuvad
-// päris kasutajate arvustused nende kõrvale/ette automaatselt.
-const seedReviews = [
-  {
-    id: 'seed-1',
-    name: 'Mari K.',
-    stars: 5,
-    text: 'Telefoni ekraan vahetati ära 30 minutiga. Super kiire ja professionaalne teenindus. Soovitan kõigile!',
-    dateLabel: 'juuli 2026',
-  },
-  {
-    id: 'seed-2',
-    name: 'Andres T.',
-    stars: 5,
-    text: 'Sülearvuti ei käivitunud üldse. Tarmo leidis probleemi kiiresti üles ja parandas ära. Hind oli ka väga mõistlik.',
-    dateLabel: 'juuni 2026',
-  },
-  {
-    id: 'seed-3',
-    name: 'Kristi P.',
-    stars: 4,
-    text: 'Tahvelarvuti aku vahetus läks hästi. Ainuke miinus – pidin natuke ootama, aga tulemus oli hea.',
-    dateLabel: 'juuni 2026',
-  },
-]
+// Väljamõeldud arvustusi ei näidata. Sektsioon täitub ainult päris
+// kasutajate arvustustega Firestore'ist; kui neid veel pole, ütleb
+// leht seda ausalt ja kutsub esimese arvustuse jätma.
 
 const EST_MONTHS = [
   'jaanuar', 'veebruar', 'märts', 'aprill', 'mai', 'juuni',
@@ -115,16 +91,13 @@ function Reviews() {
     }
   }, [])
 
-  const allReviews = [
-    ...liveReviews.map((r) => ({
-      id: r.id,
-      name: r.name,
-      stars: r.stars,
-      text: r.text,
-      dateLabel: formatDate(r.createdAt),
-    })),
-    ...seedReviews,
-  ]
+  const allReviews = liveReviews.map((r) => ({
+    id: r.id,
+    name: r.name,
+    stars: r.stars,
+    text: r.text,
+    dateLabel: formatDate(r.createdAt),
+  }))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -203,7 +176,7 @@ function Reviews() {
     <section id="reviews" className="nf-reviews-section relative">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-2 sm:mb-3 text-white">
-          ⭐ Kliendid räägivad
+          Kliendid räägivad
         </h2>
         <p className="text-center text-blue-200 mb-6 sm:mb-8 text-sm sm:text-base md:text-lg">
           Vaata, mida meie kliendid NutiFix teenustest arvavad
@@ -220,7 +193,7 @@ function Reviews() {
           {!firestoreReady && (
             <p className="text-amber-300/90 text-xs sm:text-sm mt-3 max-w-xl mx-auto">
               Arvustuste andmebaas (Firebase) on veel seadistamata — vt juhiseid failis <code>src/firebase.js</code>.
-              Seni on nähtaval näidisarvustused.
+              Seni arvustusi ei kuvata.
             </p>
           )}
 
@@ -319,6 +292,13 @@ function Reviews() {
             </div>
           ))}
         </div>
+
+        {allReviews.length === 0 && (
+          <p className="nf-reviews-empty">
+            Siin pole veel ühtegi arvustust. Kui oled meie juures remondis käinud,
+            jäta esimene — see ilmub lehele kohe.
+          </p>
+        )}
       </div>
 
       {/* Kõik selle sektsiooni paigutuse jaoks kriitilised mõõdud on siin
@@ -358,8 +338,18 @@ function Reviews() {
           padding-top: 14px;
           margin-top: auto;
         }
-        .nf-star-picker { display: flex; gap: 4px; }
-        .nf-star-btn {
+        .nf-reviews-empty {
+          text-align: center;
+          max-width: 520px;
+          margin: 0 auto;
+          padding: 22px 18px;
+          border: 1px dashed rgba(148, 163, 184, 0.35);
+          border-radius: 14px;
+          color: rgba(219, 234, 254, 0.75);
+          font-size: 0.9rem;
+          line-height: 1.6;
+        }
+        .nf-star-picker { display: flex; gap: 4px; }        .nf-star-btn {
           background: none;
           border: none;
           cursor: pointer;

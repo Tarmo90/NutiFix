@@ -18,14 +18,6 @@ function Footer() {
             >
               Facebook
             </a>
-            <a 
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-400 hover:text-white transition-colors duration-300 hover:scale-110 transform"
-            >
-              Instagram
-            </a>
           </div>
           
           <p className="text-slate-500 text-sm">

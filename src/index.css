@@ -189,13 +189,69 @@ input, textarea, select {
 #services .nf-back-title { font-size: 0.9rem !important; margin-bottom: 8px !important; }
 #services .nf-back-list { font-size: 0.78rem !important; }
 
-#pricing .nf-pkg-grid { margin-bottom: 20px !important; gap: 12px !important; }
-#pricing .nf-pkg-card { padding: 14px !important; }
+#pricing .nf-pkg-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 24px !important;
+}
+#pricing .nf-pkg-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px !important;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 16px;
+  background: rgba(15, 23, 42, .72);
+  box-shadow: 0 12px 30px rgba(2, 6, 23, .25);
+  transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+#pricing .nf-pkg-card:hover { border-color: rgba(96, 165, 250, .6); transform: translateY(-3px); }
+#pricing .nf-pkg-card.selected {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 1px rgba(96, 165, 250, .35), 0 18px 40px rgba(2, 6, 23, .4);
+}
+#pricing .nf-pkg-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 #pricing .nf-pkg-emoji { font-size: 1.8rem !important; margin-bottom: 2px !important; }
-#pricing .nf-pkg-name { font-size: 0.9rem !important; margin-bottom: 2px !important; }
-#pricing .nf-pkg-price { font-size: 1.7rem !important; margin-bottom: 6px !important; }
-#pricing .nf-pkg-features { font-size: 0.72rem !important; gap: 3px !important; min-height: 0 !important; }
-#pricing .nf-pkg-btn { margin-top: 10px !important; padding: 7px 10px !important; font-size: 0.72rem !important; }
+#pricing .nf-pkg-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #bfdbfe;
+  border: 1px solid rgba(96, 165, 250, .4);
+  background: rgba(59, 130, 246, .15);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+#pricing .nf-pkg-name { font-size: 1.05rem !important; font-weight: 700; margin-bottom: 4px !important; }
+#pricing .nf-pkg-price { font-size: 2.1rem !important; font-weight: 800; margin-bottom: 10px !important; letter-spacing: -.02em; }
+#pricing .nf-pkg-features {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: .85rem !important;
+  color: rgba(219, 234, 254, .8);
+  margin-bottom: 18px;
+}
+#pricing .nf-pkg-feature { display: flex; align-items: flex-start; gap: 8px; }
+#pricing .nf-pkg-feature span:first-child { color: #60a5fa; font-weight: 800; }
+#pricing .nf-pkg-btn {
+  margin-top: auto !important;
+  padding: 11px 12px !important;
+  font-size: .85rem !important;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid rgba(96, 165, 250, .45);
+  background: rgba(59, 130, 246, .14);
+  color: #dbeafe;
+  font-weight: 700;
+}
+#pricing .nf-pkg-btn.selected { background: #3b82f6; border-color: #60a5fa; color: #fff; }
+
+@media (min-width: 768px) {
+  #pricing .nf-pkg-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  #pricing .nf-pkg-card { padding: 24px !important; }
+}
 
 #quote .nf-quote-grid { gap: 16px !important; }
 #quote .nf-quote-option { padding: 9px 11px !important; }
@@ -231,3 +287,452 @@ input, textarea, select {
   #services .nf-service-card { height: 190px !important; }
   #services .nf-front-desc { font-size: 0.8rem !important; }
 }
+
+/* ------------------------------------------------------------------ */
+/* NutiFix live layer — diagnostika terminal, kiibid, hiire valgus      */
+/* ------------------------------------------------------------------ */
+
+#diag { padding-top: 34px; padding-bottom: 34px; }
+
+.nf-diag-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  max-width: 720px;
+  margin: 0 auto 18px;
+}
+.nf-diag-steps > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid rgba(96, 165, 250, .22);
+  border-radius: 12px;
+  background: rgba(30, 41, 59, .55);
+  color: #dbeafe;
+  font-size: 13px;
+}
+.nf-diag-steps b {
+  flex: 0 0 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(59, 130, 246, .25);
+  color: #bfdbfe;
+  font-size: 12px;
+}
+@media (min-width: 768px) {
+  .nf-diag-steps { grid-template-columns: repeat(3, 1fr); }
+}
+
+.nf-spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity .35s ease;
+  background:
+    radial-gradient(340px circle at var(--nf-x, 50%) var(--nf-y, 30%),
+      rgba(56, 189, 248, 0.10),
+      rgba(139, 92, 246, 0.06) 45%,
+      transparent 70%);
+}
+
+.nf-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22d3ee;
+  display: inline-block;
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, .15), 0 0 12px #22d3ee;
+  animation: nfBlink 1.8s ease-in-out infinite;
+}
+
+@keyframes nfBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+
+.nf-term {
+  border: 1px solid rgba(96, 165, 250, .25);
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(15, 23, 42, .94), rgba(2, 6, 23, .94));
+  box-shadow: 0 30px 80px rgba(2, 6, 23, .55), 0 0 0 1px rgba(59, 130, 246, .06) inset;
+}
+
+.nf-term-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, .18);
+  background: rgba(255, 255, 255, .02);
+}
+
+.nf-dot { width: 10px; height: 10px; border-radius: 50%; display: block; }
+.nf-dot-r { background: #ff5f57; }
+.nf-dot-y { background: #febc2e; }
+.nf-dot-g { background: #28c840; }
+
+.nf-term-title {
+  margin-left: 8px;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 12px;
+  color: rgba(226, 232, 240, .65);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.nf-term-badge {
+  margin-left: auto;
+  font-size: 10.5px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, .35);
+  background: rgba(251, 191, 36, .08);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.nf-term-body { padding: 16px 16px 18px; }
+
+.nf-diag-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+
+.nf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  background: rgba(255, 255, 255, .03);
+  color: #e2e8f0;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .2s ease, border-color .2s ease, transform .15s ease;
+}
+
+.nf-chip:hover { border-color: rgba(96, 165, 250, .5); background: rgba(59, 130, 246, .12); }
+.nf-chip:active { transform: translateY(1px); }
+
+.nf-chip-on {
+  background: linear-gradient(135deg, rgba(59, 130, 246, .95), rgba(139, 92, 246, .95));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, .28);
+}
+
+.nf-diag-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.nf-diag-prompt {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 12.5px;
+  color: #7dd3fc;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nf-diag-run {
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: #04120b;
+  background: linear-gradient(135deg, #22d3ee, #38bdf8);
+  box-shadow: 0 8px 26px rgba(34, 211, 238, .3);
+  transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease;
+}
+
+.nf-diag-run:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(34, 211, 238, .4); }
+.nf-diag-run:disabled { opacity: .65; cursor: default; }
+
+.nf-progress {
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(148, 163, 184, .15);
+  margin-bottom: 14px;
+}
+
+.nf-progress i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22d3ee, #8b5cf6);
+  transition: width .22s ease;
+}
+
+.nf-diag-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+
+.nf-diag-row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) minmax(0, auto) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .025);
+  border: 1px solid rgba(148, 163, 184, .12);
+  animation: nfRow .28s ease both;
+  overflow: hidden;
+}
+
+@keyframes nfRow {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.nf-diag-mark {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.nf-diag-mark.nf-diag-ok { background: rgba(34, 197, 94, .15); color: #4ade80; border: 1px solid rgba(34, 197, 94, .35); }
+.nf-diag-mark.nf-diag-warn { background: rgba(251, 191, 36, .15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, .35); }
+.nf-diag-mark.nf-diag-fail { background: rgba(248, 113, 113, .15); color: #f87171; border: 1px solid rgba(248, 113, 113, .35); }
+
+.nf-diag-name {
+  color: #e2e8f0;
+  font-size: 13.5px;
+  font-weight: 600;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nf-diag-value {
+  color: rgba(148, 163, 184, .95);
+  font-size: 12.5px;
+  font-family: ui-monospace, Consolas, monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.nf-diag-tag {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.nf-diag-tag.nf-diag-ok { color: #4ade80; background: rgba(34, 197, 94, .1); border-color: rgba(34, 197, 94, .25); }
+.nf-diag-tag.nf-diag-warn { color: #fbbf24; background: rgba(251, 191, 36, .1); border-color: rgba(251, 191, 36, .25); }
+.nf-diag-tag.nf-diag-fail { color: #f87171; background: rgba(248, 113, 113, .1); border-color: rgba(248, 113, 113, .25); }
+
+.nf-diag-empty { color: rgba(148, 163, 184, .85); font-size: 13px; padding: 10px 2px; }
+
+.nf-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px 16px;
+  border-top: 1px solid rgba(148, 163, 184, .16);
+  background: rgba(255, 255, 255, .015);
+  min-width: 0;
+}
+
+.nf-tools-label {
+  font-size: 11.5px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, .9);
+}
+
+.nf-tools-chip {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 11.5px;
+  color: #a5f3fc;
+  background: rgba(34, 211, 238, .1);
+  border: 1px solid rgba(34, 211, 238, .28);
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nf-diag-verdict {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, .2);
+  background: rgba(255, 255, 255, .03);
+  animation: nfRow .3s ease both;
+}
+
+.nf-diag-verdict strong { display: block; font-size: 14.5px; margin-bottom: 6px; }
+.nf-diag-verdict p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.55; color: rgba(226, 232, 240, .86); }
+.nf-diag-verdict.nf-diag-ok strong { color: #4ade80; }
+.nf-diag-verdict.nf-diag-warn strong { color: #fbbf24; }
+.nf-diag-verdict.nf-diag-fail strong { color: #f87171; }
+
+.nf-diag-cta { font-size: 13.5px; font-weight: 700; color: #7dd3fc; }
+.nf-diag-cta:hover { color: #fff; }
+
+@media (max-width: 520px) {
+  .nf-diag-value { display: none; }
+  .nf-diag-row { grid-template-columns: 20px minmax(0, 1fr) auto; gap: 8px; padding: 8px; }
+  .nf-diag-name { font-size: 12.5px; }
+  .nf-diag-tag { font-size: 9.5px; padding: 2px 6px; }
+  .nf-term-title { display: none; }
+  .nf-term-body { padding: 12px 12px 14px; }
+  .nf-tools { padding: 12px 12px 14px; gap: 6px; }
+  .nf-tools-chip { font-size: 10.5px; padding: 2px 8px; }
+  .nf-tools-label { font-size: 10.5px; width: 100%; }
+  .nf-diag-run { width: 100%; }
+  .nf-diag-verdict p { font-size: 13px; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Pealkirjade rütm                                                      */
+/* Tailwindi leading-none/tight lõikab eesti täpitähti ja kirjavahemärke  */
+/* kokku – suurtel pealkirjadel peab olema hingamisruumi.                */
+/* ------------------------------------------------------------------ */
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.22 !important;
+  text-wrap: balance;
+}
+
+h1 {
+  line-height: 1.14 !important;
+}
+
+/* Tailwindi text-5xl/text-4xl määravad reavaheks 1 – eesti täpitähed ja
+   kirjavahemärgid jooksevad siis kokku nii enda kui alloleva tekstiga.
+   Seetõttu on pealkirjadel reavahe kohustuslik ja gradientiga lõigatud
+   tekstile (.bg-clip-text) lisandub väike alumine õhk. */
+h1.bg-clip-text,
+h2.bg-clip-text,
+h3.bg-clip-text,
+h4.bg-clip-text {
+  padding-bottom: 0.1em;
+}
+
+/* Ankurlink ei tohi jääda kleepuva päise alla. */
+section[id] {
+  scroll-margin-top: 92px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Lõpp-korrastus: üks tüpograafiline rütm kogu lehel                   */
+/* ------------------------------------------------------------------ */
+
+html { font-size: 16px; }
+
+body {
+  font-size: 1rem;
+  line-height: 1.7;
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Pealkirjade hierarhia: üks h1, sektsioonid h2, alamad h3/h4.
+   Suurused on vaikivad ja eesti täpitähed ei jää kokku. */
+#hero h1 {
+  font-size: clamp(2.1rem, 5vw, 3.9rem) !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 0 14px !important;
+}
+
+section h2 {
+  font-size: clamp(1.9rem, 3.4vw, 2.8rem) !important;
+  line-height: 1.18 !important;
+  letter-spacing: -0.015em !important;
+  margin: 0 0 16px !important;
+}
+
+section h3 {
+  font-size: clamp(1.15rem, 1.8vw, 1.4rem) !important;
+  line-height: 1.3 !important;
+  margin: 0 0 10px !important;
+}
+
+section h4 {
+  font-size: 1.02rem !important;
+  line-height: 1.35 !important;
+  margin: 0 0 6px !important;
+}
+
+/* Teksti reavahed ja lõigud */
+section p {
+  line-height: 1.75 !important;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+section p:last-child { margin-bottom: 0; }
+
+/* Sektsioonide hingamisruum — ei ole enam 34 px "kokku surutud" */
+#quote, #pricing, #why-us, #faq, #contact, #reviews, #status, #diag {
+  padding-top: 56px !important;
+  padding-bottom: 56px !important;
+}
+
+@media (min-width: 1024px) {
+  #quote, #pricing, #why-us, #faq, #contact, #reviews, #status, #diag {
+    padding-top: 72px !important;
+    padding-bottom: 72px !important;
+  }
+}
+
+#hero {
+  padding-top: 128px !important;
+  padding-bottom: 64px !important;
+}
+
+/* Sisemine laius ja tsentreerimine */
+#quote > div, #pricing > div, #why-us > div, #faq > div,
+#contact > div, #reviews > div, #status > div, #diag > div {
+  width: 100%;
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--site-side-padding);
+  padding-right: var(--site-side-padding);
+}
+
+/* Logo ja pealkirja vahe: väike, aga loetav */
+.nf-hero-mark { margin-bottom: 32px !important; }
+
+@media (max-width: 640px) {
+  .nf-hero-mark { margin-bottom: 22px !important; }
+}
+
+/* Nuppude ja kaartide ühtne rütm */
+button, .btn, a[role="button"] { line-height: 1.25; }

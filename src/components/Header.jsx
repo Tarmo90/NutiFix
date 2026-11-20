@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 
 const NAV = [
+  { label: 'Diagnostika', href: '#diag' },
   { label: 'Hinnakiri', href: '#pricing' },
   { label: 'Pakkumine', href: '#quote' },
-  { label: 'Staatus', href: '#status' },
   { label: 'Miks Nutifix?', href: '#why-us' },
   { label: 'KKK', href: '#faq' },
+  { label: 'Staatus', href: '#status' },
   { label: 'Kontakt', href: '#contact' },
 ]
 
