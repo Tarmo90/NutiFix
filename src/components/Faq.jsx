@@ -11,7 +11,7 @@ const ITEMS = [
   },
   {
     q: 'Kui pikk on remondi garantii?',
-    a: 'NutiFixi tehtud remonditöödele kehtib vähemalt 6 kuud garantii. Mõnedel varuosadel, nt akudel, on garantii kuni 12 kuud.',
+    a: 'Kõigile NutiFixi tehtud remonditöödele ja vahetatud varuosadele kehtib 3 kuud garantii. Garantii algab seadme üleandmisest.',
   },
   {
     q: 'Kuidas remondipäring saata?',

@@ -345,7 +345,7 @@ function Pricing() {
           </p>
           <p className="text-center text-white/70 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">
             Diagnostika on tasuta. Täpne hind kinnitatakse pärast seadme ülevaatust. Kõikidele
-            remonditöödele kehtib vähemalt 6 kuu garantii.
+            remonditöödele kehtib 3 kuu garantii.
           </p>
         </SlideIn>
 
