@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
-import { STAGES, getRepair, setRepairStatus, updateRepairInfo, createRepair } from '../repairs'
+import { STAGES, getRepair, setRepairStatus, updateRepairInfo, updateRepairReport, createRepair } from '../repairs'
 
 function Admin() {
   const [user, setUser] = useState(null)
@@ -16,6 +16,8 @@ function Admin() {
   const [newDevice, setNewDevice] = useState('')
   const [newService, setNewService] = useState('')
   const [newCode, setNewCode] = useState('')
+  const [reportName, setReportName] = useState('')
+  const [reportText, setReportText] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
 
@@ -49,6 +51,8 @@ function Admin() {
       setRepair(found)
       setDiagnosis(found?.diagnosis || '')
       setPrice(found?.price || '')
+      setReportName(found?.reportName || '')
+      setReportText(found?.reportText || '')
       if (!found) setMessage('Sellist koodi ei leitud.')
     } catch (err) {
       setMessage('Otsing ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
@@ -94,6 +98,37 @@ function Admin() {
       setNewName(''); setNewPhone(''); setNewDevice(''); setNewService('')
     } catch (err) {
       setMessage('Koodi loomine ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const onReportFile = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 900000) {
+      setMessage('Fail on liiga suur (max 900 kB). Vähenda aruannet.')
+      return
+    }
+    const reader = new FileReader()
+    reader.onload = () => {
+      setReportText(String(reader.result || ''))
+      setReportName(file.name)
+    }
+    reader.onerror = () => setMessage('Faili lugemine ebaõnnestus.')
+    reader.readAsText(file)
+  }
+
+  const saveReport = async () => {
+    if (!repair || !reportText) return
+    setBusy(true)
+    setMessage('')
+    try {
+      await updateRepairReport(repair.id, { name: reportName, text: reportText })
+      setRepair((prev) => ({ ...prev, reportName, reportText }))
+      setMessage('Aruanne salvestatud — klient näeb seda oma koodiga.')
+    } catch (err) {
+      setMessage('Aruande salvestamine ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
     } finally {
       setBusy(false)
     }
@@ -262,6 +297,23 @@ function Admin() {
                       Salvesta ja näita kliendile
                     </button>
                   </form>
+
+                  <div className="mt-6 border-t border-white/10 pt-5 space-y-3">
+                    <div className="text-sm font-semibold text-blue-300">Diagnostika aruanne</div>
+                    <p className="text-slate-400 text-xs">
+                      HWiNFO, CrystalDiskInfo, 3uTools, AccuBattery vms aruanne — salvesta tekstina (txt, csv, html, log).
+                    </p>
+                    <input type="file" accept=".txt,.csv,.log,.html,.htm,.json,.xml,text/*"
+                      onChange={onReportFile}
+                      className="block w-full text-sm text-slate-300 file:mr-3 file:px-4 file:py-2 file:rounded-lg file:border-0 file:bg-slate-700 file:text-white file:cursor-pointer" />
+                    {reportName && (
+                      <div className="text-xs text-blue-300">Valitud: {reportName} ({reportText.length} märki)</div>
+                    )}
+                    <button type="button" onClick={saveReport} disabled={busy || !reportText}
+                      className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-50">
+                      Laadi aruanne üles ja näita kliendile
+                    </button>
+                  </div>
                 </div>
               )}
             </>

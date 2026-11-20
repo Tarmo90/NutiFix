@@ -17,6 +17,7 @@ function Tracker() {
   const [repair, setRepair] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showReport, setShowReport] = useState(false)
 
   const isDemo = activeCode.toUpperCase() === 'NF-2026-DEMO'
 
@@ -108,6 +109,13 @@ function Tracker() {
                           <p className="text-lg font-bold text-white break-words">{repair.price}</p>
                         </div>
                       )}
+                      {repair.reportText && (
+                        <button type="button" onClick={() => setShowReport(true)}
+                          className="w-full sm:w-auto px-4 py-2 rounded-lg border border-blue-400/40 bg-blue-500/10 text-blue-200 text-sm font-semibold hover:bg-blue-500/20 transition-colors">
+                          Vaata diagnostika aruannet →
+                          {repair.reportName && <span className="block text-xs font-normal text-blue-300/70 mt-0.5">{repair.reportName}</span>}
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -136,6 +144,26 @@ function Tracker() {
           )}
         </div>
       </div>
+
+      {showReport && repair?.reportText && (
+        <div className="fixed inset-0 z-[95] flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-sm"
+          role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setShowReport(false) }}>
+          <div role="dialog" aria-modal="true" aria-label="Diagnostika aruanne"
+            className="relative w-full max-w-3xl max-h-[88vh] flex flex-col rounded-2xl border border-white/15 bg-slate-900 shadow-2xl">
+            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-white/10">
+              <div>
+                <div className="text-white font-bold">Diagnostika aruanne</div>
+                <div className="text-blue-300 text-xs mt-0.5">{repair.reportName || 'Aruanne'}</div>
+              </div>
+              <button type="button" onClick={() => setShowReport(false)} aria-label="Sulge"
+                className="text-slate-400 hover:text-white text-2xl leading-none bg-transparent border-none cursor-pointer p-1">×</button>
+            </div>
+            <pre className="flex-1 overflow-auto overscroll-contain px-5 py-4 text-xs sm:text-sm text-slate-200 whitespace-pre-wrap break-words font-mono">
+              {repair.reportText}
+            </pre>
+          </div>
+        </div>
+      )}
 
       <style>{`
         .nf-tracker-section { padding: 56px 0 64px; }

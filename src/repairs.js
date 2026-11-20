@@ -94,3 +94,15 @@ export async function updateRepairInfo(id, { diagnosis, price }) {
     updatedAt: serverTimestamp(),
   })
 }
+
+// Diagnostikatarkvarade (HWiNFO, CrystalDiskInfo, 3uTools jt) tekstilised
+// aruanded salvestatakse otse dokumendi sisse. Firestore'i 1 MB piirang
+// mahutab need probleemideta; Storage nõuaks Blaze'i ja makseinfo.
+export async function updateRepairReport(id, { name, text }) {
+  if (!db) throw new Error('Andmebaas pole saadaval')
+  await updateDoc(doc(db, 'repairs', id), {
+    reportName: String(name || '').slice(0, 120),
+    reportText: String(text || '').slice(0, 500000),
+    updatedAt: serverTimestamp(),
+  })
+}
