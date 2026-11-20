@@ -79,7 +79,10 @@ function Header() {
         </nav>
 
         {/* Mobile menu button */}
-        <button 
+        <button
+          type="button"
+          aria-label={isOpen ? 'Sulge menüü' : 'Ava menüü'}
+          aria-expanded={isOpen}
           className="md:hidden text-white text-xl hover:scale-110 transition-transform bg-transparent border-none p-1"
           onClick={() => setIsOpen(!isOpen)}
         >

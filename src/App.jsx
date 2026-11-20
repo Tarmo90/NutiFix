@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import DiagTerminal from './components/DiagTerminal'
@@ -10,9 +11,14 @@ import SmartQuote from './components/SmartQuote'
 import Tracker from './components/Tracker'
 import Faq from './components/Faq'
 import Footer from './components/Footer'
+import Legal from './components/Legal'
+import CookieConsent from './components/CookieConsent'
 
 
 function App() {
+  const [legal, setLegal] = useState(null)
+  const openLegal = (type) => setLegal(type)
+  const closeLegal = () => setLegal(null)
 
   return (
     <div className="min-h-screen text-white relative">
@@ -51,9 +57,11 @@ function App() {
         <Faq />
         <Tracker />
         <Contact />
-        <Footer />
+        <Footer onOpenLegal={openLegal} />
       </div>
 
+      <CookieConsent onOpenPrivacy={() => openLegal('privacy')} />
+      <Legal type={legal} onClose={closeLegal} />
     </div>
   )
 }

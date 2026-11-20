@@ -3,48 +3,75 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#000000" />
-    
-    <!-- ÕIGE KIRJELDUS (ainult üks!) -->
-    <meta name="description" content="Telefoni ja arvuti remont Võrus — sülearvutid, lauaarvutid ja mobiiltelefonid. Tasuta diagnoos, garantii, kiire teenindus. IT-abi ja võrguseadistused." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f172a" />
+
+    <title>NutiFix | Telefoni ja arvuti remont Võrus</title>
+    <link rel="canonical" href="https://nutifix.ee/" />
+    <meta name="description" content="Telefoni ja arvuti remont Võrus — sülearvutid, lauaarvutid ja mobiiltelefonid. Tasuta diagnoos, garantii 6–12 kuud, kiire teenindus. IT-abi ja võrguseadistused." />
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <title>NutiFix | Telefoni ja arvuti remont Võrus</title>
-
-    <!-- Open Graph (Facebook, Messenger, LinkedIn) -->
+    <!-- Open Graph: Facebook, Messenger, LinkedIn -->
     <meta property="og:title" content="NutiFix | Telefoni ja arvuti remont Võrus" />
-    <meta property="og:description" content="Tasuta esmane diagnoos 15 minutiga. Garantii 6-12 kuud. Professionaalne telefoni ja arvuti remont ning IT-abi Võrus." />
+    <meta property="og:description" content="Tasuta esmane diagnoos 15 minutiga. Garantii 6–12 kuud. Professionaalne telefoni ja arvuti remont ning IT-abi Võrus." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://nutifix.ee" />
+    <meta property="og:url" content="https://nutifix.ee/" />
+    <meta property="og:locale" content="et_EE" />
+    <meta property="og:site_name" content="NutiFix" />
+    <meta property="og:image" content="https://nutifix.ee/logo.png" />
 
-    <!-- Schema.org -->
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="NutiFix | Telefoni ja arvuti remont Võrus" />
+    <meta name="twitter:description" content="Tasuta diagnoos, garantii 6–12 kuud, kiire remont ja IT-abi Võrus." />
+    <meta name="twitter:image" content="https://nutifix.ee/logo.png" />
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
+      "@type": "ComputerRepair",
       "name": "NutiFix OÜ",
-      "url": "https://nutifix.ee",
+      "url": "https://nutifix.ee/",
       "telephone": "+37258530404",
+      "email": "info@nutifix.ee",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "F.R.Kreutzwaldi 58b",
+        "streetAddress": "F.R. Kreutzwaldi 58b",
         "postalCode": "65610",
         "addressLocality": "Võru",
         "addressRegion": "Võru maakond",
         "addressCountry": "EE"
       },
-      "areaServed": "Võru",
-      "description": "Telefoni ja arvuti remont Võrus — sülearvutid, lauaarvutid ja mobiiltelefonid.",
-      "priceRange": "€€",
-      "openingHours": "Mo-Fr 09:00-18:00"
+      "areaServed": [
+        { "@type": "City", "name": "Võru" },
+        { "@type": "AdministrativeArea", "name": "Võru maakond" }
+      ],
+      "description": "Telefoni ja arvuti remont Võrus — sülearvutid, lauaarvutid ja mobiiltelefonid. Tasuta diagnoos, garantii ja IT-abi.",
+      "priceRange": "€",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "10:00",
+          "closes": "18:00"
+        }
+      ],
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61593277231244"
+      ]
     }
     </script>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>Lehe nägemiseks lülita JavaScript sisse.</noscript>
     <div id="root"></div>
   </body>
 </html>
