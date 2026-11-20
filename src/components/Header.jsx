@@ -8,7 +8,6 @@ const NAV = [
   { label: 'KKK', href: '#faq' },
   { label: 'Staatus', href: '#status' },
   { label: 'Kontakt', href: '#contact' },
-  { label: 'Haldus', href: '#admin' },
 ]
 
 function Header() {
