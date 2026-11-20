@@ -67,7 +67,7 @@ function Legal({ type, onClose }) {
         </button>
 
         <h2 className="text-2xl sm:text-3xl font-bold text-white pr-10">{doc.title}</h2>
-        <p className="text-slate-400 text-xs mt-1 mb-6">{doc.updated}</p>
+        <p className="text-slate-400 text-xs md:text-sm mt-1 mb-6">{doc.updated}</p>
 
         <div className="space-y-5">
           {doc.body.map((section) => (

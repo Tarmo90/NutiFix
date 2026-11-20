@@ -153,6 +153,10 @@ function Tracker() {
         @media (min-width: 1024px) {
           .nf-tracker-steps { grid-template-columns: repeat(5,1fr); }
           .nf-step-copy span { display: none; }
+          .nf-tracker-code { font-size: 13px; }
+          .nf-tracker-head p { font-size: 14px; }
+          .nf-step-copy b { font-size: 15px; }
+          .nf-tracker-foot { font-size: 14px; }
         }
       `}</style>
     </section>

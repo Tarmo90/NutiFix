@@ -93,6 +93,8 @@ function Faq() {
         @media (min-width: 768px) {
           .nf-faq-section { padding: 72px 0 80px; }
           .nf-faq-q { font-size: 16px; }
+          .nf-faq-num { font-size: 12px; }
+          .nf-faq-answer p { font-size: 15px; }
         }
       `}</style>
     </section>

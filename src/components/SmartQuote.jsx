@@ -248,6 +248,15 @@ function SmartQuote() {
           .nf-quote-fields { grid-template-columns: 1fr 1fr; }
           .nf-summary-total { font-size: 64px; }
         }
+        @media (min-width: 1024px) {
+          .nf-quote-option-title { font-size: 14px; }
+          .nf-quote-option-note { font-size: 12.5px; }
+          .nf-quote-fields label { font-size: 13.5px; }
+          .nf-summary-label { font-size: 12.5px; }
+          .nf-summary-note, .nf-summary-line, .nf-summary-empty { font-size: 13.5px; }
+          .nf-summary-reset { font-size: 13px; }
+          .nf-summary-fine { font-size: 11.5px; }
+        }
         @media (min-width: 1280px) {
           .nf-quote-section { padding: 88px 0 96px; }
           .nf-quote-options { grid-template-columns: 1fr 1fr; }

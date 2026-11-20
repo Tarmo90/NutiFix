@@ -209,7 +209,7 @@ function Contact() {
                 {isSubmitting ? 'Saadan...' : 'Saada remondipäring'}
               </button>
 
-              <p className="text-xs text-blue-300/60 text-center">
+              <p className="text-xs md:text-sm text-blue-300/60 text-center">
                 Võtame ühendust 24 tunni jooksul. Varuosa saadavuse täpsustame pärast diagnostikat.
               </p>
             </div>
@@ -218,7 +218,7 @@ function Contact() {
           <div className="space-y-4">
             <div className="bg-slate-800/50 rounded-xl p-5 border border-white/10 flex items-center justify-between">
               <div>
-                <div className="text-blue-300 text-xs uppercase tracking-wide">Praegu</div>
+                <div className="text-blue-300 text-xs md:text-sm uppercase tracking-wide">Praegu</div>
                 <div className="text-white font-semibold">
                   {open ? '✅ Avatud — helista julgelt' : '🌙 Suletud — jäta päring'}
                 </div>

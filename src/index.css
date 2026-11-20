@@ -740,3 +740,29 @@ section p:last-child { margin-bottom: 0; }
 
 /* Nuppude ja kaartide ühtne rütm */
 button, .btn, a[role="button"] { line-height: 1.25; }
+
+/* Arvutivaates loetavamad abitekstid. Mobiil jääb puutumata. */
+@media (min-width: 1024px) {
+  .nf-term-title { font-size: 13.5px; }
+  .nf-term-badge { font-size: 12px; }
+  .nf-chip { font-size: 14.5px; }
+  .nf-diag-mark { font-size: 12.5px; width: 22px; height: 22px; }
+  .nf-diag-name { font-size: 15px; }
+  .nf-diag-value { font-size: 14px; }
+  .nf-diag-tag { font-size: 12px; }
+  .nf-diag-empty { font-size: 14px; }
+  .nf-tools-label, .nf-tools-chip { font-size: 13px; }
+  .nf-diag-verdict strong { font-size: 16px; }
+  .nf-diag-verdict p { font-size: 15px; }
+  .nf-diag-cta { font-size: 15px; }
+  .nf-diag-steps > div { font-size: 14px; }
+  .nf-diag-steps b { font-size: 13px; }
+  .nf-faq-num { font-size: 12px; }
+  .nf-faq-answer p { font-size: 15px; }
+  .nf-tracker-code, .nf-step-copy span { font-size: 12px; }
+  .nf-tracker-head p, .nf-tracker-foot { font-size: 13px; }
+  .nf-step-copy b { font-size: 14px; }
+  .nf-quote-option-title, .nf-quote-fields label, .nf-summary-line { font-size: 14px; }
+  .nf-quote-option-note, .nf-summary-note, .nf-summary-label, .nf-summary-empty { font-size: 12.5px; }
+  .nf-summary-fine { font-size: 11.5px; }
+}

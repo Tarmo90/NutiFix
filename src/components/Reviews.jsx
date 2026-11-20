@@ -267,7 +267,7 @@ function Reviews() {
                   {isSubmitting ? 'Saadan...' : 'Saada arvustus'}
                 </button>
 
-                <p className="text-xs text-blue-300/60 text-center">
+                <p className="text-xs md:text-sm text-blue-300/60 text-center">
                   Arvustus ilmub lehele kohe pärast saatmist.
                 </p>
               </div>
