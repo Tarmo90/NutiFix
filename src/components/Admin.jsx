@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
+import reportTextParser from '../reportTextParser'
 import { STAGES, getRepair, setRepairStatus, updateRepairInfo, updateRepairReport, createRepair } from '../repairs'
 
 function Admin() {
@@ -22,6 +23,8 @@ function Admin() {
   const [parseStatus, setParseStatus] = useState('')
   const [reportSummary, setReportSummary] = useState('')
   const [parseError, setParseError] = useState('')
+  const [emailReport, setEmailReport] = useState('')
+  const [emailSummary, setEmailSummary] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
 
@@ -53,7 +56,7 @@ function Admin() {
     try {
       const found = await getRepair(code.trim())
       setRepair(found)
-      setDiagnosis(found?.diagnosis || '')
+      setDiagnosis(emailSummary ? emailSummary.slice(0, 1000) : (found?.diagnosis || ''))
       setPrice(found?.price || '')
       setReportName(found?.reportName || '')
       setReportText(found?.reportText || '')
@@ -374,6 +377,34 @@ function Admin() {
                         )}
                       </div>
                     )}
+                    <div className="border-t border-white/10 pt-4 space-y-3">
+                      <div className="text-sm font-semibold text-blue-300">E-postiga saadetud MxMobi raport</div>
+                      <p className="text-slate-400 text-xs">
+                        Kleebi kiri tervikuna siia — kokkuvõte tehakse kohe brauseris, linker pole vaja.
+                      </p>
+                      <textarea rows="6" value={emailReport} onChange={(e) => setEmailReport(e.target.value)}
+                        placeholder="MxMob Phone Diagnostic · Nov 21, 2026 Phone: ..."
+                        className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm resize-y" />
+                      <button type="button" disabled={!emailReport.trim()}
+                        onClick={() => {
+                          const summary = reportTextParser.parseReportEmail(emailReport)
+                          if (!summary) {
+                            setMessage('Raporti teksti ei õnnestunud kokku võtta — kontrolli, kas kiri on tervikuna kopeeritud.')
+                            return
+                          }
+                          setEmailSummary(summary)
+                          setDiagnosis(summary.slice(0, 1000))
+                          setMessage('Kokkuvõte on diagnoosiväljas — otsi kood ja vajuta Salvesta ja näita kliendile.')
+                        }}
+                        className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-50">
+                        Tee kokkuvõte
+                      </button>
+                      {emailSummary && (
+                        <pre className="whitespace-pre-wrap break-words text-xs text-slate-200 bg-slate-900/70 rounded-lg border border-white/10 px-3 py-2 max-h-64 overflow-auto">
+                          {emailSummary}
+                        </pre>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
