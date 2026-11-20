@@ -235,10 +235,11 @@ function Tracker() {
         .nf-tracker-form button:hover { filter: brightness(1.15); }
         .nf-tracker-result { margin-top: 20px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 18px; }
         .nf-tracker-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+        .nf-tracker-head > div:first-child { min-width: 0; flex: 1 1 auto; }
         .nf-tracker-code { font-size: 11px; color: #93c5fd; letter-spacing: .08em; text-transform: uppercase; font-weight: 800; }
         .nf-tracker-current { font-size: 20px; font-weight: 800; color: #fff; margin-top: 4px; }
         .nf-tracker-head p { font-size: 12px; color: rgba(219,234,254,.7); margin: 4px 0 0; }
-        .nf-tracker-pct { font-size: 30px; font-weight: 900; color: #60a5fa; }
+        .nf-tracker-pct { font-size: 30px; font-weight: 900; color: #60a5fa; flex: 0 0 auto; }
         .nf-tracker-steps { display: grid; grid-template-columns: 1fr; gap: 8px; }
         .nf-tracker-step {
           display: flex; align-items: center; gap: 12px; padding: 10px 12px;
@@ -260,7 +261,7 @@ function Tracker() {
         .nf-tracker-foot a:hover { text-decoration: underline; }
         .nf-report-inline {
           margin-top: 14px; border: 1px solid rgba(139,92,246,.32); border-radius: 12px;
-          background: rgba(15,23,42,.7); overflow: hidden; max-width: 100%;
+          background: rgba(15,23,42,.7); overflow: hidden; width: 100%; max-width: 100%;
         }
         .nf-report-bar {
           display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
