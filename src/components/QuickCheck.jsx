@@ -21,11 +21,21 @@ function QuickCheck() {
   const [micState, setMicState] = useState('')
   const [micLevel, setMicLevel] = useState(0)
   const [copied, setCopied] = useState(false)
+  const [cameraState, setCameraState] = useState('')
+  const [sensorState, setSensorState] = useState('')
   const micRef = useRef(null)
+  const cameraRef = useRef(null)
+  const sensorRef = useRef(null)
+  const videoRef = useRef(null)
 
   useEffect(() => () => {
     micRef.current?.stream?.getTracks().forEach((track) => track.stop())
     micRef.current?.context?.close()
+    cameraRef.current?.getTracks().forEach((track) => track.stop())
+    if (sensorRef.current) {
+      window.removeEventListener('devicemotion', sensorRef.current.handler)
+      clearTimeout(sensorRef.current.timer)
+    }
   }, [])
 
   const setResult = (id, status, detail) => {
@@ -107,7 +117,88 @@ function QuickCheck() {
   const readDevice = () => {
     const platform = navigator.userAgentData?.platform || navigator.platform || 'teadmata'
     const screenSize = `${window.screen.width}×${window.screen.height}`
-    setResult('device', 'info', `${platform} · ${screenSize} · ${navigator.onLine ? 'võrgus' : 'võrgust väljas'}`)
+    const network = navigator.connection?.effectiveType ? ` · ${navigator.connection.effectiveType}` : ''
+    setResult('device', 'info', `${platform} · ${screenSize} · ${navigator.onLine ? 'võrgus' : 'võrgust väljas'}${network}`)
+  }
+
+  const toggleCamera = async () => {
+    if (cameraRef.current) {
+      cameraRef.current.getTracks().forEach((track) => track.stop())
+      cameraRef.current = null
+      setCameraState('')
+      return
+    }
+    try {
+      if (!navigator.mediaDevices?.getUserMedia) throw new Error('pole saadaval')
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+      cameraRef.current = stream
+      setCameraState('active')
+      setResult('camera', 'manual', 'kaader avatud — kas pilt on terav?')
+      setTimeout(() => {
+        if (cameraRef.current === stream && videoRef.current) {
+          videoRef.current.srcObject = stream
+          videoRef.current.play().catch(() => {})
+        }
+      }, 0)
+    } catch {
+      setResult('camera', 'manual', 'kaamera pääs puudub')
+    }
+  }
+
+  const toggleSensors = async () => {
+    if (sensorRef.current) {
+      window.removeEventListener('devicemotion', sensorRef.current.handler)
+      clearTimeout(sensorRef.current.timer)
+      sensorRef.current = null
+      setSensorState('')
+      return
+    }
+    try {
+      if (!window.DeviceMotionEvent) throw new Error('pole saadaval')
+      if (window.DeviceMotionEvent.requestPermission) {
+        const permission = await window.DeviceMotionEvent.requestPermission()
+        if (permission !== 'granted') throw new Error('keelatud')
+      }
+      const handler = (event) => {
+        const acceleration = event.accelerationIncludingGravity || event.acceleration
+        if (!acceleration) return
+        const magnitude = Math.abs(acceleration.x || 0) + Math.abs(acceleration.y || 0) + Math.abs(acceleration.z || 0)
+        if (magnitude <= 1) return
+        setResult('sensors', 'ok', 'kiirendusmõõtur reageerib liikumisele')
+        window.removeEventListener('devicemotion', handler)
+        clearTimeout(sensorRef.current?.timer)
+        sensorRef.current = null
+        setSensorState('')
+      }
+      const timer = setTimeout(() => {
+        window.removeEventListener('devicemotion', handler)
+        if (sensorRef.current?.timer === timer) sensorRef.current = null
+        setSensorState('')
+        setResult('sensors', 'manual', 'anduri liikumist ei tuvastatud')
+      }, 5000)
+      sensorRef.current = { handler, timer }
+      window.addEventListener('devicemotion', handler)
+      setSensorState('active')
+      setResult('sensors', 'manual', 'liiguta seadet — ootan andurit')
+    } catch {
+      setResult('sensors', 'manual', 'brauser ei luba andureid')
+    }
+  }
+
+  const testVibration = () => {
+    if (!navigator.vibrate) { setResult('vibration', 'manual', 'brauser ei toeta vibratsiooni'); return }
+    navigator.vibrate(300)
+    setResult('vibration', 'manual', '300 ms vibratsioon — kas tundsid?')
+  }
+
+  const readStorage = async () => {
+    try {
+      if (!navigator.storage?.estimate) { setResult('storage', 'manual', 'andmed pole saadaval'); return }
+      const { usage = 0, quota = 0 } = await navigator.storage.estimate()
+      setResult('storage', 'info', `${(usage / 1e9).toFixed(1)} / ${(quota / 1e9).toFixed(1)} GB kasutusel`)
+    } catch {
+      setResult('storage', 'manual', 'andmed pole saadaval')
+    }
   }
 
   const rows = [
@@ -120,6 +211,10 @@ function QuickCheck() {
     } },
     { id: 'battery', label: 'Aku', action: 'Loe andmed', run: readBattery },
     { id: 'device', label: 'Seade', action: 'Loe andmed', run: readDevice },
+    { id: 'camera', label: 'Kaamera', action: cameraState === 'active' ? 'Peata kaader' : 'Ava kaader', run: toggleCamera },
+    { id: 'sensors', label: 'Andurid', action: sensorState === 'active' ? 'Peata' : 'Liiguta seadet', run: toggleSensors },
+    { id: 'vibration', label: 'Vibratsioon', action: 'Proovi 300 ms', run: testVibration },
+    { id: 'storage', label: 'Mälumaht', action: 'Loe andmed', run: readStorage },
   ]
 
   const finished = Object.values(results).filter((r) => r.status !== 'info')
@@ -170,7 +265,10 @@ function QuickCheck() {
                 </div>
                 <p className="nf-qc-detail">{result?.detail || 'Veel kontrollimata'}</p>
                 <button type="button" onClick={row.run} className="nf-qc-btn">{row.action}</button>
-                {(row.id === 'touch' || row.id === 'speaker' || row.id === 'screen') && result && (
+                {row.id === 'camera' && cameraState === 'active' && (
+                  <video ref={videoRef} autoPlay playsInline muted className="nf-qc-video" />
+                )}
+                {['touch', 'speaker', 'screen', 'camera', 'sensors', 'vibration'].includes(row.id) && result && (
                   <div className="nf-qc-marks">
                     <button type="button" onClick={() => setResult(row.id, 'ok', 'kontrollitud — korras')}>Korras</button>
                     <button type="button" onClick={() => setResult(row.id, 'fail', 'kontrollitud — viga')}>Viga</button>
@@ -207,7 +305,7 @@ function QuickCheck() {
               <button type="button" onClick={copySummary}>{copied ? 'Kopeeritud ✓' : 'Kopeeri tekst'}</button>
             </div>
             <textarea readOnly rows="8" value={summaryText} />
-            <a href="#contact">Saada meile oma tulemus →</a>
+            <a href="#contact" onClick={() => { void copySummary() }}>Saada meile oma tulemus →</a>
           </div>
         )}
 
@@ -244,6 +342,7 @@ function QuickCheck() {
           .nf-qc-marks button { background: #334155; }
           .nf-qc-meter { height: 6px; background: rgba(255,255,255,.12); border-radius: 999px; margin-top: 10px; overflow: hidden; }
           .nf-qc-meter i { display: block; height: 100%; background: #38bdf8; }
+          .nf-qc-video { width: 100%; max-height: 180px; border-radius: 10px; margin-top: 10px; background: #000; object-fit: cover; }
           .nf-qc-touch {
             margin-top: 16px; background: rgba(15,23,42,.7); border: 1px solid rgba(255,255,255,.1);
             border-radius: 14px; padding: 14px;
