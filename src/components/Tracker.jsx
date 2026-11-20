@@ -6,6 +6,16 @@ import { STAGES, watchRepair } from '../repairs'
 
 const ICONS = ['📨', '🔍', '✅', '🔧', '🎉']
 
+function safeHttpUrl(value) {
+  if (!value) return null
+  try {
+    const parsed = new URL(value)
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? parsed : null
+  } catch {
+    return null
+  }
+}
+
 function Tracker() {
   // Kui klient avab kirjas oleva lingi, on kood juba väljas.
   const linkedCode = () => {
@@ -18,6 +28,7 @@ function Tracker() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showReport, setShowReport] = useState(false)
+  const [showInlineReport, setShowInlineReport] = useState(true)
 
   const isDemo = activeCode.toUpperCase() === 'NF-2026-DEMO'
 
@@ -44,11 +55,15 @@ function Tracker() {
   const rawIndex = isDemo ? 2 : Number(repair?.status ?? 0)
   const stageIndex = Math.max(0, Math.min(STAGES.length - 1, rawIndex))
   const current = activeCode && !error ? STAGES[stageIndex] : null
+  const reportLink = safeHttpUrl(repair?.reportUrl)
+  // UserDiag sends X-Frame-Options: SAMEORIGIN, so its report cannot render inside our page.
+  const canEmbedReport = reportLink && !/(^|\.)userdiag\.com$/i.test(reportLink.hostname)
 
   const submit = (event) => {
     event.preventDefault()
     setError('')
     setRepair(null)
+    setShowInlineReport(true)
     setActiveCode(code.trim().toUpperCase())
   }
 
@@ -116,11 +131,36 @@ function Tracker() {
                           {repair.reportName && <span className="block text-xs font-normal text-blue-300/70 mt-0.5">{repair.reportName}</span>}
                         </button>
                       )}
-                      {repair.reportUrl && (
-                        <a href={repair.reportUrl} target="_blank" rel="noopener noreferrer"
-                          className="w-full sm:w-auto inline-block px-4 py-2 rounded-lg border border-purple-400/40 bg-purple-500/10 text-purple-200 text-sm font-semibold hover:bg-purple-500/20 transition-colors">
-                          Ava diagnostika aruanne ↗
-                        </a>
+                      {reportLink && (
+                        <div className="nf-report-inline">
+                          <div className="nf-report-bar">
+                            <div className="min-w-0">
+                              <div className="text-blue-300 text-xs uppercase tracking-wider">Diagnostika aruanne</div>
+                              <div className="text-slate-400 text-[11px] break-all">{reportLink.hostname}</div>
+                            </div>
+                            <div className="nf-report-actions">
+                              <a href={reportLink.href} target="_blank" rel="noopener noreferrer">Ava eraldi ↗</a>
+                              <button type="button" onClick={() => setShowInlineReport((value) => !value)}>
+                                {showInlineReport ? 'Peida' : 'Näita siin'}
+                              </button>
+                            </div>
+                          </div>
+                          {showInlineReport && (canEmbedReport ? (
+                            <iframe
+                              src={reportLink.href}
+                              title="Diagnostika aruanne"
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
+                              allow="fullscreen"
+                              className="nf-report-frame"
+                            />
+                          ) : (
+                            <div className="nf-report-blocked">
+                              See aruandepakkuja ei luba oma lehte teise saidi sees kuvada.
+                              <a href={reportLink.href} target="_blank" rel="noopener noreferrer">Ava aruanne eraldi vahekaardis ↗</a>
+                            </div>
+                          ))}
+                        </div>
                       )}
                     </div>
                   )}
@@ -218,7 +258,28 @@ function Tracker() {
         .nf-tracker-foot { margin-top: 14px; font-size: 12px; }
         .nf-tracker-foot a { color: #93c5fd; text-decoration: none; }
         .nf-tracker-foot a:hover { text-decoration: underline; }
+        .nf-report-inline {
+          margin-top: 14px; border: 1px solid rgba(139,92,246,.32); border-radius: 12px;
+          background: rgba(15,23,42,.7); overflow: hidden; max-width: 100%;
+        }
+        .nf-report-bar {
+          display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+          gap: 10px; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+        .nf-report-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .nf-report-actions a, .nf-report-actions button {
+          display: inline-block; padding: 6px 10px; border-radius: 8px; font-size: 12px;
+          font-weight: 700; text-decoration: none; cursor: pointer;
+          border: 1px solid rgba(167,139,250,.45); color: #ddd6fe; background: rgba(139,92,246,.14);
+        }
+        .nf-report-actions a:hover, .nf-report-actions button:hover { background: rgba(139,92,246,.26); }
+        .nf-report-frame { display: block; width: 100%; height: 520px; border: 0; background: #fff; }
+        .nf-report-blocked { padding: 16px; font-size: 12px; color: #cbd5e1; }
+        .nf-report-blocked a { display: inline-block; margin-left: 6px; color: #c4b5fd; }
 
+        @media (max-width: 639px) {
+          .nf-report-frame { height: 420px; }
+        }
         @media (min-width: 640px) {
           .nf-tracker-section { padding: 72px 0 80px; }
           .nf-tracker-card { padding: 28px; }
