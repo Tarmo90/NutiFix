@@ -11,7 +11,7 @@ const CONTENT = {
       { h: 'Kus andmed asuvad', p: 'Päringud edastatakse Formspree kaudu meie e-postile. Arvustused salvestatakse Firebase Firestore’is (Google Cloud, ELi piirkond). Lehe majutaja Firebase Hosting võib pidada standardseid serverilogisid.' },
       { h: 'Küpsised', p: 'Me ei kasuta reklaami- ega analüütikaküpsiseid. Ainus küpsis on sinu nõusoleku meelespidamine sellel seadmel (localStorage). Selle saad igal ajal kustutada brauseri andmetest.' },
       { h: 'Sinu õigused', p: 'Saad taotleda oma andmete väljastamist, parandamist või kustutamist, kirjutades aadressile info@nutifix.ee. Vastame 30 päeva jooksul.' },
-      { h: 'Säilitamine', p: 'Päringuid hoitakse seni, kuni remonditöö ja garantiiaeg on lõppenud. Arvustused jäävad lehele, kui sa ei palu neid kustutada.' },
+      { h: 'Säilitamine', p: 'Päringuid hoitakse seni, kuni remonditöö on lõppenud ja seade üle antud. Arvustused jäävad lehele, kui sa ei palu neid kustutada.' },
     ],
   },
   terms: {
@@ -20,7 +20,7 @@ const CONTENT = {
     body: [
       { h: 'Hinnad', p: 'Lehel ja kalkulaatoris toodud hinnad on orienteeruvad. Lõplik hind kinnitatakse pärast tasuta esmast diagnoosi ja varuosa saadavuse kontrolli.' },
       { h: 'Päring ei ole broneering', p: 'Vormi saatmine või ajavaliku märkimine ei broneeri aega. Remondiaeg loeb kinnitatuks alles siis, kui me sinuga telefoni või e-postiga ühendust võtame ja kokku lepime.' },
-      { h: 'Garantii', p: 'Kõigile tehtud remonditöödele ja vahetatud varuosadele anname 3 kuud garantii. Garantii algab seadme üleandmisest ja märgitakse remondiaktile.' },
+      { h: 'Töö kvaliteet', p: 'Kui meie tehtud remonditöös ilmneb viga, parandame selle tasuta. See käib meie enda töö kohta ega kata uut kahju ega varuosa loomulikku kulumist.' },
       { h: 'Andmete turvalisus', p: 'Palun ära saada vormi kaudu parool või muud tundlikku teavet. Andmete töötlemist kirjeldab privaatsuspoliitika.' },
       { h: 'Arvustused', p: 'Arvustused avaldatakse pärast saatmist kohe. Me ei avalda valeväiteid ega eemalda arvustusi põhjuseta. Võime eemaldada sobimatu sisu.' },
       { h: 'Kontakt', p: 'Küsimuste korral: info@nutifix.ee või +372 5853 0404.' },

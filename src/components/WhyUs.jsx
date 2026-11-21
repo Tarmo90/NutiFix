@@ -41,8 +41,8 @@ function WhyUs() {
     },
     {
       icon: "🛡️",
-      title: "Garantii",
-      desc: "Kõigile remontidele ja varuosadele 3 kuu garantii.",
+      title: "Oma töö taga",
+      desc: "Kui meie remondis on viga, parandame selle tasuta.",
       color: "from-blue-500 to-purple-800"
     },
     {

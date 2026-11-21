@@ -10,8 +10,8 @@ const ITEMS = [
     a: 'Remondiaeg sõltub rikkest, seadme mudelist ja varuosa saadavusest. Enamik töid valmib 3–5 tööpäeva jooksul; kui varuosa tuleb tellida, ütleme täpse aja pärast ülevaatust.',
   },
   {
-    q: 'Kui pikk on remondi garantii?',
-    a: 'Kõigile NutiFixi tehtud remonditöödele ja vahetatud varuosadele kehtib 3 kuud garantii. Garantii algab seadme üleandmisest.',
+    q: 'Kas remondile antakse garantii?',
+    a: 'Me ei anna tähtajalist garantiid. Kui meie tehtud töös ilmneb viga, parandame selle tasuta — see on meie vastutus oma töö eest.',
   },
   {
     q: 'Kuidas remondipäring saata?',
@@ -39,7 +39,7 @@ function Faq() {
             Korduma kippuvad küsimused
           </h2>
           <p className="text-blue-200 text-sm sm:text-base md:text-lg">
-            Kiired vastused remondi, hinna ja garantii kohta.
+            Kiired vastused remondi, hinna ja meie töö kohta.
           </p>
         </div>
 

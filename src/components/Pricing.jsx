@@ -371,8 +371,8 @@ function Pricing() {
             Kõik hinnad sisaldavad tööjõudu. Varuosa hind on iga töö juures eraldi välja toodud.
           </p>
           <p className="text-center text-white/70 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">
-            Diagnostika on tasuta. Täpne hind kinnitatakse pärast seadme ülevaatust. Kõikidele
-            remonditöödele kehtib 3 kuu garantii.
+            Diagnostika on tasuta. Täpne hind kinnitatakse pärast seadme ülevaatust. Kui meie
+            tehtud töös ilmneb viga, parandame selle tasuta.
           </p>
         </SlideIn>
 

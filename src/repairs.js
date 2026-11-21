@@ -18,7 +18,7 @@ export const STAGES = [
   { key: 'diagnosis', title: 'Tasuta diagnostika', text: 'Seadme ülevaatus ja täpse hinna kinnitus.' },
   { key: 'approved', title: 'Hind kinnitatud', text: 'Ootame sinu nõusolekut töö alustamiseks.' },
   { key: 'repair', title: 'Remont käib', text: 'Tehnik teeb töö ja kontrollib tulemust.' },
-  { key: 'ready', title: 'Valmis üleandmiseks', text: 'Seade on kättesaadav, garantii algab.' },
+  { key: 'ready', title: 'Valmis üleandmiseks', text: 'Seade on kättesaadav ja üleandmiseks valmis.' },
 ]
 
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
