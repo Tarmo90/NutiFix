@@ -173,7 +173,7 @@ function SmartQuote() {
               Tühjenda valikud
             </button>
             <p className="nf-summary-fine">
-              Varuosa hind lisandub tööjõu hinnale. Täpse koguhinna kinnitame pärast tasuta diagnostikat.
+              Varuosa hind sõltub mudelist ja tarnijast ning lisandub tööjõule. Täpse koguhinna kinnitame pärast tasuta diagnostikat.
             </p>
           </aside>
         </div>

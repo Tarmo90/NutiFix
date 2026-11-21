@@ -3,7 +3,7 @@ import { useState } from 'react'
 const ITEMS = [
   {
     q: 'Kui palju remont maksab?',
-    a: 'Hinnad on hinnakirjas töö kaupa. Varuosa hind on iga töö juures eraldi kirjas. Täpse hinna kinnitame pärast seadme ülevaatust.',
+    a: 'Hinnad on hinnakirjas töö kaupa. Varuosa hind oleneb mudelist ja tarnijast, seega kinnitame täpse summa pärast seadme ülevaatust.',
   },
   {
     q: 'Kui kaua remont aega võtab?',

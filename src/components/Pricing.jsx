@@ -368,7 +368,7 @@ function Pricing() {
             Hinnakiri
           </h2>
           <p className="text-center text-white mb-3 sm:mb-4 text-sm sm:text-base md:text-lg">
-            Kõik hinnad sisaldavad tööjõudu. Varuosa hind on iga töö juures eraldi välja toodud.
+            Kõik hinnad on tööjõu hinnangud. Varuosa hind sõltub seadme mudelist ja tarnijast — kinnitame selle pärast diagnostikat.
           </p>
           <p className="text-center text-white/70 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">
             Diagnostika on tasuta. Täpne hind kinnitatakse pärast seadme ülevaatust. Kui meie
