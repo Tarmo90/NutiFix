@@ -16,6 +16,7 @@ function safeHttpUrl(value) {
   }
 }
 
+
 function Tracker() {
   // Kui klient avab kirjas oleva lingi, on kood juba väljas.
   const linkedCode = () => {
@@ -27,8 +28,6 @@ function Tracker() {
   const [repair, setRepair] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [showReport, setShowReport] = useState(false)
-  const [showInlineReport, setShowInlineReport] = useState(false)
 
   const isDemo = activeCode.toUpperCase() === 'NF-2026-DEMO'
 
@@ -56,14 +55,11 @@ function Tracker() {
   const stageIndex = Math.max(0, Math.min(STAGES.length - 1, rawIndex))
   const current = activeCode && !error ? STAGES[stageIndex] : null
   const reportLink = safeHttpUrl(repair?.reportUrl)
-  // UserDiag sends X-Frame-Options: SAMEORIGIN, so its report cannot render inside our page.
-  const canEmbedReport = reportLink && !/(^|\.)userdiag\.com$/i.test(reportLink.hostname)
 
   const submit = (event) => {
     event.preventDefault()
     setError('')
     setRepair(null)
-    setShowInlineReport(false)
     setActiveCode(code.trim().toUpperCase())
   }
 
@@ -118,57 +114,17 @@ function Tracker() {
                           <p className="whitespace-pre-wrap break-words">{repair.diagnosis}</p>
                         </div>
                       )}
-                      {repair.reportSummary && (
-                        <div className="bg-slate-900/60 rounded-lg border border-purple-400/30 px-3 py-2">
-                          <div className="text-purple-300 text-xs uppercase tracking-wider mb-1">
-                            Diagnostika kokkuvõte (automaatne)
-                          </div>
-                          <p className="whitespace-pre-wrap break-words text-slate-200">{repair.reportSummary}</p>
-                        </div>
-                      )}
                       {repair.price && (
                         <div className="bg-blue-500/10 rounded-lg border border-blue-400/30 px-3 py-2">
                           <div className="text-blue-300 text-xs uppercase tracking-wider mb-1">Kinnitatud hind</div>
                           <p className="text-lg font-bold text-white break-words">{repair.price}</p>
                         </div>
                       )}
-                      {repair.reportText && (
-                        <button type="button" onClick={() => setShowReport(true)}
-                          className="w-full sm:w-auto px-4 py-2 rounded-lg border border-blue-400/40 bg-blue-500/10 text-blue-200 text-sm font-semibold hover:bg-blue-500/20 transition-colors">
-                          Vaata diagnostika aruannet →
-                          {repair.reportName && <span className="block text-xs font-normal text-blue-300/70 mt-0.5">{repair.reportName}</span>}
-                        </button>
-                      )}
                       {reportLink && (
-                        <div className="nf-report-inline">
-                          <div className="nf-report-bar">
-                            <div className="min-w-0">
-                              <div className="text-blue-300 text-xs uppercase tracking-wider">Diagnostika aruanne</div>
-                              <div className="text-slate-400 text-[11px] break-all">{reportLink.hostname}</div>
-                            </div>
-                            <div className="nf-report-actions">
-                              <a href={reportLink.href} target="_blank" rel="noopener noreferrer">Ava eraldi ↗</a>
-                              <button type="button" onClick={() => setShowInlineReport((value) => !value)}>
-                                {showInlineReport ? 'Peida' : 'Näita siin'}
-                              </button>
-                            </div>
-                          </div>
-                          {showInlineReport && (canEmbedReport ? (
-                            <iframe
-                              src={reportLink.href}
-                              title="Diagnostika aruanne"
-                              loading="lazy"
-                              referrerPolicy="no-referrer"
-                              allow="fullscreen"
-                              className="nf-report-frame"
-                            />
-                          ) : (
-                            <div className="nf-report-blocked">
-                              See aruandepakkuja ei luba oma lehte teise saidi sees kuvada.
-                              <a href={reportLink.href} target="_blank" rel="noopener noreferrer">Ava aruanne eraldi vahekaardis ↗</a>
-                            </div>
-                          ))}
-                        </div>
+                        <a href={reportLink.href} target="_blank" rel="noopener noreferrer"
+                          className="inline-block w-full sm:w-auto px-4 py-2 rounded-lg border border-blue-400/40 bg-blue-500/10 text-blue-200 text-sm font-semibold hover:bg-blue-500/20 transition-colors">
+                          Ava diagnostika aruanne ↗
+                        </a>
                       )}
                     </div>
                   )}
@@ -198,26 +154,6 @@ function Tracker() {
           )}
         </div>
       </div>
-
-      {showReport && repair?.reportText && (
-        <div className="fixed inset-0 z-[95] flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-sm"
-          role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setShowReport(false) }}>
-          <div role="dialog" aria-modal="true" aria-label="Diagnostika aruanne"
-            className="relative w-full max-w-3xl max-h-[88vh] flex flex-col rounded-2xl border border-white/15 bg-slate-900 shadow-2xl">
-            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-white/10">
-              <div>
-                <div className="text-white font-bold">Diagnostika aruanne</div>
-                <div className="text-blue-300 text-xs mt-0.5">{repair.reportName || 'Aruanne'}</div>
-              </div>
-              <button type="button" onClick={() => setShowReport(false)} aria-label="Sulge"
-                className="text-slate-400 hover:text-white text-2xl leading-none bg-transparent border-none cursor-pointer p-1">×</button>
-            </div>
-            <pre className="flex-1 overflow-auto overscroll-contain px-5 py-4 text-xs sm:text-sm text-slate-200 whitespace-pre-wrap break-words font-mono">
-              {repair.reportText}
-            </pre>
-          </div>
-        </div>
-      )}
 
       <style>{`
         .nf-tracker-section { padding: 56px 0 64px; }
@@ -267,28 +203,7 @@ function Tracker() {
         .nf-tracker-foot { margin-top: 14px; font-size: 12px; }
         .nf-tracker-foot a { color: #93c5fd; text-decoration: none; }
         .nf-tracker-foot a:hover { text-decoration: underline; }
-        .nf-report-inline {
-          margin-top: 14px; border: 1px solid rgba(139,92,246,.32); border-radius: 12px;
-          background: rgba(15,23,42,.7); overflow: hidden; width: 100%; max-width: 100%;
-        }
-        .nf-report-bar {
-          display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-          gap: 10px; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.08);
-        }
-        .nf-report-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-        .nf-report-actions a, .nf-report-actions button {
-          display: inline-block; padding: 6px 10px; border-radius: 8px; font-size: 12px;
-          font-weight: 700; text-decoration: none; cursor: pointer;
-          border: 1px solid rgba(167,139,250,.45); color: #ddd6fe; background: rgba(139,92,246,.14);
-        }
-        .nf-report-actions a:hover, .nf-report-actions button:hover { background: rgba(139,92,246,.26); }
-        .nf-report-frame { display: block; width: 100%; height: 520px; border: 0; background: #fff; }
-        .nf-report-blocked { padding: 16px; font-size: 12px; color: #cbd5e1; }
-        .nf-report-blocked a { display: inline-block; margin-left: 6px; color: #c4b5fd; }
 
-        @media (max-width: 639px) {
-          .nf-report-frame { height: 420px; }
-        }
         @media (min-width: 640px) {
           .nf-tracker-section { padding: 72px 0 80px; }
           .nf-tracker-card { padding: 28px; }

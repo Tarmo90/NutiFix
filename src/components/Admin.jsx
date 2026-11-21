@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
-import reportTextParser from '../reportTextParser'
-import { STAGES, getRepair, setRepairStatus, updateRepairInfo, updateRepairReport, updateReportSummary, createRepair } from '../repairs'
+import { STAGES, getRepair, setRepairStatus, updateRepairInfo, createRepair } from '../repairs'
 
 function Admin() {
   const [user, setUser] = useState(null)
@@ -12,19 +11,12 @@ function Admin() {
   const [repair, setRepair] = useState(null)
   const [diagnosis, setDiagnosis] = useState('')
   const [price, setPrice] = useState('')
+  const [reportUrl, setReportUrl] = useState('')
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [newDevice, setNewDevice] = useState('')
   const [newService, setNewService] = useState('')
   const [newCode, setNewCode] = useState('')
-  const [reportName, setReportName] = useState('')
-  const [reportText, setReportText] = useState('')
-  const [reportUrl, setReportUrl] = useState('')
-  const [parseStatus, setParseStatus] = useState('')
-  const [reportSummary, setReportSummary] = useState('')
-  const [parseError, setParseError] = useState('')
-  const [emailReport, setEmailReport] = useState('')
-  const [emailSummary, setEmailSummary] = useState('')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
 
@@ -56,14 +48,9 @@ function Admin() {
     try {
       const found = await getRepair(code.trim())
       setRepair(found)
-      setDiagnosis(emailSummary ? emailSummary.slice(0, 1000) : (found?.diagnosis || ''))
+      setDiagnosis(found?.diagnosis || '')
       setPrice(found?.price || '')
-      setReportName(found?.reportName || '')
-      setReportText(found?.reportText || '')
       setReportUrl(found?.reportUrl || '')
-      setParseStatus(found?.parseStatus || '')
-      setReportSummary(found?.reportSummary || '')
-      setParseError(found?.parseError || '')
       if (!found) setMessage('Sellist koodi ei leitud.')
     } catch (err) {
       setMessage('Otsing ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
@@ -114,85 +101,16 @@ function Admin() {
     }
   }
 
-  const onReportFile = (e) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    if (file.size > 900000) {
-      setMessage('Fail on liiga suur (max 900 kB). Vähenda aruannet.')
-      return
-    }
-    const reader = new FileReader()
-    reader.onload = () => {
-      setReportText(String(reader.result || ''))
-      setReportName(file.name)
-    }
-    reader.onerror = () => setMessage('Faili lugemine ebaõnnestus.')
-    reader.readAsText(file)
-  }
-
-  const saveReport = async () => {
-    if (!repair || (!reportText && !reportUrl.trim())) return
-    setBusy(true)
-    setMessage('')
-    try {
-      const previousUrl = String(repair.reportUrl || '').trim()
-      const nextUrl = reportUrl.trim()
-      const wantsParse = Boolean(nextUrl) && nextUrl !== previousUrl
-      await updateRepairReport(repair.id, {
-        name: reportName, text: reportText, url: nextUrl, previousUrl,
-      })
-      setRepair((prev) => ({
-        ...prev,
-        reportName, reportText, reportUrl: nextUrl,
-        parseStatus: wantsParse ? 'pending' : prev.parseStatus,
-        reportSummary: wantsParse ? '' : prev.reportSummary,
-        parseError: wantsParse ? '' : prev.parseError,
-      }))
-      if (wantsParse) {
-        setParseStatus('pending')
-        setReportSummary('')
-        setParseError('')
-        setMessage('Link salvestatud — teen kokkuvõtte kohe.')
-        void parseLinkedReport(repair.id, nextUrl)
-      } else {
-        setMessage('Aruanne salvestatud — klient näeb seda oma koodiga.')
-      }
-    } catch (err) {
-      setMessage('Aruande salvestamine ebaõnnestus: ' + (err?.message || 'tundmatu viga'))
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  const parseLinkedReport = async (id, url) => {
-    try {
-      const response = await Promise.race([
-        fetch(`https://r.jina.ai/${url}`),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Aegus')), 15000)),
-      ])
-      if (!response.ok) throw new Error('Aruande leht ei avanenud')
-      const summary = reportTextParser.parseReportMarkdown(await response.text())
-      if (!summary) throw new Error('Aruande vormingut ei tuntud ära')
-      await updateReportSummary(id, summary)
-      setRepair((prev) => ({ ...prev, reportSummary: summary, parseStatus: 'done', parseError: '' }))
-      setReportSummary(summary)
-      setParseStatus('done')
-      setMessage('Kokkuvõte valmis — klient näeb seda kohe.')
-    } catch (err) {
-      // Kirje jääb ootele ja ajastatud varaparser proovib hiljem uuesti.
-      setMessage('Kohene parsing ei õnnestunud; kokkuvõte ilmub mõne minuti jooksul.')
-    }
-  }
-
   const saveInfo = async (e) => {
     e.preventDefault()
     if (!repair) return
     setBusy(true)
     setMessage('')
     try {
-      await updateRepairInfo(repair.id, { diagnosis, price })
-      setRepair((prev) => ({ ...prev, diagnosis, price }))
-      setMessage('Diagnoos ja hind salvestatud — klient näeb neid oma koodiga.')
+      const url = reportUrl.trim()
+      await updateRepairInfo(repair.id, { diagnosis, price, reportUrl: url })
+      setRepair((prev) => ({ ...prev, diagnosis, price, reportUrl: url }))
+      setMessage('Salvestatud — klient näeb neid oma koodiga.')
     } catch (err) {
       setMessage('Salvestamine ebaõnnestus: ' + (err?.message || 'vaata Firestore reegleid'))
     } finally {
@@ -332,8 +250,8 @@ function Admin() {
                     <div className="text-sm font-semibold text-blue-300">Info kliendile</div>
                     <label className="block">
                       <span className="block text-sm font-medium mb-1.5 text-blue-300">Diagnoosi tulemused ja märkused</span>
-                      <textarea rows="4" value={diagnosis} onChange={(e) => setDiagnosis(e.target.value)}
-                        placeholder="Nt aku 78 %, ekraani nurk nõrk, SSD korras. Soovitus: aku vahetus."
+                      <textarea rows="5" value={diagnosis} onChange={(e) => setDiagnosis(e.target.value)}
+                        placeholder={'Telefon: aku 78 %, ekraan korras, laadimisport puhas.\nArvuti: SSD 92 % tervis, 91 °C koormusel, puhastus vajalik.\nSoovitus: aku vahetus / hoolduspakett.'}
                         className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm resize-y" />
                     </label>
                     <label className="block">
@@ -342,91 +260,20 @@ function Admin() {
                         placeholder="Nt 144 € (aku 55 € + ekraan 89 €)"
                         className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
                     </label>
+                    <label className="block">
+                      <span className="block text-sm font-medium mb-1.5 text-blue-300">Diagnostika aruande link (valikuline)</span>
+                      <input type="url" value={reportUrl} onChange={(e) => setReportUrl(e.target.value)}
+                        placeholder="https://mxmob.com/r/..."
+                        className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
+                      <span className="block text-slate-400 text-xs mt-1">
+                        Kui teed MxMobi testi, kopeeri jagatav link siia — kliendile kuvatakse nupp aruande avamiseks.
+                      </span>
+                    </label>
                     <button type="submit" disabled={busy}
                       className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-60">
                       Salvesta ja näita kliendile
                     </button>
                   </form>
-
-                  <div className="mt-6 border-t border-white/10 pt-5 space-y-3">
-                    <div className="text-sm font-semibold text-blue-300">Diagnostika aruanne</div>
-                    <p className="text-slate-400 text-xs">
-                      HWiNFO, CrystalDiskInfo, 3uTools, AccuBattery vms aruanne — salvesta tekstina (txt, csv, html, log).
-                    </p>
-                    <input type="file" accept=".txt,.csv,.log,.html,.htm,.json,.xml,text/*"
-                      onChange={onReportFile}
-                      className="block w-full text-sm text-slate-300 file:mr-3 file:px-4 file:py-2 file:rounded-lg file:border-0 file:bg-slate-700 file:text-white file:cursor-pointer" />
-                    {reportName && (
-                      <div className="text-xs text-blue-300">Valitud: {reportName} ({reportText.length} märki)</div>
-                    )}
-                    <label className="block pt-2">
-                      <span className="block text-sm font-medium mb-1.5 text-blue-300">Välise diagnostika aruande link</span>
-                      <input type="url" value={reportUrl} onChange={(e) => setReportUrl(e.target.value)}
-                        placeholder="https://..."
-                        className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm" />
-                      <span className="block text-slate-400 text-xs mt-1">
-                        MxMob (telefon), UserDiag (PC), TestM vms — jagatav URL. MxMobi põhitulemused võtab süsteem ise kokku; link aegub 30 päeva pärast, aga kokkuvõte jääb alles.
-                      </span>
-                    </label>
-                    <button type="button" onClick={saveReport} disabled={busy || (!reportText && !reportUrl)}
-                      className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-50">
-                      Salvesta aruanne ja näita kliendile
-                    </button>
-                    {(parseStatus === 'pending' || parseStatus === 'error' || reportSummary) && (
-                      <div className="rounded-xl border border-purple-400/30 bg-purple-500/10 px-4 py-3">
-                        <div className="text-purple-300 text-xs uppercase tracking-wider mb-1">Automaatne kokkuvõte</div>
-                        {parseStatus === 'pending' && (
-                          <p className="text-slate-300 text-sm">Ootan parsingu… kokkuvõte ilmub siia mõne minuti jooksul.</p>
-                        )}
-                        {parseStatus === 'error' && (
-                          <p className="text-amber-300 text-sm">Parsing ebaõnnestus: {parseError}</p>
-                        )}
-                        {reportSummary && (
-                          <>
-                            <pre className="whitespace-pre-wrap break-words text-xs text-slate-200 mt-2 max-h-64 overflow-auto">
-                              {reportSummary}
-                            </pre>
-                            <button type="button"
-                              onClick={() => {
-                                setDiagnosis(reportSummary.slice(0, 1000))
-                                setMessage('Kokkuvõte kopeeritud diagnoosiväljasse — vajuta Salvesta ja näita kliendile.')
-                              }}
-                              className="mt-3 text-xs text-purple-200 underline underline-offset-2 bg-transparent border-none cursor-pointer">
-                              Kopeeri diagnoosiväljasse
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    )}
-                    <div className="border-t border-white/10 pt-4 space-y-3">
-                      <div className="text-sm font-semibold text-blue-300">E-postiga saadetud MxMobi raport</div>
-                      <p className="text-slate-400 text-xs">
-                        Kleebi kiri tervikuna siia — kokkuvõte tehakse kohe brauseris, linker pole vaja.
-                      </p>
-                      <textarea rows="6" value={emailReport} onChange={(e) => setEmailReport(e.target.value)}
-                        placeholder="MxMob Phone Diagnostic · Nov 21, 2026 Phone: ..."
-                        className="w-full px-3 py-2.5 bg-slate-900 border border-white/20 rounded-lg text-white text-sm resize-y" />
-                      <button type="button" disabled={!emailReport.trim()}
-                        onClick={() => {
-                          const summary = reportTextParser.parseReportEmail(emailReport)
-                          if (!summary) {
-                            setMessage('Raporti teksti ei õnnestunud kokku võtta — kontrolli, kas kiri on tervikuna kopeeritud.')
-                            return
-                          }
-                          setEmailSummary(summary)
-                          setDiagnosis(summary.slice(0, 1000))
-                          setMessage('Kokkuvõte on diagnoosiväljas — otsi kood ja vajuta Salvesta ja näita kliendile.')
-                        }}
-                        className="px-5 py-2.5 rounded-lg font-bold text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white disabled:opacity-50">
-                        Tee kokkuvõte
-                      </button>
-                      {emailSummary && (
-                        <pre className="whitespace-pre-wrap break-words text-xs text-slate-200 bg-slate-900/70 rounded-lg border border-white/10 px-3 py-2 max-h-64 overflow-auto">
-                          {emailSummary}
-                        </pre>
-                      )}
-                    </div>
-                  </div>
                 </div>
               )}
             </>

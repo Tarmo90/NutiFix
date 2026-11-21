@@ -86,50 +86,14 @@ export async function setRepairStatus(id, status) {
 // Diagnoosi märkused ja kinnitatud hind lähevad kliendile tema koodiga
 // jälgimisvaates kuvamiseks. Mõlemad on vabatekst, et mahutaksid ka
 // täpsustused (nt "aku 55 € + ekraan 89 € = 144 €").
-export async function updateRepairInfo(id, { diagnosis, price }) {
+export async function updateRepairInfo(id, { diagnosis, price, reportUrl }) {
   if (!db) throw new Error('Andmebaas pole saadaval')
+  const cleanUrl = String(reportUrl || '').trim()
   await updateDoc(doc(db, 'repairs', id), {
     diagnosis: String(diagnosis || '').slice(0, 1000),
     price: String(price || '').slice(0, 200),
+    reportUrl: /^https?:\/\//i.test(cleanUrl) ? cleanUrl : '',
     updatedAt: serverTimestamp(),
   })
 }
 
-// Diagnostikatarkvarade (HWiNFO, CrystalDiskInfo, 3uTools jt) tekstilised
-// aruanded salvestatakse otse dokumendi sisse. Firestore'i 1 MB piirang
-// mahutab need probleemideta; Storage nõuaks Blaze'i ja makseinfo.
-export async function updateRepairReport(id, { name, text, url, previousUrl }) {
-  if (!db) throw new Error('Andmebaas pole saadaval')
-  const cleanUrl = String(url || '').trim()
-  const safeUrl = /^https?:\/\//i.test(cleanUrl) ? cleanUrl : ''
-  const update = {
-    reportName: String(name || '').slice(0, 120),
-    reportText: String(text || '').slice(0, 500000),
-    reportUrl: safeUrl,
-    updatedAt: serverTimestamp(),
-  }
-  // Uus link -> ajastatud parser võtab selle mõne minuti jooksul kokku.
-  // Tekstiaruande salvestamine ei kustuta olemasolevat kokkuvõtet.
-  if (safeUrl && safeUrl !== String(previousUrl || '').trim()) {
-    Object.assign(update, {
-      parseStatus: 'pending', reportSummary: '', parseError: '', parsedAt: null,
-    })
-  } else if (!safeUrl) {
-    Object.assign(update, {
-      parseStatus: 'idle', reportSummary: '', parseError: '', parsedAt: null,
-    })
-  }
-  await updateDoc(doc(db, 'repairs', id), update)
-}
-
-// Brauser teeb avaliku rapordi tekstiks ja kirjutab kokkuvõtte kohe,
-// et klient ei peaks ootama ajastatud varaparsingut.
-export async function updateReportSummary(id, summary) {
-  if (!db) throw new Error('Andmebaas pole saadaval')
-  await updateDoc(doc(db, 'repairs', id), {
-    reportSummary: String(summary || '').slice(0, 1800),
-    parseStatus: 'done',
-    parseError: '',
-    parsedAt: serverTimestamp(),
-  })
-}
