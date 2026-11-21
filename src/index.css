@@ -743,6 +743,11 @@ button, .btn, a[role="button"] { line-height: 1.25; }
 
 /* Arvutivaates loetavamad abitekstid. Mobiil jääb puutumata. */
 @media (min-width: 1024px) {
+  /* Arvutivaates ei veni diagnostika read üle kogu lehe laiuse. */
+  .nf-term { max-width: 900px; margin-left: auto; margin-right: auto; }
+  .nf-diag-row { grid-template-columns: 22px minmax(140px, 220px) minmax(0, 1fr) auto; column-gap: 12px; }
+  .nf-diag-value { text-align: left; }
+  .nf-diag-verdict p { max-width: 70ch; }
   .nf-term-title { font-size: 13.5px; }
   .nf-term-badge { font-size: 12px; }
   .nf-chip { font-size: 14.5px; }
