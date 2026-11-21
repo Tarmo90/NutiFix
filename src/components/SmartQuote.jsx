@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { sendQuote, serviceForQuoteLabel } from '../quoteBridge'
 
 // Interaktiivne hinnapakkumise kalkulaator.
 // Kõik hinnad pärinevad avalikust hinnakirjast; lõpliku hinna kinnitab
@@ -44,27 +45,31 @@ function SmartQuote() {
   // Tähtaeg ei muuda hinda — varuosa saadavus sõltub tarnijast, mitte kiirusest.
   const total = smartRound(subtotal)
 
+  const pushToForm = (selection) => {
+    const chosen = selection.length
+      ? selection.map((item) => item.label).join(', ')
+      : 'Tasuta diagnostika / personaalne pakkumine'
+    const amount = selection.reduce((sum, item) => sum + item.price, 0)
+    sendQuote({
+      service: selection.length === 1 ? serviceForQuoteLabel(selection[0].label) : 'Muu / Ei ole kindel',
+      device,
+      message: `Kalkulaatori pakkumine: ${chosen}. Seade: ${device || 'määramata'}. `
+        + `Hinnang: ${smartRound(amount)}€. Ajaline soov: ${timeline}. `
+        + `Varuosa saadavus ja lõplik hind kinnitatakse pärast diagnostikat.`,
+    })
+  }
+
   const toggle = (option) => {
-    setSelected((prev) =>
-      prev.some((item) => item.label === option.label)
-        ? prev.filter((item) => item.label !== option.label)
-        : [...prev, option]
-    )
+    const next = selected.some((item) => item.label === option.label)
+      ? selected.filter((item) => item.label !== option.label)
+      : [...selected, option]
+    setSelected(next)
+    // Iga valik täidab päringu väljad kohe, ilma eraldi nuputa.
+    pushToForm(next)
   }
 
   const askQuote = () => {
-    const chosen = selected.length
-      ? selected.map((item) => item.label).join(', ')
-      : 'Tasuta diagnostika / personaalne pakkumine'
-    window.dispatchEvent(new CustomEvent('nf:quote', {
-      detail: {
-        service: selected.length === 1 ? selected[0].label : 'Muu / Ei ole kindel',
-        device,
-        message: `Kalkulaatori pakkumine: ${chosen}. Seade: ${device || 'määramata'}. `
-          + `Hinnang: ${total}€. Ajaline soov: ${timeline}. `
-          + `Varuosa saadavus ja lõplik hind kinnitatakse pärast diagnostikat.`,
-      },
-    }))
+    pushToForm(selected)
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 

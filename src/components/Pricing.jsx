@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import { sendQuote, serviceForPricingSlug } from '../quoteBridge'
 
 function SlideIn({ children, direction = 'left', delay = 0, className = '' }) {
   const ref = useRef(null)
@@ -56,7 +57,7 @@ function SlideIn({ children, direction = 'left', delay = 0, className = '' }) {
   )
 }
 
-function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) {
+function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef, onPick }) {
   const contentRef = useRef(null)
   const [height, setHeight] = useState(0)
 
@@ -116,8 +117,18 @@ function AccordionItem({ title, icon, color, rows, isOpen, onToggle, itemRef }) 
                 } hover:bg-cyan-400/[0.06] transition-colors`}
               >
                 <span className="text-white/80 text-sm sm:text-[0.95rem] leading-snug">{row.service}</span>
-                <span className="text-white font-semibold text-sm sm:text-base whitespace-nowrap tabular-nums">
-                  {row.price}
+                <span className="flex items-center gap-3">
+                  <span className="text-white font-semibold text-sm sm:text-base whitespace-nowrap tabular-nums">
+                    {row.price}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onPick(row)}
+                    aria-label={`Vali ${row.service}`}
+                    className="nf-price-pick"
+                  >
+                    Vali →
+                  </button>
                 </span>
               </div>
             ))}
@@ -333,6 +344,22 @@ function Pricing() {
     setOpenIndex(openIndex === index ? -1 : index)
   }
 
+  const pickPackage = (pkg) => {
+    sendQuote({
+      service: pkg.name,
+      message: `Valitud pakett: ${pkg.name} (${pkg.price}). `
+        + `Teenused: ${pkg.features.join(', ')}. Lõplik hind kinnitatakse pärast diagnostikat.`,
+    })
+  }
+
+  const pickPriceRow = (category, row) => {
+    sendQuote({
+      service: serviceForPricingSlug(category.slug),
+      message: `Hinnakirja valik: ${row.service} — ${row.price}. Kategooria: ${category.title}. `
+        + `Lõplik hind kinnitatakse pärast diagnostikat.`,
+    })
+  }
+
   return (
     <section id="pricing" className="py-14 sm:py-16 md:py-20 relative">
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
@@ -383,7 +410,11 @@ function Pricing() {
               return (
                 <div
                   key={i}
-                  onClick={() => setSelectedPackage(isSelected ? null : i)}
+                  onClick={() => {
+                    const next = isSelected ? null : i
+                    setSelectedPackage(next)
+                    if (next !== null) pickPackage(pkg)
+                  }}
                   className={`nf-pkg-card relative cursor-pointer ${isSelected ? 'selected' : ''}`}
                 >
                   <div className="nf-pkg-top">
@@ -416,9 +447,7 @@ function Pricing() {
               <a
                 href="#contact"
                 className="inline-block px-6 sm:px-8 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-sm sm:text-lg transition-colors"
-                onClick={() => {
-                  // Navigate to contact
-                }}
+                onClick={() => pickPackage(packages[selectedPackage])}
               >
                 Broneeri see pakett →
               </a>
@@ -442,6 +471,7 @@ function Pricing() {
             {...cat}
             isOpen={openIndex === i}
             onToggle={() => toggle(i)}
+            onPick={(row) => pickPriceRow(cat, row)}
             itemRef={el => itemRefs.current[i] = el}
           />
         ))}
@@ -492,6 +522,12 @@ function Pricing() {
           gap: 4px;
         }
         .nf-pkg-feature { display: flex; align-items: flex-start; gap: 6px; }
+        .nf-price-pick {
+          background: rgba(59,130,246,.18); border: 1px solid rgba(96,165,250,.5);
+          color: #bfdbfe; border-radius: 8px; padding: 4px 8px; font-size: 11px;
+          font-weight: 700; white-space: nowrap; cursor: pointer; transition: .2s;
+        }
+        .nf-price-pick:hover { background: rgba(59,130,246,.35); color: #fff; }
         .nf-pkg-btn {
           margin-top: 12px;
           padding: 8px 12px;

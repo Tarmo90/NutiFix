@@ -1,21 +1,6 @@
 import { useEffect, useState } from 'react'
 import { createRepair } from '../repairs'
-
-const SERVICES = [
-  'Mobiiltelefonide ekraani vahetus',
-  'Sülearvutite ekraani vahetus',
-  'Mobiiltelefonide aku vahetus',
-  'Arvutite hooldus',
-  'Kõvaketta / andmekandja vahetus',
-  'Andmete varundus & taastamine',
-  'Arvuti optimeerimine ja kiirendamine',
-  'IT kiirabi',
-  'Ruuterite ja koduvõrkude paigaldus',
-  'Parooli lähtestamine & IT tugi',
-  'OS paigaldus & draiverite seadistamine',
-  'Printerite ja perifeeria seadistamine',
-  'Muu / Ei ole kindel',
-]
+import { SERVICES, PACKAGES, normalizeService } from '../quoteBridge'
 
 function isOpenNow() {
   try {
@@ -53,7 +38,7 @@ function Contact() {
       const detail = event.detail || {}
       setFormData((prev) => ({
         ...prev,
-        service: detail.service || prev.service,
+        service: detail.service ? normalizeService(detail.service) : prev.service,
         device: detail.device || prev.device,
         problem: detail.message || prev.problem,
       }))
@@ -209,9 +194,9 @@ function Contact() {
                 >
                   <option value="" disabled>Vali teenus...</option>
                   <optgroup label="🎁 Hoolduspaketid">
-                    <option value="Arvuti Põhipakett">Arvuti Põhipakett (35 €)</option>
-                    <option value="Arvuti Hoolduspakett">Arvuti Hoolduspakett (60 €)</option>
-                    <option value="Arvuti Täispakett">Arvuti Täispakett (90 €)</option>
+                    {PACKAGES.map((item) => (
+                      <option key={item.value} value={item.value}>{item.label}</option>
+                    ))}
                   </optgroup>
                   <optgroup label="🔧 Üksikteenused">
                     {SERVICES.map((service) => (
