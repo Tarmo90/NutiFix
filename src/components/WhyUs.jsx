@@ -91,7 +91,7 @@ function WhyUs() {
           Miks valida NutiFix?
         </h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           {reasons.map((reason, index) => (
             <div
               key={index}
@@ -104,12 +104,12 @@ function WhyUs() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
 
               {/* Kaardi sisu - stabiilne, alati sama kõrgusega kui reas kõige kõrgem kaart */}
-              <div className="card-inner relative flex-1 flex flex-col bg-slate-800/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 md:p-8 text-center border border-white/10 hover:border-blue-500/50 transition-all duration-300" style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d', willChange: 'transform' }}>
-                <div className={`w-14 h-14 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-6 rounded-full bg-gradient-to-br ${reason.color} flex items-center justify-center text-2xl sm:text-4xl shadow-lg shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+              <div className="card-inner relative flex-1 flex flex-col justify-center bg-slate-800/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 text-center border border-white/10 hover:border-blue-500/50 transition-all duration-300" style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d', willChange: 'transform' }}>
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-gradient-to-br ${reason.color} flex items-center justify-center text-2xl sm:text-3xl shadow-lg shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                   {reason.icon}
                 </div>
-                <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1.5 sm:mb-3 text-white shrink-0">{reason.title}</h3>
-                <p className="text-blue-200 text-sm sm:text-base">{reason.desc}</p>
+                <h3 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 text-white shrink-0">{reason.title}</h3>
+                <p className="text-blue-200 text-sm sm:text-sm leading-snug">{reason.desc}</p>
               </div>
             </div>
           ))}
