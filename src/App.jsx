@@ -7,6 +7,7 @@ import WhyUs from './components/WhyUs'
 import Contact from './components/Contact'
 import Reviews from './components/Reviews'
 import SmartQuote from './components/SmartQuote'
+import ConditionCheck from './components/ConditionCheck'
 import Tracker from './components/Tracker'
 import Faq from './components/Faq'
 import Admin from './components/Admin'
@@ -58,6 +59,7 @@ function App() {
         <Hero />
         <DiagTerminal />
         <SmartQuote />
+        <ConditionCheck />
         <Pricing />
         <WhyUs />
         <Reviews />

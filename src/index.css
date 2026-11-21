@@ -721,7 +721,7 @@ section p:last-child { margin-bottom: 0; }
 }
 
 /* Sisemine laius ja tsentreerimine — kõik sektsioonid ühel joonel */
-#quote > div, #pricing > div, #why-us > div, #faq > div,
+#quote > div, #condition > div, #pricing > div, #why-us > div, #faq > div,
 #contact > div, #reviews > div, #status > div, #diag > div {
   width: 100%;
   max-width: 900px;
