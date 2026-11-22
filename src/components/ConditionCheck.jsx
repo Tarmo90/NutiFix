@@ -255,7 +255,7 @@ function ConditionCheck() {
         .nf-condition-section { padding: 56px 0 64px; }
         .nf-condition-section .nf-eyebrow {
           display: inline-block; color: #38bdf8; border: 1px solid rgba(56,189,248,.35);
-          border-radius: 999px; padding: 3px 12px; font-size: 11px; font-weight: 800;
+          border-radius: 999px; padding: 4px 13px; font-size: 13px; font-weight: 800;
           letter-spacing: .12em; margin-bottom: 12px;
         }
         .nf-condition-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
@@ -267,11 +267,11 @@ function ConditionCheck() {
         .nf-condition-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
         .nf-condition-index {
           width: 26px; height: 26px; flex: 0 0 26px; border-radius: 8px;
-          background: rgba(59,130,246,.2); color: #93c5fd; font-size: 11px; font-weight: 800;
+          background: rgba(59,130,246,.2); color: #93c5fd; font-size: 13px; font-weight: 800;
           display: flex; align-items: center; justify-content: center;
         }
-        .nf-condition-title { font-size: 14px; font-weight: 800; color: #fff; }
-        .nf-condition-question { font-size: 11.5px; color: rgba(219,234,254,.65); }
+        .nf-condition-title { font-size: 17px; font-weight: 800; color: #fff; }
+        .nf-condition-question { font-size: 13.5px; color: rgba(219,234,254,.65); }
         .nf-condition-options { display: grid; grid-template-columns: 1fr; gap: 7px; }
         .nf-condition-option {
           display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
@@ -282,48 +282,48 @@ function ConditionCheck() {
         .nf-condition-option.selected { border-color: #60a5fa; background: rgba(59,130,246,.18); }
         .nf-condition-dot {
           width: 20px; height: 20px; flex: 0 0 20px; border-radius: 6px;
-          background: rgba(59,130,246,.25); color: #93c5fd; font-size: 11px; font-weight: 800;
+          background: rgba(59,130,246,.25); color: #93c5fd; font-size: 13px; font-weight: 800;
           display: flex; align-items: center; justify-content: center;
         }
         .nf-condition-option.selected .nf-condition-dot { background: #3b82f6; color: #fff; }
         .nf-condition-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-        .nf-condition-label { font-size: 12.5px; font-weight: 700; }
-        .nf-condition-detail { font-size: 10.5px; color: rgba(219,234,254,.6); }
-        .nf-condition-price { font-weight: 800; color: #fbbf24; white-space: nowrap; font-size: 12px; }
-        .nf-condition-device { display: flex; flex-direction: column; gap: 6px; margin-top: 16px; font-size: 12px; color: #93c5fd; font-weight: 700; }
+        .nf-condition-label { font-size: 15px; font-weight: 700; }
+        .nf-condition-detail { font-size: 13px; color: rgba(219,234,254,.6); }
+        .nf-condition-price { font-weight: 800; color: #fbbf24; white-space: nowrap; font-size: 14px; }
+        .nf-condition-device { display: flex; flex-direction: column; gap: 6px; margin-top: 16px; font-size: 14px; color: #93c5fd; font-weight: 700; }
         .nf-condition-device input {
           background: #0f172a; border: 1px solid rgba(255,255,255,.18); border-radius: 9px;
           padding: 11px 12px; color: #fff; font-family: inherit; font-size: 14px; outline: none;
         }
         .nf-condition-device input:focus { border-color: #60a5fa; }
         .nf-condition-level { font-size: 38px; line-height: 1.15; font-weight: 900; margin: 4px 0; }
-        .nf-condition-note { font-size: 12px; color: rgba(226,232,240,.7); }
+        .nf-condition-note { font-size: 14.5px; color: rgba(226,232,240,.7); }
         .nf-condition-extra {
           display: flex; justify-content: space-between; align-items: center; gap: 12px;
           margin: 18px 0 0; padding: 12px 0; border-top: 1px solid rgba(255,255,255,.1);
-          font-size: 12.5px; color: #dbeafe;
+          font-size: 14px; color: #dbeafe;
         }
         .nf-condition-extra b { font-size: 22px; color: #fbbf24; }
         .nf-condition-lines { border-top: 1px solid rgba(255,255,255,.1); padding-top: 12px; }
-        .nf-condition-line { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: #dbeafe; padding: 5px 0; }
+        .nf-condition-line { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; color: #dbeafe; padding: 6px 0; }
         .nf-condition-line b { color: #fff; white-space: nowrap; }
         .nf-condition-reasons {
           margin-top: 12px; background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.25);
           border-radius: 10px; padding: 10px 12px;
         }
-        .nf-condition-reasons p { font-size: 11px; line-height: 1.5; color: rgba(254,243,199,.85); margin: 0 0 6px; }
+        .nf-condition-reasons p { font-size: 13px; line-height: 1.5; color: rgba(254,243,199,.85); margin: 0 0 6px; }
         .nf-condition-reasons p:last-child { margin-bottom: 0; }
         .nf-condition-summary .nf-summary-cta {
           width: 100%; border: none; border-radius: 11px; padding: 13px; cursor: pointer;
-          background: linear-gradient(90deg, #2563eb, #7c3aed); color: #fff; font-weight: 800; font-size: 14px;
+          background: linear-gradient(90deg, #2563eb, #7c3aed); color: #fff; font-weight: 800; font-size: 16px;
           transition: .2s; margin-top: 18px;
         }
         .nf-condition-summary .nf-summary-cta:hover { filter: brightness(1.15); transform: translateY(-1px); }
         .nf-condition-summary .nf-summary-reset {
           width: 100%; margin-top: 8px; background: transparent; border: 1px solid rgba(255,255,255,.16);
-          color: #cbd5e1; border-radius: 10px; padding: 9px; cursor: pointer; font-size: 12px;
+          color: #cbd5e1; border-radius: 10px; padding: 9px; cursor: pointer; font-size: 14px;
         }
-        .nf-condition-summary .nf-summary-fine { font-size: 10px; color: rgba(148,163,184,.8); margin: 12px 0 0; text-align: center; }
+        .nf-condition-summary .nf-summary-fine { font-size: 12px; color: rgba(148,163,184,.8); margin: 12px 0 0; text-align: center; }
 
         @media (min-width: 768px) {
           .nf-condition-section { padding: 72px 0 80px; }
@@ -333,9 +333,9 @@ function ConditionCheck() {
           .nf-condition-level { font-size: 52px; }
         }
         @media (min-width: 1024px) {
-          .nf-condition-label { font-size: 13.5px; }
-          .nf-condition-detail { font-size: 11.5px; }
-          .nf-condition-note, .nf-condition-line, .nf-summary-empty { font-size: 13.5px; }
+          .nf-condition-label { font-size: 16px; }
+          .nf-condition-detail { font-size: 14px; }
+          .nf-condition-note, .nf-condition-line, .nf-summary-empty { font-size: 15px; }
         }
         @media (min-width: 1280px) {
           .nf-condition-section { padding: 88px 0 96px; }
