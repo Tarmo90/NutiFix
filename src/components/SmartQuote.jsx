@@ -243,7 +243,7 @@ function SmartQuote() {
           width: 100%; margin-top: 8px; background: transparent; border: 1px solid rgba(255,255,255,.16);
           color: #cbd5e1; border-radius: 10px; padding: 9px; cursor: pointer; font-size: 12px;
         }
-        .nf-summary-fine { font-size: 10px; color: rgba(148,163,184,.8); margin: 12px 0 0; text-align: center; }
+        .nf-summary-fine { font-size: 12px; color: rgba(148,163,184,.8); margin: 12px 0 0; text-align: center; }
 
         @media (min-width: 768px) {
           .nf-quote-section { padding: 72px 0 80px; }
@@ -260,7 +260,7 @@ function SmartQuote() {
           .nf-summary-label { font-size: 12.5px; }
           .nf-summary-note, .nf-summary-line, .nf-summary-empty { font-size: 13.5px; }
           .nf-summary-reset { font-size: 13px; }
-          .nf-summary-fine { font-size: 11.5px; }
+          .nf-summary-fine { font-size: 13px; }
         }
         @media (min-width: 1280px) {
           .nf-quote-section { padding: 88px 0 96px; }

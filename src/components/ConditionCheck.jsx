@@ -323,7 +323,7 @@ function ConditionCheck() {
           width: 100%; margin-top: 8px; background: transparent; border: 1px solid rgba(255,255,255,.16);
           color: #cbd5e1; border-radius: 10px; padding: 9px; cursor: pointer; font-size: 14px;
         }
-        .nf-condition-summary .nf-summary-fine { font-size: 12px; color: rgba(148,163,184,.8); margin: 12px 0 0; text-align: center; }
+        .nf-condition-summary .nf-summary-fine { font-size: 13.5px; color: rgba(148,163,184,.8); margin: 12px 0 0; text-align: center; }
 
         @media (min-width: 768px) {
           .nf-condition-section { padding: 72px 0 80px; }
